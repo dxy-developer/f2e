@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Repaint on 丁香园前端小分队</title>
+    <link>http://dxy-developer.github.io/f2e/tags/repaint/index.xml</link>
+    <description>Recent content in Repaint on 丁香园前端小分队</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Establishment · 丁香园前端</copyright>
+    <atom:link href="http://dxy-developer.github.io/f2e/tags/repaint/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>浏览器渲染那些事之 Reflow、Repaint</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/03/29/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E9%82%A3%E4%BA%9B%E4%BA%8B%E4%B9%8B-reflowrepaint/</link>
+      <pubDate>Wed, 29 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/03/29/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E9%82%A3%E4%BA%9B%E4%BA%8B%E4%B9%8B-reflowrepaint/</guid>
+      <description>&lt;p&gt;在进行网页开发的时候，一般会忽略到页面渲染给浏览器带来的性能问题；在实际情况中，浏览器进行页面渲染会进行大量的计算，来确定每个可见元素在屏幕上的精确位置、大小，还需要将每个确定好的像素绘制到屏幕上，这些操作都需要消耗大量的资源；如果反复的进行这些操作，对用户设备性能损耗不容乐观，因此希望通过这篇文章加深大家对浏览器渲染过程的理解，并希望大家能够重视渲染过程带来的性能问题。
+&lt;/p&gt;
+
+&lt;h4 id=&#34;浏览器内核-渲染引擎&#34;&gt;浏览器内核（渲染引擎）&lt;/h4&gt;
+
+&lt;p&gt;在各个浏览器厂商你追我赶的形势下，截止今日，产生了很多不同的浏览器，各个浏览器本质大同小异，核心部分基本相似，由渲染引擎和 JS 引擎组成。当你在访问网站页面的时候，浏览器做了很多事情，从发送请求，到解析 HTML 源码，构建渲染树，最后将内容像素绘制到设备屏幕上，一步步完成用户最终需要的场景。然而，在浏览器完成整个渲染的过程中，最为核心的就是“渲染引擎”。以下分别列出一些主流浏览器的渲染引擎：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html&#34;&gt;chrome&lt;/a&gt; - webkit&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.apple.com/cn/safari/&#34;&gt;safari&lt;/a&gt; - webkit&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.opera.com/zh-cn&#34;&gt;opera&lt;/a&gt; - webkit（早期是 presto）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.mozilla.org/en-US/firefox/products/&#34;&gt;firefox&lt;/a&gt; - gecko&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://support.microsoft.com/zh-tw/help/17621/internet-explorer-downloads&#34;&gt;ie&lt;/a&gt; - trident&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;渲染流程&#34;&gt;渲染流程&lt;/h4&gt;
+
+&lt;p&gt;结合浏览器渲染原理，来剖析以下代码渲染构建过程：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;HTML 源码：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width,initial-scale=1&amp;quot;&amp;gt;
+    &amp;lt;link href=&amp;quot;style.css&amp;quot; rel=&amp;quot;stylesheet&amp;quot;&amp;gt;
+    &amp;lt;title&amp;gt;browser rendering&amp;lt;/title&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;p&amp;gt;Hello &amp;lt;span&amp;gt;web performance&amp;lt;/span&amp;gt; students!&amp;lt;/p&amp;gt;
+    &amp;lt;div&amp;gt;&amp;lt;img src=&amp;quot;awesome-photo.jpg&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;CSS 源码：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;body { font-size: 16px }
+p { font-weight: bold }
+span { color: red }
+p span { display: none }
+img { float: right }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;该图为以上源代码构建树：
+&lt;img src=&#34;https://acrens.github.io/css/images/render-tree-construction.png&#34; alt=&#34;构建渲染树&#34; /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;浏览器渲染页面整个过程描述：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;首先，解析 HTML Source，构建 DOM Tree；&lt;/li&gt;
+&lt;li&gt;同时，解析 CSS Style，构建 CSSOM Tree；&lt;/li&gt;
+&lt;li&gt;然后，组合 DOM Tree 与 CSSOM Tree，去除不可见元素，构建 Render Tree；&lt;/li&gt;
+&lt;li&gt;再执行 Reflow，根据 Render Tree 计算每个可见元素的布局（几何属性）；&lt;/li&gt;
+&lt;li&gt;最后，执行 Repaint，通过绘制流程，将每个像素渲染到屏幕上。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;注意：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Render Tree 只包含渲染网页所需要的节点；&lt;/li&gt;
+&lt;li&gt;Reflow 过程是布局计算每个对象的精确位置和大小；&lt;/li&gt;
+&lt;li&gt;Repaint 过程则是将 Render Tree 的每个像素渲染到屏幕上。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;哪些阶段影响渲染效率&#34;&gt;哪些阶段影响渲染效率&lt;/h4&gt;
+
+&lt;p&gt;我们都知道，网页是需要挂载在客户端的浏览器上运行，但是随着互联网的快速发展，为保证用户访问应用的流畅性，往往对客户端的设备配置要求较高。然而，对于用户的设备，我们是无法控制；因此，作为一名开发者，就需要找到除了用户设备配置之外导致访问不流畅的问题，下面就从渲染流程中找到影响性能的问题。&lt;/p&gt;
+
+&lt;p&gt;浏览器初始化渲染时会执行一次 Reflow 过程，这个过程主要是用来确定页面上每个元素在屏幕上的几何位置属性。但是，每执行一次 Reflow 会需要花费大量的时间，耗费大量的设备资源，所以尽量避免执行 Reflow 过程。同时，执行完 Reflow 都会伴随着一次 Repaint 过程，这个过程也会耗费大量的计算机资源，严重影响页面的渲染性能。所以，在浏览器渲染阶段，主要影响页面渲染的阶段是 Reflow 和 Repaint 过程，因此在编写代码时应该尽量避免 Reflow 和 Repaint 过程的执行，如：避免在 JS 代码里直接改变元素的几何属性。&lt;/p&gt;
+
+&lt;h4 id=&#34;reflow-repaint-简介&#34;&gt;reflow &amp;amp; repaint 简介&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;reflow 在渲染过程中称为回流，发生在 Render Tree 阶段，它主要是用来确定每个元素在屏幕上的几何属性，需要大量计算每个元素的位置。在代码里每改变一个元素的几何属性，均会发生一次回流过程。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;repaint 在渲染过程中称为重绘，发生在 reflow 过程之后，当元素的几何属性确定之后便要开始将元素绘制在屏幕上展示。repaint 执行过程就是将元素的颜色、背景等属性绘制出来。在代码里每改变一次元素的颜色等属性时均会对相关元素执行一次重绘。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;如何触发-reflow-和-repaint-过程&#34;&gt;如何触发 reflow 和 repaint 过程&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;改变元素 font-size：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;document.getElementsByTagName(&#39;body&#39;)[0].style.fontSize = &#39;20px&#39;; // reflow,repaint
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;改变元素盒模型margin、border、padding、width：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;let styles = document.getElementsByTagName(&#39;body&#39;)[0].style;
+styles.margin = &#39;40px&#39;; // reflow,repaint
+styles.border = &#39;40px solid #f00&#39;; // reflow,repaint
+styles.padding = &#39;40px&#39;; // reflow,repaint
+styles.width = &#39;300px&#39;; // reflow,repaint
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;改变元素颜色、背景色属性：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;let styles = document.getElementsByTagName(&#39;body&#39;)[0].style;
+styles.color = &#39;#fff&#39;; // repaint
+styles.backgroundColor = &#39;#f00&#39;; // repaint
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;特殊：offset*、scroll*、client*、getComputedStyle、currentStyle：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;由于浏览器在处理批量修改页面元素样式时，会将批量操作缓存起来，然后再做一次 reflow 过程（异步 reflow），避免每次操作都执行 reflow 消耗资源。但是如果在某个操作之后立马调用了以上执行属性，为了等够得到最新的样式，会检查缓存的操作，是否需要 reflow，这样就 flush 出最新的样式。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;如何减少-reflow-和-repaint-过程&#34;&gt;如何减少 reflow 和 repaint 过程&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;减少 JS 逐行修改元素样式：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;let body = document.getElementsByTagName(&#39;body&#39;)[0];
+body.className += &#39; class-name&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;离线处理 DOM 操作：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;通过 documentFragment 集中处理临时操作；&lt;/li&gt;
+&lt;li&gt;克隆节点进行操作，然后进行原节点替换；&lt;/li&gt;
+&lt;li&gt;使用 display:none; 进行批量操作。
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;减少样式的重新计算，即减少 offset*、scroll*、client*、getComputedStyle、currentStyle 的使用，因为每次调用都会刷新操作缓冲区，执行 reflow &amp;amp; repaint。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://acrens.github.io/2017/03/23/2017-03-22-reflow&amp;amp;repaint/&#34;&gt;阅读原文&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;参考资料&#34;&gt;参考资料&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/web/fundamentals/performance/rendering/&#34;&gt;渲染性能&lt;/a&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/&#34;&gt;Rendering: repaint, reflow/relayout, restyle&lt;/a&gt; - &lt;a href=&#34;http://www.cnblogs.com/ihardcoder/p/3927709.html&#34;&gt;译文&lt;/a&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://coolshell.cn/articles/9666.html&#34;&gt;浏览器的渲染原理简介&lt;/a&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/web/tools/chrome-devtools/rendering-tools/&#34;&gt;分析运行时性能&lt;/a&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/timeline-tool#profile-js&#34;&gt;如何使用 Timeline 工具&lt;/a&gt;。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

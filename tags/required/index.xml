@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Required on 丁香园前端小分队</title>
+    <link>http://dxy-developer.github.io/f2e/tags/required/index.xml</link>
+    <description>Recent content in Required on 丁香园前端小分队</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Establishment · 丁香园前端</copyright>
+    <atom:link href="http://dxy-developer.github.io/f2e/tags/required/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>经验杂谈 - 魔性表单</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/04/05/%E7%BB%8F%E9%AA%8C%E6%9D%82%E8%B0%88---%E9%AD%94%E6%80%A7%E8%A1%A8%E5%8D%95/</link>
+      <pubDate>Tue, 05 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/04/05/%E7%BB%8F%E9%AA%8C%E6%9D%82%E8%B0%88---%E9%AD%94%E6%80%A7%E8%A1%A8%E5%8D%95/</guid>
+      <description>&lt;hr /&gt;
+
+&lt;h4 id=&#34;表单&#34;&gt;表单&lt;/h4&gt;
+
+&lt;p&gt;这里先解释表单，相信大家看到这里已经知道是什么了；没错，这里说的表单就是 html 中的 form 表单。&lt;/p&gt;
+
+&lt;p&gt;HTML5 中 form 做了一些优化，比如增加 novalidate 属性，可以控制 form 无需校验提交；给 form 内部 input 增加 required 属性，结合 validate 既可以控制表单必填字段校验，又无需写 js 代码校验。
+&lt;/p&gt;
+
+&lt;p&gt;HTML5 自动校验截图：
+&lt;img src=&#34;../share1.png&#34; alt=&#34;表单验证&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在这里在特别说明下 form 的 enctype 属性；用于设置表单提交数据的编码，默认编码格式：application/x-www-form-urlencoded，在发送前会对所有字符进行编码；当为值 multipart/form-data 时，并不对字符进行编码，一般在文件上传时一定要使用该类型；另外还有一个不经常使用的值：text/plain，提交数据会以存文本形式编码，且不包含格式字符。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;魔性&#34;&gt;魔性&lt;/h4&gt;
+
+&lt;p&gt;魔性给我们带来的感觉就是很神奇，为什么会这样；这里所说的魔性跟 form 提交相关联。&lt;/p&gt;
+
+&lt;p&gt;在一次项目开发中，曾经碰到这样的问题，在一个页面上有一个 input 输入框，同时有一个提交按钮，input 需要支持 enter 按键提交，并且提交之前需要 JS 校验。
+&lt;img src=&#34;../share2.png&#34; alt=&#34;表单提交&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;此时，我正在调试 enter keyup input 输入框，死活都不进入我的 keyup 事件监听函数里，后面就开始进行了扫盲行动，在某搜索引擎输入关键字 &amp;ldquo;form 自动提交&amp;rdquo;关键词，难题迎刃而解。&lt;/p&gt;
+
+&lt;p&gt;在没有 JS 处理的情况下，form 有以下一些表单提交方式：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;如果 form 表单里有 type 为 submit 的按钮存在，不管 form 内部有一个文本框还是多个文本框都会触发按钮提交生效。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;如果按钮不是 input，而是用 button，并且没有加 type，IE 下默认为&lt;br /&gt;
+type = button 触发不提交，Chrome 默认为 type = submit 触发提交。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;对于其它表单元素，如 textarea、select、radio、checkbox 不影响触发规则。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;最奇怪的是如果有 type=&amp;ldquo;image&amp;rdquo; 的 input 效果等同于 type=&amp;ldquo;submit&amp;rdquo;。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;如果 form 表单里面只有一个 type=&amp;ldquo;text&amp;rdquo; 的 input 文本框，不管按钮是什么type，回车键都会自动提交 form（我遇到的问题）。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;解决方案&#34;&gt;解决方案&lt;/h4&gt;
+
+&lt;p&gt;在 form 里面再添加一个 input 输入框，type 不可以为 hidden，否则无效：
+&lt;img src=&#34;../share3.png&#34; alt=&#34;代码片段&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在最底部我添加了一个 input 输入框 type=&amp;ldquo;text&amp;rdquo;。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

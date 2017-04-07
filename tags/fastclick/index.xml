@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fastclick on 丁香园前端小分队</title>
+    <link>http://dxy-developer.github.io/f2e/tags/fastclick/index.xml</link>
+    <description>Recent content in Fastclick on 丁香园前端小分队</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Establishment · 丁香园前端</copyright>
+    <atom:link href="http://dxy-developer.github.io/f2e/tags/fastclick/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>延迟，让你更幸福了吗？</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/03/15/%E5%BB%B6%E8%BF%9F%E8%AE%A9%E4%BD%A0%E6%9B%B4%E5%B9%B8%E7%A6%8F%E4%BA%86%E5%90%97/</link>
+      <pubDate>Wed, 15 Mar 2017 17:18:13 +0800</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/03/15/%E5%BB%B6%E8%BF%9F%E8%AE%A9%E4%BD%A0%E6%9B%B4%E5%B9%B8%E7%A6%8F%E4%BA%86%E5%90%97/</guid>
+      <description>
+
+&lt;p&gt;做前端开发的同学应该知道：在移动端使用了 WebKit 内核的浏览器上，单击操作会延迟 300ms（也有延迟 350ms 的说法，下文统称为 300ms 延迟）后再执行。&lt;/p&gt;
+
+&lt;h1 id=&#34;造成延迟的原因&#34;&gt;造成延迟的原因&lt;/h1&gt;
+
+&lt;p&gt;故事要从 2007 年第一场雪说起，当时的网站都是为大屏幕设备所设计的，
+苹果公司在发布首款 iPhone 前夕，遇到一个问题： 在用户使用像 iPhone 这种小屏幕设备的浏览器访问网站时，
+如何确保用户获得较好的浏览体验。苹果的工程师们做了一些约定来解决这个问题，其中一项约定便是
+双击缩放(double tap to zoom)：用手指在屏幕上快速点击两次，iOS 自带的 Safari 浏览器会将网页缩放
+至原始比例。&lt;/p&gt;
+
+&lt;p&gt;由于当用户一次点击屏幕之后，浏览器并不能立刻判断用户是确实要打开这个链接，还是想要进行双击操作。
+因此，iOS Safari 就等待 300ms，以判断用户是否再次点击了屏幕。&lt;/p&gt;
+
+&lt;p&gt;逐渐地，几乎现在所有的移动端浏览器都支持了了双击缩放这个交互。&lt;/p&gt;
+
+&lt;p&gt;在人们还在为通过移动设备上网而惊叹的时期，没有人会在意这 300ms 的延时。
+而当移动互联网的浪潮滚滚而来时，对于 Web 开发人员来说，点击事件的快速响应变得非常重要。
+移动端浏览器上所有的单击事件都有 300ms 延迟这件事，开始被人们诟病。&lt;/p&gt;
+
+&lt;h1 id=&#34;解决延迟的方法&#34;&gt;解决延迟的方法&lt;/h1&gt;
+
+&lt;p&gt;有问题，就会有对应的解决办法，任何一件事都逃不出这个定律。300ms 延迟也不例外。&lt;/p&gt;
+
+&lt;p&gt;常用的解决方案如下：
+- 禁用缩放
+- 更改浏览器视口的默认宽度
+- 指针事件 (Pointer Events)
+- FastClick&lt;/p&gt;
+
+&lt;h2 id=&#34;禁用缩放&#34;&gt;禁用缩放&lt;/h2&gt;
+
+&lt;p&gt;这是一个比较容易想到的解决方案：既然延迟的起因是页面缩放，那就禁止页面缩放好了。&lt;/p&gt;
+
+&lt;p&gt;代码实现起来也很容易，只需要在 html 页面头部添加如下代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;user-scalable=no&amp;quot;&amp;gt;
+&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;initial-scale=1,minimum-scale=1,maximum-scale=1&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;自古以来，“一刀切”是能解决问题的，但通常不是问题的最优解。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;这个解决方案看似完美，但也带来一个明显的缺陷 —— 你必须完全禁用缩放来达到目的，
+而从移动端站点的可用性和可访问性来看，缩放是相当关键的一环。
+你很可能已经遇到过这个问题，即你想要放大一张图片或者一段字体较小的文本，却发现无法完成操作。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;更改浏览器视口的默认宽度&#34;&gt;更改浏览器视口的默认宽度&lt;/h2&gt;
+
+&lt;p&gt;2014 年，Chrome 开发团队宣布，在 Chrome 32 这一版中，他们将在通过&lt;code&gt;&amp;lt;meta&amp;gt;&lt;/code&gt;标签设置 &lt;code&gt;width=device-width&lt;/code&gt; 或者置为比 &lt;code&gt;viewport&lt;/code&gt; 值更小的页面上禁用双击缩放。页面禁用了双击缩放，就意味着没有了 300 ms点击延迟。&lt;/p&gt;
+
+&lt;p&gt;这个方法代码实现起来依旧很简单：只需要在 html 页面头部添加一行代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;!--使浏览器将视口大小设为设备本身的尺寸--&amp;gt;
+&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;该方案只是禁用了双击缩放操作，用户依旧可以使用双指缩放(pinch to zoom)等操作与页面发生交互。
+缩放功能并非被完全禁用，也就不存在可用性和可访问性的问题了。&lt;/p&gt;
+
+&lt;p&gt;目前，主流的移动端浏览器均已支持该方案。&lt;/p&gt;
+
+&lt;p&gt;iOS 10 发布之后，通过 &lt;code&gt;&amp;lt;meta&amp;gt;&lt;/code&gt; 标签设置的 &lt;code&gt;user-scalable&lt;/code&gt;，&lt;code&gt;min-scale&lt;/code&gt; 和 &lt;code&gt;max-scale&lt;/code&gt; 会被 WebKit 忽略掉，这意味着 iOS 10 上的 Safari/Chrome 允许用户在每个页面上进行缩放。但是依旧可以通过使用 &lt;code&gt;&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;initial-scale=1.0, width=device-width&amp;quot;&amp;gt;&lt;/code&gt; 来消除延迟，从而快速响应用户的单击操作。&lt;/p&gt;
+
+&lt;p&gt;在 iOS 10 的 hybrid 应用中，可以通过在 &lt;code&gt;WKWebViewConfiguration&lt;/code&gt; 上设置新属性来阻止用户缩放：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; var ignoresViewportScaleLimits : Bool 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;默认值为 false ，这意味着 WKWebView 内容将允许内容阻止缩放。这保留了旧版本的iOS的行为。&lt;/p&gt;
+
+&lt;p&gt;实际上，正是因为 iOS 10 中的 Safari 和 SafariViewController 将值设置为 true，才会导致禁止页面缩放失效。&lt;/p&gt;
+
+&lt;h2 id=&#34;指针事件-pointer-events&#34;&gt;指针事件 (Pointer Events)&lt;/h2&gt;
+
+&lt;p&gt;除了使用 HTML 的 &lt;code&gt;&amp;lt;meta&amp;gt;&lt;/code&gt; 标签禁止页面缩放外，我们还可以通过 CSS 的方式来让页面快速响应点击操作。
+该种方式在国内通常被称作：指针事件。&lt;/p&gt;
+
+&lt;p&gt;指针事件最初由微软提出。指针事件是一个新的 web 事件系列，相应的规范旨在使用一个单独的事件模型，对所有输入类型，包括鼠标 (mouse)、触摸 (touch)、触控 (stylus) 等，进行统一的处理。&lt;/p&gt;
+
+&lt;p&gt;指针事件方案中，有一个和点击延迟直接相关的实现：一个名为 &lt;code&gt;touch-action&lt;/code&gt; 的新 CSS 属性。
+根据&lt;a href=&#34;https://w3c.github.io/pointerevents/#the-touch-action-css-property&#34;&gt;规范&lt;/a&gt; &lt;code&gt;touch-action&lt;/code&gt; 属性决定 “是否触摸操作会触发用户代理的默认行为。这包括但不限于双指缩放等行为”。&lt;/p&gt;
+
+&lt;p&gt;默认情况下，页面上的元素具有 &lt;code&gt;touch-action: auto;&lt;/code&gt;，这表示 WebKit 可以启用任何触摸行为，例如平移，捏和双击。当页面上的元素具有 &lt;code&gt;touch-action: manipulation;&lt;/code&gt; 时，WebKit 仅会支持在可点击元素上的触摸行为，仅用于平移和缩放的目的。 这味着 WebKit 不会考虑对元素执行双击手势，因此会立即调度单个点击。 当任何元素的祖先具有&lt;code&gt;touch-action: manipulation;&lt;/code&gt; 时，元素上的单个点击变得快速。 注意，页面上所有具有了&lt;code&gt;touch-action: manipulation;&lt;/code&gt;的节点的子节点都会立即调度单个点击事件。该种方式适用于各种缩放比例的页面。&lt;/p&gt;
+
+&lt;p&gt;关于 &lt;code&gt;touch-action&lt;/code&gt; 具体详情,可访问&lt;a href=&#34;https://w3c.github.io/pointerevents/&#34;&gt;W3C 规范的候选推荐标准阶段&lt;/a&gt;进行了解。&lt;/p&gt;
+
+&lt;p&gt;可以从&lt;a href=&#34;http://caniuse.com/#search=touch-action&#34;&gt;http://caniuse.com/&lt;/a&gt;来了解现阶段各个浏览器对&lt;code&gt;touch-action&lt;/code&gt;的支持情况。&lt;/p&gt;
+
+&lt;h3 id=&#34;指针事件的-polyfill&#34;&gt;指针事件的 polyfill&lt;/h3&gt;
+
+&lt;p&gt;下面列出了几种针对指针事件的 polyfill：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jquery/PEP&#34;&gt;Polymer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://handjs.codeplex.com/&#34;&gt;HandJS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Rich-Harris/Points&#34;&gt;Points&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;需要注意的是，如果你需要的仅仅是一个解决 300ms 点击延迟的方法，上述方案可能不是最理想的。
+因为它们要么是会影响页面整体性能的资源密集型的方案，要么是 touch-action 属性的非标准化模拟。&lt;/p&gt;
+
+&lt;h2 id=&#34;fastclick-https-github-com-ftlabs-fastclick&#34;&gt;&lt;a href=&#34;https://github.com/ftlabs/fastclick&#34;&gt;FastClick&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;FastClick 是 &lt;a href=&#34;http://labs.ft.com/&#34;&gt;FT Labs&lt;/a&gt; 专门为解决移动端浏览器 300 ms点击延迟问题所开发的一个轻量级的库。&lt;/p&gt;
+
+&lt;h3 id=&#34;实现原理&#34;&gt;实现原理&lt;/h3&gt;
+
+&lt;p&gt;FastClick 在检测到 touchend 事件的时候，会通过 DOM 自定义事件立即触发一个模拟 click 事件，并把浏览器在 300 ms之后真正触发的 click 事件阻止掉。&lt;/p&gt;
+
+&lt;h3 id=&#34;使用方法&#34;&gt;使用方法&lt;/h3&gt;
+
+&lt;p&gt;FastClick 的使用方法非常简单。官方推荐的使用方法为：当初始 HTML 文档已完全加载和解析时，
+调用 &lt;code&gt;FastClick.attach(document.body);&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (&#39;addEventListener&#39; in document) {
+    document.addEventListener(&#39;DOMContentLoaded&#39;, function() {
+        FastClick.attach(document.body);
+    }, false);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果使用了 jQuery，可以使用如下方式使用 FastClick：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(function() {
+    FastClick.attach(document.body);
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果使用了 npm 等模块化的方式安装了 FastClick，则可以按照如下方式使用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;const attachFastClick = require(&#39;fastclick&#39;);
+attachFastClick(document.body);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其实具体如何使用 FastClick，去看一下 FastClick 的源码就一目了然了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (typeof define === &#39;function&#39; &amp;amp;&amp;amp; typeof define.amd === &#39;object&#39; &amp;amp;&amp;amp; define.amd) {
+
+    // AMD. Register as an anonymous module.
+    define(function() {
+        return FastClick;
+    });
+} else if (typeof module !== &#39;undefined&#39; &amp;amp;&amp;amp; module.exports) {
+    module.exports = FastClick.attach;
+    module.exports.FastClick = FastClick;
+} else {
+    window.FastClick = FastClick;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;值得注意的是：attach() 方法虽可在更具体的元素上调用，直接绑定到 &lt;code&gt;&amp;lt;body&amp;gt;&lt;/code&gt; 上可以确保整个应用都能受益。当 FastClick 检测到当前页面使用了基于 &lt;code&gt;&amp;lt;meta&amp;gt;&lt;/code&gt; 标签或者 &lt;code&gt;touch-action&lt;/code&gt; 属性等解决方案时，会静默退出。可以说，这是真正的跨平台方案出来之前一种很好的变通方案。&lt;/p&gt;
+
+&lt;h1 id=&#34;移动端浏览器的现状&#34;&gt;移动端浏览器的现状&lt;/h1&gt;
+
+&lt;p&gt;目前 iOS 和 Android 两大平台的移动设备上的浏览器，以及两个平台上微信中的内置浏览器均可通过上述方案
+来解决 300 ms 延时问题。&lt;/p&gt;
+
+&lt;h1 id=&#34;备注&#34;&gt;备注&lt;/h1&gt;
+
+&lt;p&gt;目前各个浏览器使用的内核情况。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;浏览器&lt;/th&gt;
+&lt;th&gt;内核&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Safari&lt;/td&gt;
+&lt;td&gt;WebKit&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Chrome&lt;/td&gt;
+&lt;td&gt;WebKit&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Opera&lt;/td&gt;
+&lt;td&gt;WebKit&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Firefox&lt;/td&gt;
+&lt;td&gt;Gecko&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;国产浏览器极速模式&lt;/td&gt;
+&lt;td&gt;WebKit&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;微信浏览器&lt;/td&gt;
+&lt;td&gt;WKWebView&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/ftlabs/fastclick&#34;&gt;FastClick&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/web/updates/2013/12/300ms-tap-delay-gone-away&#34;&gt;300ms tap delay, gone away&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://thx.github.io/mobile/300ms-click-delay&#34;&gt;300 ms点击延迟的来龙去脉&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://labs.ft.com/&#34;&gt;FT Labs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent&#34;&gt;CustomEvent&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://webkit.org/blog/5610/more-responsive-tapping-on-ios/&#34;&gt;More Responsive Tapping on iOS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://webkit.org/blog/7367/new-interaction-behaviors-in-ios-10/&#34;&gt;New Interaction Behaviors in iOS 10&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://amazeui.org/javascript/fastclick?_ver=2.x&#34;&gt;Amaze UI JS 插件 FastClick&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cnblogs.com/vajoy/p/3735553.html&#34;&gt;各主流浏览器内核介绍&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cnblogs.com/vajoy/p/5522114.html&#34;&gt;FastClick 填坑及源码解析&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

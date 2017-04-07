@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>debounce &amp;&amp; throttle 简单实现</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/init.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/particles.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/markdown.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/style.css">
+    <script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+    <script>
+      
+      function setLeanCloud() {
+        AV.initialize('PPDrp7ANvEDvzYqBF2gKC7vY-gzGzoHsz', '60o0boL7ij0mkftarA5kEfNs');
+      }
+      setLeanCloud();
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="menu"></button>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+    <div class="header">
+        <a href="http://dxy-developer.github.io/f2e">
+            <p class="title J-title">debounce &amp;&amp; throttle 简单实现</p>
+            <p class="title">回到首页</p>
+            <p class="sub-title">DXY Tech&amp;Product Division</p>
+            <hr />
+        </a>
+    </div>
+
+<div class="container">
+    <div class="left">
+        <div class="post markdown-body">
+    <p class="post-info J-detail-option">
+        Author.<span class="J-author">huot</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a> ·
+        Fri, Feb 17, 2017
+    </p>
+    <div class="post-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/huot/">
+        <p>2011 年，Twitter 曝出一个 bug：当用户在滚动页面时，网站会变慢甚至无响应。John Resig 发表了一篇关于该问题的博客，并指出把高消耗的函数执行绑定在<code>onscroll</code>事件上是多么得不靠谱。下面以<code>lodash</code>中的<code>debounce</code>和<code>throttle</code>为例，来讲解<code>函数节流</code>在解决类似问题中的作用。
+</p>
+
+<h3 id="debounce">debounce</h3>
+
+<p>搜索引擎的<code>自动补全</code>功能已司空见惯，每当用户输入一个字符就去发一次请求，显然有点浪费。我们可以考虑在用户停止输入<code>500 ms</code>后再去请求，这样用户体验基本不会受到影响，也减少了不必要的请求，减轻了服务器的压力。</p>
+
+<blockquote>
+<p>简单实现</p>
+</blockquote>
+
+<pre><code>function debounce(func, wait) {
+    let timer;
+
+    return function(...args) {
+        const context = this;
+
+        clearTimeout(timer);
+
+        timer = setTimeout(function() {
+            func.apply(context, args);
+        }, wait);
+    };
+}
+</code></pre>
+
+<blockquote>
+<p>调用示例</p>
+</blockquote>
+
+<pre><code>/** 原来的做法 */
+input.onkeypress = doSomeThing;
+
+/** 使用函数节流 */
+input.onkeypress = debounce(doSomeThing, 500);
+
+/** 错误示例 */
+input.onkeypress = function() {
+    // 原因：返回一个函数，但没有执行
+    // debounce(doSomeThing, 500);
+
+    // 原因：每次事件触发单独创建一个闭包，会产生多个定时器
+    // debounce(doSomeThing, 500)();
+}
+</code></pre>
+
+<h3 id="leading-edge">leading edge</h3>
+
+<p>如果用户打字速度很快，我们希望能在他输入第一个字符的时候就给出相关提示，可以使用<code>leading</code>参数来控制。</p>
+
+<blockquote>
+<p>扩展<code>leading</code>参数</p>
+</blockquote>
+
+<pre><code>function debounce(func, wait, { leading = false } = {} ) {
+    let context, xargs, timer;
+    let firstInvoke = true;
+
+    function invokeFunc() {
+        func.apply(context, xargs);
+    }
+
+    function debounced(...args) {
+        context = this;
+        xargs = args;
+
+        clearTimeout(timer);
+
+        if (leading &amp;&amp; firstInvoke) {
+            invokeFunc();
+            firstInvoke = false;
+        }
+
+        timer = setTimeout(function() {
+            invokeFunc();
+        }, wait);
+    };
+
+    return debounced;
+}
+</code></pre>
+
+<h3 id="maxwait">maxWait</h3>
+
+<p><code>无限滚动</code>在移动端场景中必不可少，我们希望能在页面滚动即将到达底部时去请求更多的数据。通过上面的实现，我们只有等用户停止滚动<code>wait ms</code>后才能开始检测<code>到页面底部距离</code>，未免有些慢了。不过我们通过<code>maxWait</code>参数，可以每隔<code>maxWait ms</code>就去执行检测代码来解决类似问题。</p>
+
+<blockquote>
+<p>扩展<code>maxWait</code>参数</p>
+</blockquote>
+
+<pre><code>function debounce(func, wait, { leading = false, maxWait = 0 } = {}) {
+    let context, xargs, timer, timeLast;
+    let firstInvoke = true;
+
+    function invokeFunc() {
+        func.apply(context, xargs);
+    }
+
+    function debounced(...args) {
+        context = this;
+        xargs = args;
+
+        const timeNow = +new Date();
+
+        clearTimeout(timer);
+
+        if (leading &amp;&amp; firstInvoke) {
+            invokeFunc();
+            firstInvoke = false;
+        }
+
+        if (!timeLast) {
+            timeLast = timeNow;
+        }
+
+        if (!!maxWait &amp;&amp; timeNow - timeLast &gt;= maxWait) {
+            invokeFunc();
+            timeLast = timeNow;
+        } else {
+            timer = setTimeout(function() {
+                invokeFunc();
+            }, wait);
+        }
+    };
+
+    return debounced;
+}
+</code></pre>
+
+<h3 id="trailing-edge">trailing edge</h3>
+
+<p>除了以上参数，<code>debounce</code>还提供了<code>trailing</code>参数。在调整浏览器窗口大小时会触发多次<code>onresize</code>事件，如果我们只对操作停止时的窗口尺寸感兴趣，那么就使用<code>trailing = true</code>来保证这一点（<code>debounce</code>中<code>trailing</code>默认为<code>true</code>）。</p>
+
+<blockquote>
+<p>扩展<code>trailing</code>参数</p>
+</blockquote>
+
+<pre><code>function debounce(func, wait, { leading = false, maxWait = 0, trailing = true } = {}) {
+    let context, xargs, timer, timeLast;
+    let firstInvoke = true;
+
+    function invokeFunc() {
+        func.apply(context, xargs);
+    }
+
+    function debounced(...args) {
+        context = this;
+        xargs = args;
+
+        const timeNow = +new Date();
+
+        clearTimeout(timer);
+
+        if (leading &amp;&amp; firstInvoke) {
+            firstInvoke = false;
+            invokeFunc();
+        }
+
+        if (!timeLast) {
+            timeLast = timeNow;
+        }
+
+        if (!!maxWait &amp;&amp; timeNow - timeLast &gt;= maxWait) {
+            invokeFunc();
+            timeLast = timeNow;
+        } else if (trailing) {
+            timer = setTimeout(function() {
+                invokeFunc();
+            }, wait);
+        }
+    };
+
+    return debounced;
+}
+</code></pre>
+
+<h3 id="throttle">throttle</h3>
+
+<p>通过以上示例代码不难看出，使用<code>debounce</code>就可以实现<code>throttle</code>的功能，或者说<code>throttle</code>就是封装后的<code>debounce</code>。其实<code>lodash</code>的源码也是这么做得，<code>underscore</code>则将两个函数的实现分开了，有兴趣可以<a href="https://github.com/jashkenas/underscore/blob/master/underscore.js#L880">看一下</a>。</p>
+
+<blockquote>
+<p>实现<code>throttle</code></p>
+</blockquote>
+
+<pre><code>function throttle(func, wait, { leading = true, trailing = true } = {}) {
+      return debounce(func, wait, { leading, maxWait: wait, trailing });
+}
+</code></pre>
+
+<h3 id="私有函数">私有函数</h3>
+
+<p>除了以上参数，<code>lodash</code>中的<code>debounce</code>和<code>throttle</code>还包含以下两个私有函数可供调用，</p>
+
+<ul>
+<li><code>cancel</code>：取消延时函数（定时器）的执行</li>
+<li><code>flush</code>：立即执行用户回调</li>
+</ul>
+
+<blockquote>
+<p>调用示例</p>
+</blockquote>
+
+<pre><code>const debounceFunc = _.debounce(doSomething, 500);
+
+debounceFunc.cancel();
+debounceFunc.flush();
+</code></pre>
+
+<h3 id="应用场景">应用场景</h3>
+
+<ul>
+<li>debounce</li>
+</ul>
+
+<pre><code>// 避免过分频繁得计算布局
+window.onresize = debounce(calculateLayout, 150);
+
+// 防止用户连续点击，发送重复请求
+button.onclick = debounce(sendMail, 300, { leading: true, trailing: false });
+
+// 恰当地处理批量登录
+const debounceFunc = debounce(batchLog, 250, { maxWait: 1000 });
+const source = new EventSource('/stream');
+
+source.onmessage = debounceFunc;
+
+// 取消节流调用
+window.onpopstate = debounceFunc.cancel;
+</code></pre>
+
+<ul>
+<li>throttle</li>
+</ul>
+
+<pre><code>// 避免过分频繁得更新定位
+window.onscroll = throttle(updatePosition, 100);
+
+// 恰当地处理身份更新
+const throttleFunc = throttle(renewToken, 300000, { 'trailing': false });
+
+button.onclick = throttleFunc;
+
+// 取消防抖调用
+window.onpopstate = throttled.cancel;
+</code></pre>
+
+<h3 id="参考">参考</h3>
+
+<ul>
+<li><a href="https://css-tricks.com/debouncing-throttling-explained-examples">Debouncing and Throttling Explained Through Examples</a></li>
+<li><a href="https://lodash.com/docs/4.17.4">Lodash Documentation</a></li>
+<li><a href="https://github.com/lodash/lodash">Github/lodash</a></li>
+<li><a href="https://github.com/jashkenas/underscore">Github/underscore</a></li>
+<li><a href="http://www.alloyteam.com/2012/11/javascript-throttle">浅谈 javascript 的函数节流</a></li>
+<li><a href="https://lizhiyao.github.io/2017/02/15/debounce-throttle/">详解 lodash 中的 debounce 和 throttle</a></li>
+</ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var VisitTable = AV.Object.extend('Visit');
+    var URLLinkId = location.pathname;
+    var author = $('.J-author').text() || '';
+    var title = $('.J-title').text() || '';
+
+    
+    function postVisitData() {
+      var visit = new VisitTable();
+      var query = new AV.Query('Visit');
+
+      query.equalTo('link', URLLinkId)
+      query.find().then(function(list) {
+        var count = 1;
+        if (list.length > 0) {
+          var item = list[0];
+          item.increment('visitCount');
+          item.save();
+          count = item.get('visitCount');
+        } else {
+          visit.increment('visitCount');
+          visit.save({
+            link: URLLinkId,
+            author: author,
+            title: title
+          });
+        }
+        $('.J-detail-option').append('· 浏览量. <span>' + count + '</span>');
+      });
+    }
+
+    postVisitData();
+  });
+</script>
+
+
+        
+<div class="ds-thread" data-thread-key="http://dxy-developer.github.io/f2e/blog/2017/02/17/debounce--throttle-%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/" data-title="debounce &amp;&amp; throttle 简单实现" data-url="http://dxy-developer.github.io/f2e/blog/2017/02/17/debounce--throttle-%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"dxy-developer"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+    </div>
+    <div class="right">
+    
+    <div class="assort">
+        <p>分类</p>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+</div>
+
+</div>
+<div id="gotop">
+	<a href="javascript:;">TOP</a>
+</div>
+<div class="footer">
+    <p>Establishment · 丁香园前端</p>
+</div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/script.js"></script>
+</body>
+
+</html>
+
+<div id="particles-js"></div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/particles.js"></script>
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http:\/\/dxy-developer.github.io\/f2e/json/particles.json', null);
+</script>
+

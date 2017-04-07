@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>hybrid资源包增量更新机制: 起步</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/init.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/particles.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/markdown.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/style.css">
+    <script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+    <script>
+      
+      function setLeanCloud() {
+        AV.initialize('PPDrp7ANvEDvzYqBF2gKC7vY-gzGzoHsz', '60o0boL7ij0mkftarA5kEfNs');
+      }
+      setLeanCloud();
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="menu"></button>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+    <div class="header">
+        <a href="http://dxy-developer.github.io/f2e">
+            <p class="title J-title">hybrid资源包增量更新机制: 起步</p>
+            <p class="title">回到首页</p>
+            <p class="sub-title">DXY Tech&amp;Product Division</p>
+            <hr />
+        </a>
+    </div>
+
+<div class="container">
+    <div class="left">
+        <div class="post markdown-body">
+    <p class="post-info J-detail-option">
+        Author.<span class="J-author">alexayan</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a> ·
+        Mon, Apr 4, 2016
+    </p>
+    <div class="post-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/alexayan/dxy-hybrid/">
+        <p>从<code>丁香医生</code>app决定使用<code>hybrid</code>到现在已有一段时间。前端资源包的大小接近<code>360KB</code>。并且pm会不时的提出一些小的需求，可能是一些样式的调整，也可能是新的活动页面，因此发布十分频繁。</p>
+
+<p>丁香医生hybrid开发遇到的问题</p>
+
+<blockquote>
+<p>频繁的发布，很小的改动，尺寸不断增加的资源包。</p>
+</blockquote>
+
+<p>丁香医生hybrid开发资源更新机制的现状</p>
+
+<blockquote>
+<p>使用原始的全量更新,即每一次发布，对于终端用户都必须下载完整的资源包，尽管资源包的变动很小。</p>
+</blockquote>
+
+<p>面对以上问题和现状，需要新的资源更新机制。他的核心功能是</p>
+
+<blockquote>
+<p>支持全量更新，增量更新</p>
+</blockquote>
+
+<p></p>
+
+<h2 id="设计">设计</h2>
+
+<p>资源增量更新机制是在如下前提下设计的</p>
+
+<ol>
+<li>没有后台程序员提供支持。（跨部门推一个方案感觉很麻烦）</li>
+<li>尽量简单。(开发，部署)</li>
+</ol>
+
+<p>最终的增量更新机制如下</p>
+
+<ul>
+<li>由前端进行历代版本资源包的diff，生成不同版本之间的增量包（增量包为变动的文件和变动详情配置文件的压缩包）</li>
+<li>使用已有的前端资源发布机制进行资源的发布</li>
+<li>客户端根据配置文件，获取相应的增量包，进行patch</li>
+</ul>
+
+<h2 id="diff-patch">diff&amp;patch</h2>
+
+<p>找 node, swift, java都支持的 diff&amp;patch 第三方库好麻烦。</p>
+
+<p>最终采用的方案将diff的粒度增大到文件。根据文件内容的hash值是否不同，来决定是否进行文件的全量更新。因此最终的diff&amp;patch算法是简单文件内容比较和文件增、删、替换操作。虽然不是最好的，但是它足够简单，实用。</p>
+
+<h2 id="gulp插件-https-github-com-alexayan-gulp-assets-incremental-update"><a href="https://github.com/alexayan/gulp-assets-incremental-update">gulp插件</a></h2>
+
+<p>通过前端构建工具使版本方便的发布</p>
+
+<p><code>npm install gulp-assets-incremental-update --save-dev</code></p>
+
+<pre><code class="language-javascript">//gulpfile.js
+require('gulp-assets-incremental-update')(gulp, {
+    publish_folder : publish_folder,//资源发布目录
+    name : 'article_detail.zip',//zip包名
+    assets_folder : assets, //本地资源目录
+    base_url : base_url //线上资源路径 {base_url}/1/2/{name}
+});
+
+gulp.task('publish', ['assets-incremental-update'] , function(){});
+
+</code></pre>
+
+<p><code>gulp publish</code></p>
+
+<h2 id="相关文章">相关文章</h2>
+
+<ol>
+<li><a href="/f2e/blog/2016/07/18/hybrid资源包增量更新机制-优化与安全/">hybrid资源包增量更新机制: 优化与安全</a></li>
+<li><a href="/f2e/blog/2016/11/15/RDS(前端资源分发系统)/">RDS(前端资源分发系统)</a></li>
+</ol>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var VisitTable = AV.Object.extend('Visit');
+    var URLLinkId = location.pathname;
+    var author = $('.J-author').text() || '';
+    var title = $('.J-title').text() || '';
+
+    
+    function postVisitData() {
+      var visit = new VisitTable();
+      var query = new AV.Query('Visit');
+
+      query.equalTo('link', URLLinkId)
+      query.find().then(function(list) {
+        var count = 1;
+        if (list.length > 0) {
+          var item = list[0];
+          item.increment('visitCount');
+          item.save();
+          count = item.get('visitCount');
+        } else {
+          visit.increment('visitCount');
+          visit.save({
+            link: URLLinkId,
+            author: author,
+            title: title
+          });
+        }
+        $('.J-detail-option').append('· 浏览量. <span>' + count + '</span>');
+      });
+    }
+
+    postVisitData();
+  });
+</script>
+
+
+        
+<div class="ds-thread" data-thread-key="http://dxy-developer.github.io/f2e/blog/2016/04/04/hybrid%E8%B5%84%E6%BA%90%E5%8C%85%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%E6%9C%BA%E5%88%B6-%E8%B5%B7%E6%AD%A5/" data-title="hybrid资源包增量更新机制: 起步" data-url="http://dxy-developer.github.io/f2e/blog/2016/04/04/hybrid%E8%B5%84%E6%BA%90%E5%8C%85%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%E6%9C%BA%E5%88%B6-%E8%B5%B7%E6%AD%A5/"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"dxy-developer"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+    </div>
+    <div class="right">
+    
+    <div class="assort">
+        <p>分类</p>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+</div>
+
+</div>
+<div id="gotop">
+	<a href="javascript:;">TOP</a>
+</div>
+<div class="footer">
+    <p>Establishment · 丁香园前端</p>
+</div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/script.js"></script>
+</body>
+
+</html>
+
+<div id="particles-js"></div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/particles.js"></script>
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http:\/\/dxy-developer.github.io\/f2e/json/particles.json', null);
+</script>
+

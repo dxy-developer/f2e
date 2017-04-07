@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>什么是 HTTPS ?</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/init.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/particles.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/markdown.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/style.css">
+    <script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+    <script>
+      
+      function setLeanCloud() {
+        AV.initialize('PPDrp7ANvEDvzYqBF2gKC7vY-gzGzoHsz', '60o0boL7ij0mkftarA5kEfNs');
+      }
+      setLeanCloud();
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="menu"></button>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+    <div class="header">
+        <a href="http://dxy-developer.github.io/f2e">
+            <p class="title J-title">什么是 HTTPS ?</p>
+            <p class="title">回到首页</p>
+            <p class="sub-title">DXY Tech&amp;Product Division</p>
+            <hr />
+        </a>
+    </div>
+
+<div class="container">
+    <div class="left">
+        <div class="post markdown-body">
+    <p class="post-info J-detail-option">
+        Author.<span class="J-author">huot</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/http">http</a> ·
+        Tue, Dec 27, 2016
+    </p>
+    <div class="post-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/huot/">
+        <p>准确的说，HTTPS 不是一种协议，而是 HTTP 和 SSL 两种技术的组合，HTTP 本身所有的数据都是不加密的。</p>
+
+<p>SSL ( Secure Socket Layer ) ，有时也称为 TLS ( Transport Layer Security ) ，是介于传输层和应用层的拓展层，可以将应用层数据加密后送入传输层。因此，使用了 SSL 传输的 HTTP <code>报文整体</code>都是被加密的。</p>
+
+<p></p>
+
+<h1 id="真的安全吗">真的安全吗？</h1>
+
+<p><em>为什么 HTTPS 比 HTTP 安全？下面来逐步分析其加密过程。</em></p>
+
+<h3 id="对称加密算法">对称加密算法</h3>
+
+<blockquote>
+<p>对称加密算法：又称单钥加密，是指加密和解密使用相同的密钥。</p>
+</blockquote>
+
+<p>因为 HTTP 所有数据都没有被加密，一旦中间人拦截到客户端请求，就可以看到具体的报文内容。如果客户端和服务端约定好同一密钥进行通信，则中间人无法破解。</p>
+
+<p>但是服务端在通信之前不知道客户端的密钥，<code>如何安全地进行密钥传递</code>就是接下来要解决的问题。</p>
+
+<h3 id="非对称加密算法">非对称加密算法</h3>
+
+<blockquote>
+<p>非对称加密算法：又称双钥加密，包括公钥和私钥。公钥/私钥一一对应，有一把公钥就必然有一把与之对应的、独一无二的私钥，反之亦成立。公钥可以解开私钥加密的信息，反之亦成立；</p>
+</blockquote>
+
+<p>借助非对称加密算法，服务端生成自己的密钥对，私钥自己保存，公钥对外公开。</p>
+
+<p>这样的话，客户端就可以使用服务端返回的公钥来加密自己的密钥 ( <code>对称加密算法</code> ) 发送给服务端。即使中间人拦截，由于能解密公钥的私钥只有服务端才有，所以不能解密，保证了数据传输的安全。</p>
+
+<p>那么问题来了，任何人都可以生成一对公钥/私钥，如果中间人在拦截请求时，把自己的公钥返回给客户端，客户端不能分辨出公钥的拥有者，只会按照之前的逻辑，使用接收到的公钥去加密自己的密钥来和服务端通信。</p>
+
+<p>由于客户端使用中间人的公钥进行加密，所以中间人可以使用自己的私钥对客户端的请求进行解密，拿到请求的所有内容，然后再用服务端的公钥对请求进行加密并转发给服务端。整个过程“天衣无缝”，你几乎觉察不到中间人的存在，但是你的信息已经实实在在地被盗取了。</p>
+
+<p>如果<code>客户端能辨别服务端公钥真伪</code>，那么我们的信息又安全了。</p>
+
+<h3 id="数字证书">数字证书</h3>
+
+<blockquote>
+<p>CA ( Certification Authority ) 是认证机构的国际通称，它是对数字证书的申请者发放、管理、取消数字证书的机构。CA的作用是检查证书持有者身份的合法性，并签发证书，以防证书被伪造或篡改。</p>
+</blockquote>
+
+<p>服务端将自己的公钥以及相关注册信息发送给 CA 申请认证，来获得数字证书，其中就包含了服务端的公钥。这样服务端就可以返回数字证书给客户端，因为通过了国际权威机构的认证，数字证书<code>将持有者的公钥和持有者的身份绑定起来</code>，我们这次可以放心地使用公钥去和服务端进行通信了。</p>
+
+<p>这时候中间人又出来搞事情了，我能伪造公钥，我难道不能伪造证书吗？证书没有加密，那我把证书中的公钥换成我自己 ( 中间人 ) 的不就得了？</p>
+
+<p>可以，没毛病。不过中间者还是 SOMETIME NAIVE，CA 比他们不知道高到哪里去了，自然有应对<code>证书被篡改</code>的办法。</p>
+
+<h3 id="数字签名">数字签名</h3>
+
+<p>CA 首先对证书进行 HASH，拿到摘要后使用 CA 的私钥对其加密，并把加密后的结果 ( <code>签名</code> ) 附在证书后面，这个过程就叫<code>数字签名</code>。客户端拿到证书后，会使用 CA 的公钥对签名解密，然后把证书 HASH 后跟解密后的结果进行对比，一致的话说明确实是<code>原厂出品</code>，不一致的话说明<code>被纂改过</code>，直接丢掉。</p>
+
+<p>这次中间人发现没招了，即使修改了证书，由于没有 CA 的私钥，就不能对证书的 HASH 结果进行加密，这个<code>数字签名</code>改不了是不会有客户端认的。正打算放弃时，他忽然想到，CA 的公钥这里貌似可以做文章，如果能替换客户端手里 CA 的公钥，那么就可以伪造证书，从而摧毁这套<code>信任链</code>体系。</p>
+
+<p>那客户端怎么保证 CA 的公钥 ( 或者说用于验证证书签名的公钥 ) 的可靠性？</p>
+
+<h3 id="证书链">证书链</h3>
+
+<p>其实，一个证书的公钥是放在他上一级证书，只要能保证他上一级证书可靠，我们就能保证本级证书可靠。</p>
+
+<p>以此类推，每级证书都是使用上一级证书的非对称密钥进行签名和验证的，我们称这一系列证书的关系为<code>证书链</code>。而在证书链的最顶层的是<code>根证书</code>，那根证书的可靠性是由谁保证的？</p>
+
+<p>根证书是由他自己进行签名和验证的，我们又称他为<code>自签名根证书</code>。他的可靠性是不需要被证明的，或者说需要使用者去证明。</p>
+
+<p>所以，只要我们系统中安装了一个机构的自签名根证书，就代表信任该证书下的所有证书。一旦根证书出了问题，我们的整个<code>证书体系的安全</code>就不再可信。</p>
+
+<h3 id="证书撤销">证书撤销</h3>
+
+<blockquote>
+<p>证书吊销列表 ( Certificate Revocation List，CRL ) ，一个被签署的列表，它指定了一套证书发布者认为无效的证书。</p>
+</blockquote>
+
+<p>当我们从服务端拿到数字证书时，会根据证书上的<code>CRL分发点</code>从指定的 URL 下载 CRL 来检查证书的有效性，CRL 包含了其<code>下一次</code>的更新日期。</p>
+
+<h1 id="q-a">Q&amp;A</h1>
+
+<h3 id="客户端通过证书拿到服务端的公钥后-为什么不采用-双钥加密-而转用-单钥加密">客户端通过证书拿到服务端的公钥后，为什么不采用<code>双钥加密</code>，而转用<code>单钥加密</code>？</h3>
+
+<p>这是个好问题。确实，如果客户端拿到服务端公钥的时候，生成自己的公钥/私钥，然后把自己的公钥发给服务端，采用<code>两对</code>密钥进行通信也是可以的。</p>
+
+<p><code>但是</code>，<code>非对称算法</code>在性能上比<code>对称算法</code>要慢太多。</p>
+
+<p>采用<code>对称算法</code>已经能确保整个通信的安全，其加密/解密带来的消耗可以忽略不计，而且理论上来说<code>对称算法</code>比<code>非对称算法</code>甚至更难破解。</p>
+
+<h3 id="ca-为什么不使用自己的私钥直接对证书加密-而采用-数字签名-的方式">CA 为什么不使用自己的私钥直接对证书加密，而采用<code>数字签名</code>的方式？</h3>
+
+<p>其实这个问题跟上一个类似，因为<code>非对称加密</code>的方式效率低下，比起加密原信息，不如去加密他的 HASH 来得划算，其实这两种给我们带来的作用是等效的，都能防止证书被篡改。</p>
+
+<h3 id="为什么不可以直接用-根证书-去给其他所有证书签名-而要设计-证书链-的概念">为什么不可以直接用<code>根证书</code>去给其他所有证书签名，而要设计<code>证书链</code>的概念？</h3>
+
+<p>这个问题一开始也困扰我很久，我就不阐述我<code>错误</code>的思路了，只提醒大家一点：<code>两个父子证书间的映射关系是放在子证书，而不是父证书</code>。</p>
+
+<p>如果直接使用根证书去给各服务端签署证书，那根证书的密钥就不是足够安全的，毕竟签署的过程不是手动进行，而是放在服务端进行的。一旦有人攻破 CA 的服务器，拿到根证书的密钥，那他就可以伪造根证书，该 CA 下的所有证书都不可信了。</p>
+
+<p>所以，为了保证根证书的绝对安全，根证书的私钥都被保存在离线的<code>金库</code>中。他一般被定期拿出来确保相关密码设备的正常工作，签署证书吊销列表，以及签署新的二级证书。</p>
+
+<p>那么二级证书就可以用来做<code>在线签名</code>，即使二级证书的私钥被盗 ( 可能性很小 ) ，只要根证书是安全的，那么我就可以去更新证书的吊销列表，来让被盗的二级证书失效。</p>
+
+<p>为什么要有多个二级证书？我们可以使用不同的证书去做不同的事情，例如 A 来签署保证邮件安全的证书，B 来签署 SSL 证书。毕竟<code>多线程</code>更高效，各自负责自己的业务场景，一定程度上也能分散风险 ( 我是这么想的，不一定对 ) 。</p>
+
+<h1 id="缺点">缺点</h1>
+
+<p><em>HTTPS 相比于 HTTP 更加安全自不必说，那他都有哪些缺点呢？</em></p>
+
+<h3 id="建立连接">建立连接</h3>
+
+<p>HTTP 使用 TCP 三次握手建立连接，客户端和服务端需要交换 3 个包。 HTTPS 除了 TCP 的三个包，还需要加上 SSL 握手需要的 9 个包，一共是 12 个包。</p>
+
+<p>这样的话，HTTPS 在建立连接阶段比 HTTP 多花费的时间包括了多出的网络延时和 SSL 本身加密/解密的开销。</p>
+
+<p>为了避免重新握手而造成的访问效率低下，这时候引入了<code>Session ID</code>的概念。出于某种原因，如果对话中断且在<code>短时间内</code>重连，只要客户端给出之前的<code>Session ID</code>，且服务器有这个<code>Session ID</code>的记录，双方就可以重新使用已有的<code>对称密钥</code>，而不必重新生成一把。</p>
+
+<p>上述方式可以缓解单个连接的性能问题，但对于并发访问用户数极多的大型网站，如果频繁的重建 SSL 的<code>Session ID</code>，对于服务器性能的影响将会是致命的。这时可以考虑在 Web 服务前配置 <a href="https://en.wikipedia.org/wiki/TLS_termination_proxy">SSL Termination Proxy</a> ，来将 SSL 处理转移到另一起机器以减少主服务器的负载。</p>
+
+<h3 id="通信阶段">通信阶段</h3>
+
+<p>当 SSL 建立连接后，之后的加密方式会使用客户端传输的<code>对称加密算法</code>。相对前面 SSL 建立连接时的非对称加密方式，对称加密方式对 CPU 的负荷基本可以忽略不记。</p>
+
+<h3 id="总而言之">总而言之</h3>
+
+<p>HTTPS 相比 HTTP 在建立连接阶段确实会有性能的影响，但建立连接之后的通信速度跟 HTTP 差别不大。</p>
+
+<p>好在 HTTPS 提供了<code>Session ID</code>这种优化的方式，再加上服务端如果能够进行恰当的配置和优化，相对于 HTTPS 带来的安全性，给客户端以及服务端造成体验上和性能上<code>微小</code>的损失都是值得的。</p>
+
+<h1 id="参考">参考</h1>
+
+<ul>
+<li><a href="http://www.ruanyifeng.com/blog/2006/12/notes_on_cryptography.html">密码学笔记</a></li>
+<li><a href="https://www.zhihu.com/question/21518760">HTTPS 要比 HTTP 多用多少服务器资源？</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/22142170?utm_medium=social&amp;utm_source=wechat_session">深入揭秘HTTPS安全问题&amp;连接建立全过程</a></li>
+<li><a href="https://www.zhihu.com/question/47232448?from=profile_question_card">怎么保证「CA 的公钥」是真实的？</a></li>
+<li><a href="https://www.zhihu.com/question/52466748">TLS 过程中，为何不用证书提供的公钥加密数据或者加密私钥，而要设计秘钥交换流程呢？</a></li>
+<li><a href="http://www.jianshu.com/p/46e48bc517d0">证书链-Digital Certificates</a></li>
+<li><a href="http://unmitigatedrisk.com/?p=397">What’s in a certificate chain and why?</a></li>
+<li><a href="http://security.stackexchange.com/questions/59566/ssl-certificate-chain-verification">SSL certificate chain verification</a></li>
+</ul>
+
+<h1 id="扩展">扩展</h1>
+
+<ul>
+<li><a href="https://www.zhihu.com/question/26161255/answer/35530559">为什么 12306 页面的 HTTPS 会被划红线？</a></li>
+<li><a href="https://www.zhihu.com/question/26600336">Charles 如何抓取 HTTPS 数据包的？</a></li>
+<li><a href="https://www.zhihu.com/question/22306245">网上流传的所谓「支付宝偷偷添加根证书，将造成安全隐患」的说法是否正确？</a></li>
+</ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var VisitTable = AV.Object.extend('Visit');
+    var URLLinkId = location.pathname;
+    var author = $('.J-author').text() || '';
+    var title = $('.J-title').text() || '';
+
+    
+    function postVisitData() {
+      var visit = new VisitTable();
+      var query = new AV.Query('Visit');
+
+      query.equalTo('link', URLLinkId)
+      query.find().then(function(list) {
+        var count = 1;
+        if (list.length > 0) {
+          var item = list[0];
+          item.increment('visitCount');
+          item.save();
+          count = item.get('visitCount');
+        } else {
+          visit.increment('visitCount');
+          visit.save({
+            link: URLLinkId,
+            author: author,
+            title: title
+          });
+        }
+        $('.J-detail-option').append('· 浏览量. <span>' + count + '</span>');
+      });
+    }
+
+    postVisitData();
+  });
+</script>
+
+
+        
+<div class="ds-thread" data-thread-key="http://dxy-developer.github.io/f2e/blog/2016/12/27/%E4%BB%80%E4%B9%88%E6%98%AF-https-/" data-title="什么是 HTTPS ?" data-url="http://dxy-developer.github.io/f2e/blog/2016/12/27/%E4%BB%80%E4%B9%88%E6%98%AF-https-/"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"dxy-developer"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+    </div>
+    <div class="right">
+    
+    <div class="assort">
+        <p>分类</p>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+</div>
+
+</div>
+<div id="gotop">
+	<a href="javascript:;">TOP</a>
+</div>
+<div class="footer">
+    <p>Establishment · 丁香园前端</p>
+</div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/script.js"></script>
+</body>
+
+</html>
+
+<div id="particles-js"></div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/particles.js"></script>
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http:\/\/dxy-developer.github.io\/f2e/json/particles.json', null);
+</script>
+

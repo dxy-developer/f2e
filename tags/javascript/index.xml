@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Javascript on 丁香园前端小分队</title>
+    <link>http://dxy-developer.github.io/f2e/tags/javascript/index.xml</link>
+    <description>Recent content in Javascript on 丁香园前端小分队</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Establishment · 丁香园前端</copyright>
+    <atom:link href="http://dxy-developer.github.io/f2e/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>debounce &amp;&amp; throttle 简单实现</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/02/17/debounce--throttle-%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/</link>
+      <pubDate>Fri, 17 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/02/17/debounce--throttle-%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/</guid>
+      <description>&lt;p&gt;2011 年，Twitter 曝出一个 bug：当用户在滚动页面时，网站会变慢甚至无响应。John Resig 发表了一篇关于该问题的博客，并指出把高消耗的函数执行绑定在&lt;code&gt;onscroll&lt;/code&gt;事件上是多么得不靠谱。下面以&lt;code&gt;lodash&lt;/code&gt;中的&lt;code&gt;debounce&lt;/code&gt;和&lt;code&gt;throttle&lt;/code&gt;为例，来讲解&lt;code&gt;函数节流&lt;/code&gt;在解决类似问题中的作用。
+&lt;/p&gt;
+
+&lt;h3 id=&#34;debounce&#34;&gt;debounce&lt;/h3&gt;
+
+&lt;p&gt;搜索引擎的&lt;code&gt;自动补全&lt;/code&gt;功能已司空见惯，每当用户输入一个字符就去发一次请求，显然有点浪费。我们可以考虑在用户停止输入&lt;code&gt;500 ms&lt;/code&gt;后再去请求，这样用户体验基本不会受到影响，也减少了不必要的请求，减轻了服务器的压力。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;简单实现&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function debounce(func, wait) {
+    let timer;
+
+    return function(...args) {
+        const context = this;
+
+        clearTimeout(timer);
+
+        timer = setTimeout(function() {
+            func.apply(context, args);
+        }, wait);
+    };
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;调用示例&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;/** 原来的做法 */
+input.onkeypress = doSomeThing;
+
+/** 使用函数节流 */
+input.onkeypress = debounce(doSomeThing, 500);
+
+/** 错误示例 */
+input.onkeypress = function() {
+    // 原因：返回一个函数，但没有执行
+    // debounce(doSomeThing, 500);
+
+    // 原因：每次事件触发单独创建一个闭包，会产生多个定时器
+    // debounce(doSomeThing, 500)();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;leading-edge&#34;&gt;leading edge&lt;/h3&gt;
+
+&lt;p&gt;如果用户打字速度很快，我们希望能在他输入第一个字符的时候就给出相关提示，可以使用&lt;code&gt;leading&lt;/code&gt;参数来控制。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;扩展&lt;code&gt;leading&lt;/code&gt;参数&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function debounce(func, wait, { leading = false } = {} ) {
+    let context, xargs, timer;
+    let firstInvoke = true;
+
+    function invokeFunc() {
+        func.apply(context, xargs);
+    }
+
+    function debounced(...args) {
+        context = this;
+        xargs = args;
+
+        clearTimeout(timer);
+
+        if (leading &amp;amp;&amp;amp; firstInvoke) {
+            invokeFunc();
+            firstInvoke = false;
+        }
+
+        timer = setTimeout(function() {
+            invokeFunc();
+        }, wait);
+    };
+
+    return debounced;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;maxwait&#34;&gt;maxWait&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;无限滚动&lt;/code&gt;在移动端场景中必不可少，我们希望能在页面滚动即将到达底部时去请求更多的数据。通过上面的实现，我们只有等用户停止滚动&lt;code&gt;wait ms&lt;/code&gt;后才能开始检测&lt;code&gt;到页面底部距离&lt;/code&gt;，未免有些慢了。不过我们通过&lt;code&gt;maxWait&lt;/code&gt;参数，可以每隔&lt;code&gt;maxWait ms&lt;/code&gt;就去执行检测代码来解决类似问题。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;扩展&lt;code&gt;maxWait&lt;/code&gt;参数&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function debounce(func, wait, { leading = false, maxWait = 0 } = {}) {
+    let context, xargs, timer, timeLast;
+    let firstInvoke = true;
+
+    function invokeFunc() {
+        func.apply(context, xargs);
+    }
+
+    function debounced(...args) {
+        context = this;
+        xargs = args;
+
+        const timeNow = +new Date();
+
+        clearTimeout(timer);
+
+        if (leading &amp;amp;&amp;amp; firstInvoke) {
+            invokeFunc();
+            firstInvoke = false;
+        }
+
+        if (!timeLast) {
+            timeLast = timeNow;
+        }
+
+        if (!!maxWait &amp;amp;&amp;amp; timeNow - timeLast &amp;gt;= maxWait) {
+            invokeFunc();
+            timeLast = timeNow;
+        } else {
+            timer = setTimeout(function() {
+                invokeFunc();
+            }, wait);
+        }
+    };
+
+    return debounced;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;trailing-edge&#34;&gt;trailing edge&lt;/h3&gt;
+
+&lt;p&gt;除了以上参数，&lt;code&gt;debounce&lt;/code&gt;还提供了&lt;code&gt;trailing&lt;/code&gt;参数。在调整浏览器窗口大小时会触发多次&lt;code&gt;onresize&lt;/code&gt;事件，如果我们只对操作停止时的窗口尺寸感兴趣，那么就使用&lt;code&gt;trailing = true&lt;/code&gt;来保证这一点（&lt;code&gt;debounce&lt;/code&gt;中&lt;code&gt;trailing&lt;/code&gt;默认为&lt;code&gt;true&lt;/code&gt;）。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;扩展&lt;code&gt;trailing&lt;/code&gt;参数&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function debounce(func, wait, { leading = false, maxWait = 0, trailing = true } = {}) {
+    let context, xargs, timer, timeLast;
+    let firstInvoke = true;
+
+    function invokeFunc() {
+        func.apply(context, xargs);
+    }
+
+    function debounced(...args) {
+        context = this;
+        xargs = args;
+
+        const timeNow = +new Date();
+
+        clearTimeout(timer);
+
+        if (leading &amp;amp;&amp;amp; firstInvoke) {
+            firstInvoke = false;
+            invokeFunc();
+        }
+
+        if (!timeLast) {
+            timeLast = timeNow;
+        }
+
+        if (!!maxWait &amp;amp;&amp;amp; timeNow - timeLast &amp;gt;= maxWait) {
+            invokeFunc();
+            timeLast = timeNow;
+        } else if (trailing) {
+            timer = setTimeout(function() {
+                invokeFunc();
+            }, wait);
+        }
+    };
+
+    return debounced;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;throttle&#34;&gt;throttle&lt;/h3&gt;
+
+&lt;p&gt;通过以上示例代码不难看出，使用&lt;code&gt;debounce&lt;/code&gt;就可以实现&lt;code&gt;throttle&lt;/code&gt;的功能，或者说&lt;code&gt;throttle&lt;/code&gt;就是封装后的&lt;code&gt;debounce&lt;/code&gt;。其实&lt;code&gt;lodash&lt;/code&gt;的源码也是这么做得，&lt;code&gt;underscore&lt;/code&gt;则将两个函数的实现分开了，有兴趣可以&lt;a href=&#34;https://github.com/jashkenas/underscore/blob/master/underscore.js#L880&#34;&gt;看一下&lt;/a&gt;。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;实现&lt;code&gt;throttle&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function throttle(func, wait, { leading = true, trailing = true } = {}) {
+      return debounce(func, wait, { leading, maxWait: wait, trailing });
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;私有函数&#34;&gt;私有函数&lt;/h3&gt;
+
+&lt;p&gt;除了以上参数，&lt;code&gt;lodash&lt;/code&gt;中的&lt;code&gt;debounce&lt;/code&gt;和&lt;code&gt;throttle&lt;/code&gt;还包含以下两个私有函数可供调用，&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cancel&lt;/code&gt;：取消延时函数（定时器）的执行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;flush&lt;/code&gt;：立即执行用户回调&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;调用示例&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;const debounceFunc = _.debounce(doSomething, 500);
+
+debounceFunc.cancel();
+debounceFunc.flush();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;应用场景&#34;&gt;应用场景&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;debounce&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;// 避免过分频繁得计算布局
+window.onresize = debounce(calculateLayout, 150);
+
+// 防止用户连续点击，发送重复请求
+button.onclick = debounce(sendMail, 300, { leading: true, trailing: false });
+
+// 恰当地处理批量登录
+const debounceFunc = debounce(batchLog, 250, { maxWait: 1000 });
+const source = new EventSource(&#39;/stream&#39;);
+
+source.onmessage = debounceFunc;
+
+// 取消节流调用
+window.onpopstate = debounceFunc.cancel;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;throttle&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;// 避免过分频繁得更新定位
+window.onscroll = throttle(updatePosition, 100);
+
+// 恰当地处理身份更新
+const throttleFunc = throttle(renewToken, 300000, { &#39;trailing&#39;: false });
+
+button.onclick = throttleFunc;
+
+// 取消防抖调用
+window.onpopstate = throttled.cancel;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;参考&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://css-tricks.com/debouncing-throttling-explained-examples&#34;&gt;Debouncing and Throttling Explained Through Examples&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://lodash.com/docs/4.17.4&#34;&gt;Lodash Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lodash/lodash&#34;&gt;Github/lodash&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jashkenas/underscore&#34;&gt;Github/underscore&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.alloyteam.com/2012/11/javascript-throttle&#34;&gt;浅谈 javascript 的函数节流&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://lizhiyao.github.io/2017/02/15/debounce-throttle/&#34;&gt;详解 lodash 中的 debounce 和 throttle&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

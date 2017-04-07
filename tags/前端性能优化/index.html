@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>前端性能优化</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/init.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/particles.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/markdown.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/style.css">
+    <script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+    <script>
+      
+      function setLeanCloud() {
+        AV.initialize('PPDrp7ANvEDvzYqBF2gKC7vY-gzGzoHsz', '60o0boL7ij0mkftarA5kEfNs');
+      }
+      setLeanCloud();
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="menu"></button>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+    <div class="header">
+        <a href="http://dxy-developer.github.io/f2e">
+            <p class="title J-title">前端性能优化</p>
+            <p class="title">回到首页</p>
+            <p class="sub-title">DXY Tech&amp;Product Division</p>
+            <hr />
+        </a>
+    </div>
+
+<div class="container">
+    <div class="left">
+        <div class="posts J-list">
+    
+    <div class="post">
+    <h1 class="post-title">
+
+        
+        
+
+        
+        <img src="http://dxy-developer.github.io/f2e/media/luolr.jpg" />
+        
+
+        <a class="J-link" href="http://dxy-developer.github.io/f2e/blog/2017/04/01/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">前端性能优化：从入门到放弃？</a>
+    </h1>
+
+    <p class="post-info">
+        Author.<span>罗椋仁</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a> ·
+        Sat, Apr 1, 2017
+    </p>
+
+    <div class="post-body markdown-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/luolr/">
+        
+        <blockquote>
+<p>作为一名合格的web开发人员，不应该仅仅满足于功能的实现，前端性能的优化也是我们必须要关注的问题。我们都不希望自己辛辛苦苦写成的代码，却因为优化不到位的问题，带给用户不好的体验。为此，我们可以做不少的事。</p>
+</blockquote>
+
+<p>对于前端性能优化的讨论，一直都不是一个过时的话题，前有雅虎的<a href="https://developer.yahoo.com/performance/rules.html">35条黄金法则</a>，后有O’Reilly 出版的两本性能优化圣经《高性﻿能网站建设指南》、《高性能网站建设进阶指南》，这些都很值得我们学习，将会是我们在探索性能优化道路上的指路明灯。那么，我们首先来看看雅虎的军规吧，我选取了其中的一部分。
+</p>
+        
+    </div>
+
+    
+    <p class="post-more">
+        <a href="http://dxy-developer.github.io/f2e/blog/2017/04/01/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">查看更多…</a>
+    </p>
+    
+</div>
+
+    
+    <div class="post">
+    <h1 class="post-title">
+
+        
+        
+
+        
+        <img src="http://dxy-developer.github.io/f2e/media/acrens.jpeg" />
+        
+
+        <a class="J-link" href="http://dxy-developer.github.io/f2e/blog/2016/07/03/%E6%B5%85%E8%B0%88%E7%BD%91%E7%AB%99%E6%80%A7%E8%83%BD%E4%B9%8B%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">浅谈网站性能之前端性能优化</a>
+    </h1>
+
+    <p class="post-info">
+        Author.<span>acrens</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a> ·
+        Sun, Jul 3, 2016
+    </p>
+
+    <div class="post-body markdown-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/acrens/">
+        
+        <p>性能优化的目的无非是减少用户流量消耗，提升用户首屏体验，提升用户访问速度，让用户专注内容本身。
+</p>
+        
+    </div>
+
+    
+    <p class="post-more">
+        <a href="http://dxy-developer.github.io/f2e/blog/2016/07/03/%E6%B5%85%E8%B0%88%E7%BD%91%E7%AB%99%E6%80%A7%E8%83%BD%E4%B9%8B%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">查看更多…</a>
+    </p>
+    
+</div>
+
+    
+</div>
+
+<script>
+  
+  function renderVisit() {
+    var query = new AV.Query('Visit');
+    query.limit(1000);
+    query.find().then(function(list) {
+      var treeMap = {};
+      list.forEach(function(item) {
+        var keyLink = item.get('link'),
+            count = item.get('visitCount');
+        treeMap[keyLink] = count;
+      });
+
+        $('.J-list .post').each(function() {
+          var a = document.createElement('a');
+          var el = $(this),
+              href = el.find('.J-link').attr('href'),
+              dom = el.find('.post-info');
+
+          a.href = href;
+          var link = a.pathname;
+          var len = treeMap[link] || 0;
+          dom.append('· 浏览量. <span>' + len + '</span>');
+        });
+    });
+  }
+  renderVisit();
+</script>
+
+    </div>
+    <div class="right">
+    
+    <div class="assort">
+        <p>分类</p>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+</div>
+ 
+    <div class="recommend">
+    <h3>文章列表</h3>
+    <div class="posts">
+        
+        
+        <div class="post">
+            <span class="post-title">
+                
+
+                
+                <img src="http://dxy-developer.github.io/f2e/media/luolr.jpg" />
+                
+
+                <a href="http://dxy-developer.github.io/f2e/blog/2017/04/01/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">前端性能优化：从入门到放弃？</a>
+            </span>
+            <span class="post-info">
+                Author.<span>罗椋仁</span> ·
+                Tag.<a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a> ·
+                Sat, Apr 1, 2017
+            </span>
+        </div>
+        
+        <div class="post">
+            <span class="post-title">
+                
+
+                
+                <img src="http://dxy-developer.github.io/f2e/media/acrens.jpeg" />
+                
+
+                <a href="http://dxy-developer.github.io/f2e/blog/2016/07/03/%E6%B5%85%E8%B0%88%E7%BD%91%E7%AB%99%E6%80%A7%E8%83%BD%E4%B9%8B%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">浅谈网站性能之前端性能优化</a>
+            </span>
+            <span class="post-info">
+                Author.<span>acrens</span> ·
+                Tag.<a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a> ·
+                Sun, Jul 3, 2016
+            </span>
+        </div>
+        
+    </div>
+</div>
+
+</div>
+<div id="gotop">
+	<a href="javascript:;">TOP</a>
+</div>
+<div class="footer">
+    <p>Establishment · 丁香园前端</p>
+</div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/script.js"></script>
+</body>
+
+</html>
+ 
+<div id="particles-js"></div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/particles.js"></script>
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http:\/\/dxy-developer.github.io\/f2e/json/particles.json', null);
+</script>
+

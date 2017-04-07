@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>前端性能优化 on 丁香园前端小分队</title>
+    <link>http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.xml</link>
+    <description>Recent content in 前端性能优化 on 丁香园前端小分队</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Establishment · 丁香园前端</copyright>
+    <atom:link href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>前端性能优化：从入门到放弃？</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/04/01/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/</link>
+      <pubDate>Sat, 01 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/04/01/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;作为一名合格的web开发人员，不应该仅仅满足于功能的实现，前端性能的优化也是我们必须要关注的问题。我们都不希望自己辛辛苦苦写成的代码，却因为优化不到位的问题，带给用户不好的体验。为此，我们可以做不少的事。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;对于前端性能优化的讨论，一直都不是一个过时的话题，前有雅虎的&lt;a href=&#34;https://developer.yahoo.com/performance/rules.html&#34;&gt;35条黄金法则&lt;/a&gt;，后有O’Reilly 出版的两本性能优化圣经《高性﻿能网站建设指南》、《高性能网站建设进阶指南》，这些都很值得我们学习，将会是我们在探索性能优化道路上的指路明灯。那么，我们首先来看看雅虎的军规吧，我选取了其中的一部分。
+&lt;/p&gt;
+
+&lt;h4 id=&#34;雅虎-17-条性能优化原则及其分类&#34;&gt;雅虎 17 条性能优化原则及其分类：&lt;/h4&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;优化方向&lt;/th&gt;
+&lt;th&gt;优化手段&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;请求数量&lt;/td&gt;
+&lt;td&gt;合并脚本和样式表，CSS Sprites，拆分初始化负载，划分主域&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;请求带宽&lt;/td&gt;
+&lt;td&gt;开启 GZip，精简 JavaScript，移除重复脚本，图像优化&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;缓存利用&lt;/td&gt;
+&lt;td&gt;使用 CDN，使用外部 JavaScript 和 CSS，添加 Expires 头，减少 DNS 查找，配置 ETag，使 AjaX 可缓存&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;页面结构&lt;/td&gt;
+&lt;td&gt;将样式表放在顶部，将脚本放在底部，尽早刷新文档的输出，延迟加载 JavaScript&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;代码校验&lt;/td&gt;
+&lt;td&gt;避免 CSS 表达式，避免重定向&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&#34;优化原则细则&#34;&gt;优化原则细则：&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;请求数量：
+
+&lt;ul&gt;
+&lt;li&gt;合并脚本和样式表：通过将脚本和样式表合并的方式，可以有效的减少http请求的次数，从而减少DNS请求所耗费的时间和对服务器的压力。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CSS Sprites&lt;/code&gt;：即CSS 雪碧图，通过将众多细小的图片整合成一个文件，从而减少http请求次数。&lt;/li&gt;
+&lt;li&gt;拆分初始化负载：对于页面中一开始加载时不需要执行的资源，可以将其分离出来等到需要时再加载。&lt;/li&gt;
+&lt;li&gt;划分主域：众所周知，在 HTTP/1.x 协议中「浏览器客户端在同一时间，针对同一域名下的请求有一定数量限制。超过限制数目的请求会被阻塞」，而不同浏览器对该限制的数目也不尽相同，划分主域、配置静态资源专用域，目的就是变相的解决浏览器针对同一域名的请求限制阻塞问题。但不易过多，否则 DNS 的查询时间也是个问题。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;请求宽带：
+
+&lt;ul&gt;
+&lt;li&gt;开启&lt;code&gt;GZip&lt;/code&gt;：服务端启用 Gzip 可以有效的减少数据传输量，Gzip 对于基于文本的文件（CSS、JavaScript、HTML）压缩效果最好，所有现代浏览器都支持 Gzip 压缩并将自动请求该压缩
+精简JavaScript，移除重复脚本：这个就不必细说了，减少重复的代码，避免无意义的脚本执行。&lt;/li&gt;
+&lt;li&gt;图像优化：对于要上传的图片，尽量保证该图片已经是经过压缩优化过的。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;缓存利用：
+
+&lt;ul&gt;
+&lt;li&gt;使用&lt;code&gt;CDN&lt;/code&gt;：利用内容分发网络能够有效的减少资源响应时间，提升用户体验。
+使用外部JavaScript和CSS：浏览器可以将外部的 JavaScript 和 CSS 文件进行缓存，而如果将其写成内联样式，嵌入至 HTML 文档里，那么每次请求该文档时它们都会被下载。而且如果多个页面都用到了相同的脚本，那么使用浏览器缓存的外部JavaScript和CSS必然是更好的选择。&lt;/li&gt;
+&lt;li&gt;添加 &lt;code&gt;Expires&lt;/code&gt; 头：对于一些不怎么改变的静态资源，可以设置文件头过期时间Expires的值为“Never expire”（永不过期），而对于一些动态的资源，可以使用恰当的Cache-Control文件头来帮助浏览器进行选择性的请求，通过这样的方式，可以有效的利用浏览器的缓存机制来减少HTTP请求的大小和次数以加快页面访问速度。&lt;/li&gt;
+&lt;li&gt;减少 &lt;code&gt;DNS&lt;/code&gt; 查找：由于DNS的解析需要花费一定的时间，减少DNS查找次数可以节省响应时间，减少主机名的数量可以减少DNS查找次数。&lt;/li&gt;
+&lt;li&gt;配置 &lt;code&gt;ETag&lt;/code&gt;：服务端配置 ETag 是一种有效的 Web 缓存验证机制，并且允许客户端进行缓存协商。这就使得缓存变得更加高效，而且节省带宽。如果资源的内容没有发生改变，服务器就不需要发送一个完整的响应。ETag 也可用于乐观并发控制，作为一种防止资源同步更新而相互覆盖的方法。&lt;/li&gt;
+&lt;li&gt;使 AjaX 可缓存：Ajax缓存和HTTP缓存效果相同，可以通过设置Expires、Last-Modified、Cache-Control 等HTTP响应头的方式实现，具体的实现难度偏高。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;页面结构：
+
+&lt;ul&gt;
+&lt;li&gt;将样式表放在顶部，将脚本放在底部：Js的下载以及执行会阻塞DOM与CSSOM的下载与构建，因此将样式表放在body的顶部，而将脚本放在底部，用于优先加载html和css。&lt;br&gt;「推荐阅读：&lt;a href=&#34;https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction?hl=zh-cn&#34;&gt;渲染树构建、布局及绘制&lt;/a&gt; 」&lt;/li&gt;
+&lt;li&gt;延迟加载 JavaScript：默认情况下，JavaScript 执行会阻塞解析器：当浏览器在文档中遇到一个 script，它必须暂停 DOM 构建，移交控制权给 JavaScript 运行时，让脚本先执行，然后才继续处理 DOM。为了优先构建渲染树，有时候需要编写额外的代码来延迟脚本的执行&lt;br&gt;「推荐阅读：&lt;a href=&#34;http://web.jobbole.com/82317/&#34;&gt;如何延迟加载JS&lt;/a&gt; 」&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;代码校验：
+
+&lt;ul&gt;
+&lt;li&gt;避免 CSS 表达式：CSS 表达式是动态设置 CSS 属性的强大（但危险）方法。表达式的问题就在于它的计算频率要比我们想象的多。不仅仅是在页面显示和缩放时，就是在页面滚动、乃至移动鼠标时都会要重新计算一次，可能会对页面的性能产生影响。因此CSS表达式的使用需要慎重。&lt;/li&gt;
+&lt;li&gt;避免重定向：当页面发生了重定向，在新的HTMl文档到达之前，当前页面的资源不会被加载，可能呈现空白页面。
+&lt;br&gt;
+在了解Yahoo军规后，想必对web性能优化有了一个大致的了解。当然，除了军规之外，也有不少其他要注意的细节。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;javascript-优化&#34;&gt;JavaScript 优化&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Dom操作优化&lt;/p&gt;
+
+&lt;p&gt;首先澄清两个概念——Repaint 和 Reflow：Repaint 也叫 Redraw，它指的是一种不会影响当前 DOM 的结构和布局的一种重绘动作。如下动作会产生 Repaint 动作：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;不可见到可见（visibility 样式属性）&lt;/li&gt;
+&lt;li&gt;颜色或图片变化（background, border-color, color 样式属性）&lt;/li&gt;
+&lt;li&gt;不改变页面元素大小，形状和位置，但改变其外观的变化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Reflow 比起 Repaint 来讲就是一种更加显著的变化了。它主要发生在 DOM 树被操作的时候，任何改变 DOM 的结构和布局都会产生 Reflow。但一个元素的 Reflow 操作发生时，它的所有父元素和子元素都会放生 Reflow，最后 Reflow 必然会导致 Repaint 的产生。举例说明，如下动作会产生 Reflow 动作：
++ 浏览器窗口的变化
++ DOM 节点的添加删除操作
++ 一些改变页面元素大小，形状和位置的操作的触发&lt;/p&gt;
+
+&lt;p&gt;实际上，Reflow 比起 Repaint 会消耗更多的资源，因此，我们应该尽量减少 Reflow 的发生，或者将其转化为只会触发 Repaint 操作的代码。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var tipBox = document.createElement(&#39;div&#39;);
+document.body.appendChild(&#39;tipBox&#39;); //reflow
+var tip1 = document.createElement(&#39;div&#39;);
+var tip2 = document.createElement(&#39;div&#39;);
+tipBox.appendChild(tip1); //reflow
+tipBox.appendChild(tip2); //reflow  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如上代码会产生三次reflow，优化后的代码如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var tipBox = document.createElement(&#39;div&#39;);
+      tip1 = document.createElement(&#39;div&#39;);
+      tip2 = document.createElement(&#39;div&#39;);
+tipBox.appendChild(tip1);
+tipBox.appendChild(tip2);
+document.body.appendChild(&#39;tipBox&#39;); //reflow 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;经过优化，只会产生一次reflow，减少了不必要的开销。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;尽量采用点号&lt;/p&gt;
+
+&lt;p&gt;在 JavaScript 中，你可以使用点号 (foo.bar) 或者方括号 (foo[&amp;ldquo;bar&amp;rdquo;])来访问属性。然而，点号通常是首选，因为它更加易读，简洁，也更适于 JavaScript 压缩。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;减少全局变量的使用&lt;/p&gt;
+
+&lt;p&gt;JavaScript 代码解释执行，在进入函数内部时，它会预先分析当前的变量，并将变量存放在不同的层级中，一般情况下： 局部变量放入最浅的层级 1，全局变量、try - catch等则放入较深的层级 2，并根据嵌套层级依次加深。变量所在的层越浅，访问（读取或修改）速度越快，反之则越。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;html-优化&#34;&gt;HTML 优化&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;使用合适的的元素可保证代码的易读性&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;当网站支持HTML5时，使用&lt;code&gt;&amp;lt;header&amp;gt;&lt;/code&gt;，&lt;code&gt;&amp;lt;footer&amp;gt;&lt;/code&gt;，&lt;code&gt;&amp;lt;nav&amp;gt;&lt;/code&gt;等语义化标签，可以很清晰的体现出该内容的功能。&lt;/li&gt;
+&lt;li&gt;使用&lt;code&gt;&amp;lt;h1&amp;gt;(&amp;lt;h2&amp;gt;,&amp;lt;h3&amp;gt;…)&lt;/code&gt;表示标题，&lt;code&gt;&amp;lt;ul&amp;gt;&lt;/code&gt;或&lt;code&gt;&amp;lt;ol&amp;gt;&lt;/code&gt;实现列表。&lt;/li&gt;
+&lt;li&gt;使用&lt;code&gt;&amp;lt;em&amp;gt;&lt;/code&gt;和&lt;code&gt;&amp;lt;strong&amp;gt;&lt;/code&gt;标签替代&lt;code&gt;&amp;lt;i&amp;gt;&lt;/code&gt;和&lt;code&gt;&amp;lt;b&amp;gt;&lt;/code&gt;标签。&lt;/li&gt;
+&lt;li&gt;使用&lt;code&gt;&amp;lt;label&amp;gt;&lt;/code&gt;元素，可以增强使用、、用户的使用体验。&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;将文本和元素混合，并作为另一元素的子元素，会导致布局错误，例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div class=&amp;quot;form-control&amp;quot;&amp;gt;
+    Name:&amp;lt;input type=&amp;quot;text&amp;quot;&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;换成这样的写法好些：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div class=&amp;quot;form-control&amp;quot;&amp;gt;
+    &amp;lt;label for=&amp;quot;name&amp;quot;&amp;gt;Name:&amp;lt;/label&amp;gt;
+    &amp;lt;input type=&amp;quot;text&amp;quot; id=&amp;quot;name&amp;quot;&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;避免不合理的布局&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用&lt;code&gt;&amp;lt;p&amp;gt;&lt;/code&gt;元素修饰文本，而不是布局；默认&lt;code&gt;&amp;lt;p&amp;gt;&lt;/code&gt;是自动提供边缘，而且其他样式也是浏览器默认提供的。&lt;/li&gt;
+&lt;li&gt;避免使用&lt;code&gt;&amp;lt;br&amp;gt;&lt;/code&gt;分行，可以使用&lt;code&gt;block&lt;/code&gt;元素或CSS显示属性来代替。&lt;/li&gt;
+&lt;li&gt;避免使用&lt;code&gt;&amp;lt;hr&amp;gt;&lt;/code&gt;来添加水平线，可使用CSS的border-bottom 来代替。&lt;/li&gt;
+&lt;li&gt;尽可能的避免滥用&lt;code&gt;div&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;尽量少用Tables来布局。&lt;/li&gt;
+&lt;li&gt;可以多多使用Flex Box。&lt;/li&gt;
+&lt;li&gt;内联元素中不可嵌套块级元素。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;css-优化&#34;&gt;CSS 优化&lt;/h4&gt;
+
+&lt;p&gt;一般来说，页面渲染所需的时间将取决于文档大小、应用的样式，以及运行文档的设备：文档越大，浏览器需要完成的工作就越多；样式越复杂，绘制需要的时间就越长。虽然现在各大浏览器的渲染引擎经过无数版本的优化，都已经十分强大，CSS对于页面渲染的性能影响基本已经很小。不过，不放弃任何可能的优化，不正是是我们广大程序员的一大优点嘛。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;对CSS进行合并、压缩&lt;/li&gt;
+&lt;li&gt;不使用CSS表达式&lt;/li&gt;
+&lt;li&gt;移除空的CSS规则&lt;/li&gt;
+&lt;li&gt;不滥用Float&lt;/li&gt;
+&lt;li&gt;不声明过多的Font-size&lt;/li&gt;
+&lt;li&gt;值为0时不需要任何单位&lt;/li&gt;
+&lt;li&gt;选用合适的CSS选择器：
+对于CSS选择器的使用建议遵循以下原则：使用时能具体则具体，不过要注意避免层级过深，对于一些相似的样式可以将其中相同的部分抽取出来单独作为一个样式。附上css选择符开销排序：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;ID选择符 #box
+类选择符 .box
+类型选择符 div
+相邻兄弟选择符 h4 + #pics
+子选择符 #pics li
+后代选择符 .box a{}
+通配选择符 *
+属性选择符 [href=”#pic”]
+伪类和伪元素 a:hover
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;其他优化&#34;&gt;其他优化&lt;/h4&gt;
+
+&lt;p&gt;除了以上优化之外，许多大公司（例如腾讯）会选择对网络以及服务器端进行优化，感兴趣的同学可以Google相关资料。&lt;br&gt;
+「推荐阅读：&lt;a href=&#34;http://velocity.oreilly.com.cn/2013/ppts/16_ms_optimization--web_front-end_performance_optimization.pdf&#34;&gt;16毫秒的优化&lt;/a&gt; 」&lt;/p&gt;
+
+&lt;h4 id=&#34;参考资料&#34;&gt;参考资料&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://fex.baidu.com/blog/2014/03/fis-optimize/&#34;&gt;前端工程与性能优化&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://isux.tencent.com/h5-performance.html&#34;&gt;移动H5前端性能优化指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.imooc.com/article/4307&#34;&gt;你不可不知的HTML优化技巧&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>浅谈网站性能之前端性能优化</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/07/03/%E6%B5%85%E8%B0%88%E7%BD%91%E7%AB%99%E6%80%A7%E8%83%BD%E4%B9%8B%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</link>
+      <pubDate>Sun, 03 Jul 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/07/03/%E6%B5%85%E8%B0%88%E7%BD%91%E7%AB%99%E6%80%A7%E8%83%BD%E4%B9%8B%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</guid>
+      <description>&lt;p&gt;性能优化的目的无非是减少用户流量消耗，提升用户首屏体验，提升用户访问速度，让用户专注内容本身。
+&lt;/p&gt;
+
+&lt;h4 id=&#34;前端性能优化&#34;&gt;前端性能优化&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;减少 HTTP 请求数量&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基本原理：在浏览器与服务器进行通信时，主要是通过 HTTP 进行通信。浏览器与服务器需要经过三次握手，每次握手需要花费大量时间。而且不同浏览器对资源文件并发请求数量有限（&lt;a href=&#34;http://www.stevesouders.com/blog/2008/03/20/roundup-on-parallel-connections/&#34;&gt;不同浏览器允许并发数&lt;/a&gt;），一旦 HTTP 请求数量达到一定数量，资源请求就存在等待状态，这是很致命的，因此减少 HTTP 的请求数量可以很大程度上对网站性能进行优化。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. CSS Sprites：国内俗称 CSS 精灵，这是将多张图片合并成一张图片达到减少 HTTP 请求的一种解决方案，可以通过 CSS background 属性来访问图片内容。这种方案同时还可以减少图片总字节数，节省命名词汇量（由命名多张图片文件变成一张，哈哈哈）。
+
+2. 合并 CSS 和 JS 文件：现在前端有很多工程化打包工具，如：grunt、gulp、webpack等。为了减少 HTTP 请求数量，可以通过这些工具再发布前将多个 CSS 或者 多个 JS 合并成一个文件。
+
+3. 采用 lazyLoad：俗称懒加载，可以控制网页上的内容在一开始无需加载，不需要发请求，等到用户操作真正需要的时候立即加载出内容。这样就控制了网页资源一次性请求数量。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;控制资源文件加载优先级&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基本原理：说到这里就需要知道浏览器加载 HTML 内容的原理，浏览器在加载 HTML 内容时，是将 HTML 内容从上至下依次解析，解析到 link 或者 script 标签就会加载 href 或者 src 对应链接内容，为了第一时间展示页面给用户，就需要将 CSS 提前加载，不要受 JS 加载影响。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. 遵循原则：主要文件放在 head 内部，次要文件放在 body 底部。一般情况下都是 CSS 在头部，JS 在底部。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;利用浏览器缓存&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基本原理：浏览器缓存分强缓存和协商缓存，他们是将网络资源存储在本地，等待下次请求该资源时，如果命中就不需要到服务器重新请求该资源，直接在本地读取该资源。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. 强缓存：在 web 服务器返回的响应中添加 Expires 和 Cache-Control Header。
+
+2. 协商缓存：通过【Last-Modified，If-Modified-Since】和【ETag、If-None-Match】这两对 Header 分别管理。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用 CDN&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基本原理：CDN的全称是Content Delivery Network，即&lt;a href=&#34;http://zsvalue.com/201405/foundation-of-cdn-%E3%80%8Acdn%E6%8A%80%E6%9C%AF%E8%AF%A6%E8%A7%A3%E3%80%8Bnote/&#34;&gt;内容分发网络&lt;/a&gt;。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;减少重排（Reflow）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基本原理：重排是 DOM 的变化影响到了元素的几何属性（宽和高），浏览器会重新计算元素的几何属性，会使渲染树中受到影响的部分失效，浏览器会验证 DOM 树上的所有其它结点的 visibility 属性，这也是 Reflow 低效的原因。如果 Reflow 的过于频繁，CPU 使用率就会急剧上升。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. 减少 Reflow，如果需要在 DOM 操作时添加样式，尽量使用 增加 class 属性，而不是通过 style 操作样式。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;减少 DOM 操作&lt;/li&gt;
+&lt;li&gt;图标使用 IconFont 替换&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;花絮&#34;&gt;花絮&lt;/h4&gt;
+
+&lt;p&gt;在开始提笔写这篇博客前就遇到了一个很棘手的问题，这篇博客标题叫什么，思考了一会，我心里冒出了三个答案：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;浅谈网站性能优化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;第一个标题网站性能优化，一看标题可以理解为是讲网站性能，而且是对网站进行优化，描述的是一种解决方案，然而网站性能包括的太多了，超出了我的知识范畴，所以放弃。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;浅谈网站性能之前端性能优化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;第二个标题正适我怀，答题概括了我本期博客内容，既有性能介绍，又有前端性能优化解决方案。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;浅谈前端性能优化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;第三个标题前端性能优化，心想这不就是我要写的内容嘛，等我写完内容发现，不对，我写的内容不仅仅是解决方案，好包括的其他内容，所以放弃。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;以上内容仅为个人理解，如果本内容大家觉得哪里写的不对，望大家指出，供一起讨论。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

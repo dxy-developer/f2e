@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CSS 自定义滚动条</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/init.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/particles.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/markdown.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/style.css">
+    <script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+    <script>
+      
+      function setLeanCloud() {
+        AV.initialize('PPDrp7ANvEDvzYqBF2gKC7vY-gzGzoHsz', '60o0boL7ij0mkftarA5kEfNs');
+      }
+      setLeanCloud();
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="menu"></button>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+    <div class="header">
+        <a href="http://dxy-developer.github.io/f2e">
+            <p class="title J-title">CSS 自定义滚动条</p>
+            <p class="title">回到首页</p>
+            <p class="sub-title">DXY Tech&amp;Product Division</p>
+            <hr />
+        </a>
+    </div>
+
+<div class="container">
+    <div class="left">
+        <div class="post markdown-body">
+    <p class="post-info J-detail-option">
+        Author.<span class="J-author">huot</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/css">CSS</a> ·
+        Mon, Apr 4, 2016
+    </p>
+    <div class="post-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/huot/">
+        <p>最近遇到的一个需求，由于移动端空间有限，表格不能完整显示，为了让用户知道可以通过左右滑动来查看表格的完整信息，PM 希望能模拟一个水平滚动条来提醒用户。具体需求如下（或者您也可以查看线上实例，<a href="http://hz.dxy.com">丁香诊所</a> → 医疗团队 → 排班信息）：</p>
+
+<p></p>
+
+<blockquote>
+<p>PC 端效果</p>
+</blockquote>
+
+<p><img src="../duty-info-pc.png" alt="排版信息 - PC" /></p>
+
+<blockquote>
+<p>移动端效果</p>
+</blockquote>
+
+<p><img src="../duty-info-mobile.png" alt="排版信息 - Mobile" /></p>
+
+<blockquote>
+<p>移动端效果（期望）</p>
+</blockquote>
+
+<p><img src="../duty-info-mobile-scroll.png" alt="排版信息 - Mobile Expect" /></p>
+
+<p>要解决这个问题，我们可以去使用一些开源的滚动条插件，或者自己模拟。但是为了这么一个小功能就额外引用插件，而且为了保证设计上没有违和感，或许连同<code>HTML</code>和<code>CSS</code>也得跟着一起调整，未免小题大做了。</p>
+
+<p>目前主要有两种通过<code>CSS</code>来自定义滚动条的样式，但也还是做不到兼容所有的浏览器。</p>
+
+<h3 id="1-在-webkit-中自定义滚动条">1. 在<code>WebKit</code>中自定义滚动条</h3>
+
+<p>通过伪元素和 <a href="http://www.toobug.net/article/what_is_shadow_dom.html">Shadow DOM</a> 来实现，David Hyatt 2009 年就在 <a href="https://webkit.org/blog/363/styling-scrollbars/">WebKit 官网</a>介绍过这种方法，并列出了<a href="http://trac.webkit.org/export/41842/trunk/LayoutTests/scrollbars/overflow-scrollbar-combinations.html">所有可能的组合</a>。</p>
+
+<h4 id="1-1-伪元素所代表的不同部分">1.1 伪元素所代表的不同部分</h4>
+
+<pre><code>::-webkit-scrollbar              { /* 1 */ }
+::-webkit-scrollbar-button       { /* 2 */ }
+::-webkit-scrollbar-track        { /* 3 */ }
+::-webkit-scrollbar-track-piece  { /* 4 */ }
+::-webkit-scrollbar-thumb        { /* 5 */ }
+::-webkit-scrollbar-corner       { /* 6 */ }
+::-webkit-resizer                { /* 7 */ }
+</code></pre>
+
+<p><img src="../scrollbar-parts.png" alt="Scrollbar Parts" /></p>
+
+<h4 id="1-2-伪类所代表的不同状态">1.2 伪类所代表的不同状态</h4>
+
+<pre><code>:horizontal         //应用于水平滚动条
+:vertical           //应用于垂直滚动条
+:decrement          //应用于按钮和内层轨道，用来指示按钮或内层轨道是否会减小视窗的位置(如，垂直滚动条的上面，水平滚动条的左边)
+:increment          //应用于按钮和内层轨道，用来指示按钮或内层轨道是否会增大视窗的位置(如，垂直滚动条的下面，水平滚动条的右边)
+:start              //应用于按钮和滑块，用来定义对象是否放到滑块的前面
+:end                //应用于按钮和滑块，用来定义对象是否放到滑块的后面
+:double-button      //应用于按钮和内层轨道，用来判断一个按钮是不是放在滚动条同一端一对按钮中的一个，对于内层轨道来说，它表示内层轨道是否紧靠一对按钮
+:single-button      //应用于判断一个按钮是否自己独立的在滚动条的一端，对内层轨道来说，它表示内层轨道是否紧靠一个`single-button`
+:no-button          //应用于内层轨道，表示内层轨道是否要滚动到滚动条的终端，如，滚动条两端没有按钮
+:corner-present     //应用于所有滚动条轨道，指示滚动条圆角是否显示
+:window-inactive    //应用于所有滚动条轨道，指示应用滚动条的某个页面容器(元素)是否当前被激活(在webkit最近的版本中，该伪类也可以用于`::selection`伪元素，Webkit团队有计划扩展它并推动成为一个标准的伪类)
+</code></pre>
+
+<h4 id="1-3-伪元素和伪类的组合使用">1.3 伪元素和伪类的组合使用</h4>
+
+<pre><code>::-webkit-scrollbar-track-piece:start {
+   /* Select the top half (or left half) or scrollbar track individually */
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+   /* Select the thumb when the browser window isn't in focus */
+}
+
+::-webkit-scrollbar-button:horizontal:decrement:hover {
+   /* Select the down or left scroll button when it's being hovered by the mouse */
+}
+</code></pre>
+
+<h4 id="1-4-简单示例">1.4 简单示例</h4>
+
+<blockquote>
+<p>配合<code>WebKit</code>的伪类和伪元素，我们可以同时使用<code>:enabled</code>，<code>:disabled</code>，<code>:hover</code>等伪类，也可以去应用一些<code>CSS</code>属性，如渐变、圆角、gbba 等。具体可以看看官网给出的 <a href="http://trac.webkit.org/export/41842/trunk/LayoutTests/scrollbars/overflow-scrollbar-combinations.html">demo</a>。</p>
+</blockquote>
+
+<pre><code>::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+</code></pre>
+
+<h3 id="2-在-ie-中自定义滚动条">2. 在<code>IE</code>中自定义滚动条</h3>
+
+<blockquote>
+<p><a href="http://www.dengjie.com/temp/scroller.swf">在线的可视化工具</a>，简单好用。</p>
+</blockquote>
+
+<pre><code>scrollbar-arrow-color: color;       //三角箭头的颜色
+scrollbar-face-color: color;        //立体滚动条的颜色，包括箭头部分的背景色
+scrollbar-3dlight-color: color;     //立体滚动条亮边的颜色
+scrollbar-highlight-color: color;   //滚动条的高亮颜色
+scrollbar-shadow-color: color;      //立体滚动条阴影的颜色
+scrollbar-darkshadow-color: color;  //立体滚动条外阴影的颜色
+scrollbar-track-color: color;       //立体滚动条背景颜色
+scrollbar-base-color:color;         //滚动条的基色
+</code></pre>
+
+<h3 id="参考资料">参考资料</h3>
+
+<ul>
+<li><a href="https://css-tricks.com/custom-scrollbars-in-webkit">Custom Scrollbars in WebKit</a></li>
+<li><a href="http://www.toobug.net/article/what_is_shadow_dom.html">[译] 什么是Shadow DOM？</a></li>
+</ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var VisitTable = AV.Object.extend('Visit');
+    var URLLinkId = location.pathname;
+    var author = $('.J-author').text() || '';
+    var title = $('.J-title').text() || '';
+
+    
+    function postVisitData() {
+      var visit = new VisitTable();
+      var query = new AV.Query('Visit');
+
+      query.equalTo('link', URLLinkId)
+      query.find().then(function(list) {
+        var count = 1;
+        if (list.length > 0) {
+          var item = list[0];
+          item.increment('visitCount');
+          item.save();
+          count = item.get('visitCount');
+        } else {
+          visit.increment('visitCount');
+          visit.save({
+            link: URLLinkId,
+            author: author,
+            title: title
+          });
+        }
+        $('.J-detail-option').append('· 浏览量. <span>' + count + '</span>');
+      });
+    }
+
+    postVisitData();
+  });
+</script>
+
+
+        
+<div class="ds-thread" data-thread-key="http://dxy-developer.github.io/f2e/blog/2016/04/04/css-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%BB%9A%E5%8A%A8%E6%9D%A1/" data-title="CSS 自定义滚动条" data-url="http://dxy-developer.github.io/f2e/blog/2016/04/04/css-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%BB%9A%E5%8A%A8%E6%9D%A1/"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"dxy-developer"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+    </div>
+    <div class="right">
+    
+    <div class="assort">
+        <p>分类</p>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+</div>
+
+</div>
+<div id="gotop">
+	<a href="javascript:;">TOP</a>
+</div>
+<div class="footer">
+    <p>Establishment · 丁香园前端</p>
+</div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/script.js"></script>
+</body>
+
+</html>
+
+<div id="particles-js"></div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/particles.js"></script>
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http:\/\/dxy-developer.github.io\/f2e/json/particles.json', null);
+</script>
+

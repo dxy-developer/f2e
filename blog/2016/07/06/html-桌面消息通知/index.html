@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HTML 桌面消息通知</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/init.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/particles.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/markdown.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/style.css">
+    <script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+    <script>
+      
+      function setLeanCloud() {
+        AV.initialize('PPDrp7ANvEDvzYqBF2gKC7vY-gzGzoHsz', '60o0boL7ij0mkftarA5kEfNs');
+      }
+      setLeanCloud();
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="menu"></button>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+    <div class="header">
+        <a href="http://dxy-developer.github.io/f2e">
+            <p class="title J-title">HTML 桌面消息通知</p>
+            <p class="title">回到首页</p>
+            <p class="sub-title">DXY Tech&amp;Product Division</p>
+            <hr />
+        </a>
+    </div>
+
+<div class="container">
+    <div class="left">
+        <div class="post markdown-body">
+    <p class="post-info J-detail-option">
+        Author.<span class="J-author">yaoyj</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/html5">HTML5</a> ·
+        Wed, Jul 6, 2016
+    </p>
+    <div class="post-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/yaoyj/20160706/">
+        <p>HTML 桌面消息通知，指的是通过浏览器的 Notification 对象为用户在系统桌面设置和显示通知提醒。这样，用户就可以做自己的事情，而不用担心会错过一些消息。
+</p>
+
+<h3 id="如何使用">如何使用？</h3>
+
+<h5 id="首先向用户获取在当前网站展示系统通知的权限">首先向用户获取在当前网站展示系统通知的权限</h5>
+
+<p>获取这个权限一般在网站在初始化的时候完成，使用 <code>Notification.requestPermission()</code>方法</p>
+
+<pre><code>    Notification.requestPermission().then(function(status) {
+        // 根据 status 的值做一些事情 
+        if (Notification.permission !== status) {
+            Notification.permission = status;
+        }
+    });
+</code></pre>
+
+<p>返回的 status 为字符串，有三个值</p>
+
+<ul>
+<li>denied (用户拒绝了通知的显示)</li>
+<li>granted (用户允许了通知的显示)</li>
+<li>default (默认为 default，也就是需要询问用户是否授权，浏览器的表现和 denied 一样)</li>
+</ul>
+
+<h5 id="之后-就可以用-notification-构造函数建一条新的通知">之后，就可以用<code>Notification()</code>构造函数建一条新的通知</h5>
+
+<pre><code>    var notification = new Notification(title, options);    
+</code></pre>
+
+<ul>
+<li>这里的 title 是必传的</li>
+<li>options 是可选的一个对象，它规定了文本的方向、通知的内容、通知的图标等等</li>
+</ul>
+
+<h3 id="属性">属性</h3>
+
+<h5 id="静态属性-notification-permission">静态属性：<code>Notification.permission</code></h5>
+
+<p>表明当前通知显示的授权状态，值可能为：denied、granted、default</p>
+
+<h5 id="只读属性">只读属性：</h5>
+
+<ul>
+<li>dir (文字方向，经测试都不支持)</li>
+<li>lang (语言)</li>
+<li>body (消息体)</li>
+<li>tag (标签)</li>
+<li>icon (图标地址)</li>
+</ul>
+
+<p>这些属性，可以在创建消息的时候，作为 options 的属性传入 Notificaiton 函数。</p>
+
+<p>重点提一下tag属性，它用于给相同类别的消息做标记，如果在短时间内有很多消息，系统会只显示tag标记的消息中最新的一条</p>
+
+<h3 id="事件处理">事件处理</h3>
+
+<p>Notification.onclick()/onshow()/onerror()/onclose()</p>
+
+<p>通常情况下，onclick事件用的比较多，比如点击消息后跳转到特定页面</p>
+
+<h3 id="方法">方法</h3>
+
+<h5 id="静态方法">静态方法：</h5>
+
+<ul>
+<li>Notification.requestPermission() ——只能被用户行为调用，比如页面加载或用户点击</li>
+</ul>
+
+<h5 id="实例方法-仅在notification实例或其prototype中有效">实例方法（仅在Notification实例或其prototype中有效）：</h5>
+
+<ul>
+<li>Notification.close()</li>
+<li>继承自EventTarget接口：addEventListener()/removeEventListener()/dispatchEvnet()</li>
+</ul>
+
+<h3 id="举个">举个🌰</h3>
+
+<pre><code>    // 页面加载时，获取权限
+    if (window.Notification &amp;&amp; Notification.permission !== &quot;granted&quot;) {
+        Notification.requestPermission(function (status) {
+            if (Notification.permission !== status) {
+                Notification.permission = status;
+            }
+        });
+    }
+    function notifyMe() {
+        // 判断浏览器是否支持Nitifocaiton
+        if (!(&quot;Notification&quot; in window)) {
+            alert(&quot;This browser does not support desktop notification&quot;);
+        // 判断用户是否已经准许了发送桌面通知
+        } else if (window.Notification &amp;&amp; Notification.permission === 'granted') {
+        // 如果准许了，我们就发送一条消息
+            var n = new Notification('Hi!', {
+                body: 'hi, this is body'
+            });
+        // 如果用户没有准许，我们需要向用户获取权限
+        } else if (window.Notification &amp;&amp; Notification.permission !== 'denied') {
+            Notification.requestPermission(function(status) {
+                if (Notification.permission !== status) {
+                    Notification.permission = status;
+                }
+                if (status === 'granted') {
+                    var n = new Notification('Hi!', {
+                    body: 'hi, this is body'
+                    });
+                } else {
+                    alert('Hi!');
+                }
+            });
+        } else {
+            alert('Hi!');
+        }
+    }
+</code></pre>
+
+<p>（在我的 Mac 下 Chrome 中测试时，不能弹出通知，Firefox 和 Safari 都可以，但是别的电脑的 Chrome 中可以。原因我没有查到，希望查到的小伙伴告诉我一下～）</p>
+
+<h3 id="浏览器兼容性">浏览器兼容性</h3>
+
+<p>现代浏览器都支持基本的属性和方法，除了 IE。具体属性和方法的支持情况，可见参考资料</p>
+
+<p>下面是 Nick Desaulniers 编写的一个可以向前向后兼容各种版本的实现</p>
+
+<pre><code>	function sendNotification (title, options) {
+	  // Memoize based on feature detection.
+	  if (&quot;Notification&quot; in window) {
+	    sendNotification = function (title, options) {
+	      return new Notification(title, options);
+	    };
+	  } else if (&quot;mozNotification&quot; in navigator) {
+	    sendNotification = function (title, options) {
+	      // Gecko &lt; 22
+	      return navigator.mozNotification
+	               .createNotification(title, options.body, options.icon)
+	               .show();
+	    };
+	  } else {
+	    sendNotification = function (title, options) {
+	      alert(title + &quot;: &quot; + options.body);
+	    };
+	  }
+	  return sendNotification(title, options);
+	};
+</code></pre>
+
+<h5 id="chrome-备忘">Chrome 备忘</h5>
+
+<p>在 Chrome 22 版本之前，如果要使用通知需要旧的带前缀版本的规范 ，并且使用navigator.webkitNotifications 对象创建一个新的通知实例。</p>
+
+<p>在 Chrome 32 版本之前，不支持 Notification.permission 属性。</p>
+
+<p>在Chrome 42 版本之前，不支持 service worker。</p>
+
+<p>从chrome 49版本开始，匿名模式下的notifications不能运行。</p>
+
+<h5 id="safari-备忘">Safari 备忘</h5>
+
+<p>Safari 在 Safari 6 版本开始支持通知，但是只能在 Mac OSX 10.8+ (Mountain Lion) 中使用。</p>
+
+<h3 id="参考资料">参考资料</h3>
+
+<ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/notification">Notification - Web Api 接口</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/notification/Using_Web_Notifications">使用 Web Notification</a></li>
+</ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var VisitTable = AV.Object.extend('Visit');
+    var URLLinkId = location.pathname;
+    var author = $('.J-author').text() || '';
+    var title = $('.J-title').text() || '';
+
+    
+    function postVisitData() {
+      var visit = new VisitTable();
+      var query = new AV.Query('Visit');
+
+      query.equalTo('link', URLLinkId)
+      query.find().then(function(list) {
+        var count = 1;
+        if (list.length > 0) {
+          var item = list[0];
+          item.increment('visitCount');
+          item.save();
+          count = item.get('visitCount');
+        } else {
+          visit.increment('visitCount');
+          visit.save({
+            link: URLLinkId,
+            author: author,
+            title: title
+          });
+        }
+        $('.J-detail-option').append('· 浏览量. <span>' + count + '</span>');
+      });
+    }
+
+    postVisitData();
+  });
+</script>
+
+
+        
+<div class="ds-thread" data-thread-key="http://dxy-developer.github.io/f2e/blog/2016/07/06/html-%E6%A1%8C%E9%9D%A2%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/" data-title="HTML 桌面消息通知" data-url="http://dxy-developer.github.io/f2e/blog/2016/07/06/html-%E6%A1%8C%E9%9D%A2%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"dxy-developer"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+    </div>
+    <div class="right">
+    
+    <div class="assort">
+        <p>分类</p>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+</div>
+
+</div>
+<div id="gotop">
+	<a href="javascript:;">TOP</a>
+</div>
+<div class="footer">
+    <p>Establishment · 丁香园前端</p>
+</div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/script.js"></script>
+</body>
+
+</html>
+
+<div id="particles-js"></div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/particles.js"></script>
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http:\/\/dxy-developer.github.io\/f2e/json/particles.json', null);
+</script>
+

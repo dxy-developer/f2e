@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HTML5 drag and drop</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/init.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/particles.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/markdown.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/style.css">
+    <script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+    <script>
+      
+      function setLeanCloud() {
+        AV.initialize('PPDrp7ANvEDvzYqBF2gKC7vY-gzGzoHsz', '60o0boL7ij0mkftarA5kEfNs');
+      }
+      setLeanCloud();
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="menu"></button>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+    <div class="header">
+        <a href="http://dxy-developer.github.io/f2e">
+            <p class="title J-title">HTML5 drag and drop</p>
+            <p class="title">回到首页</p>
+            <p class="sub-title">DXY Tech&amp;Product Division</p>
+            <hr />
+        </a>
+    </div>
+
+<div class="container">
+    <div class="left">
+        <div class="post markdown-body">
+    <p class="post-info J-detail-option">
+        Author.<span class="J-author">yaoyj</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/html5">HTML5</a> ·
+        Tue, Apr 5, 2016
+    </p>
+    <div class="post-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/yaoyj/20160405/">
+        <hr />
+
+<h4 id="拖放简介">拖放简介：</h4>
+
+<p>拖放操作的过程是怎样的？</p>
+
+<blockquote>
+<p>允许用户在一个元素上点击并按住鼠标按钮，拖动它到别的位置，然后松开鼠标，元素停留在该位置。在拖动的过程中，被拖动元素以半透明的形式展现，并跟随鼠标指针移动。</p>
+</blockquote>
+
+<p>在早期的 IE4 中的网页上，只有文本和图片可以拖动，并且唯一有效的放置目标就是文本框。随着浏览器的发展，拖放功能也得到扩展，现在几乎网页中的任何元素都可以拖放，并且任何元素都可以作为放置目标。</p>
+
+<p>HTML5 就以 IE 的实例为基础制定了拖放规范。现对其主要内容做了整理。
+</p>
+
+<hr />
+
+<h4 id="拖放步骤">拖放步骤：</h4>
+
+<ol>
+<li>定义可拖放目标</li>
+<li>定义被拖动的数据</li>
+<li>定义拖动过程中鼠标指针旁边出现的反馈图片</li>
+<li>允许设置拖拽效果</li>
+<li>定义放置区域</li>
+<li>拖放结束时，完成数据交互等工作</li>
+</ol>
+
+<h4 id="帮助实现拖放的一些特性">帮助实现拖放的一些特性：</h4>
+
+<ul>
+<li><strong>属性</strong>：<code>draggable</code>
+
+<ul>
+<li>设为 true，则该元素可拖放</li>
+<li>在 html 中，图片、超链接、被选中文本，这些元素默认就是可拖拽，可以不用设置该属性</li>
+</ul></li>
+</ul>
+
+<pre><code class="language-html">&lt;div draggable=&quot;true&quot; ondragstart=&quot;event.dataTransfer.setData('text/plain', '这里是想要拖动的元素')&quot;&gt;
+  这里是想要拖动的元素
+&lt;/div&gt;
+</code></pre>
+
+<ul>
+<li><p><strong>事件</strong>：</p>
+
+<ul>
+<li>事件的目标是被拖动的元素
+
+<ul>
+<li><code>dragstart</code></li>
+<li><code>drag</code></li>
+<li><code>dragend</code></li>
+</ul></li>
+<li>事件的目标是作为放置目标（droptarget）的元素
+
+<ul>
+<li><code>dragenter</code></li>
+<li><code>dragover</code></li>
+<li><code>dragleave</code>/<code>drop</code></li>
+</ul></li>
+</ul></li>
+
+<li><p><strong>对象</strong>：<code>event.dataTransfer</code></p>
+
+<ul>
+<li>用于实现数据交换，可在拖放事件的事件处理程序中访问</li>
+<li>方法：<code>setData()</code>，设置拖放要传递的数据
+
+<ul>
+<li>参数1: text/URL，表示保存的数据类型（HTML5 允许各种 MIME 类型，但 IE 只支持着两种）</li>
+<li>参数2: 要保存的数据</li>
+</ul></li>
+<li>方法：<code>getData()</code>，获取拖放传递的数据，只能在 <code>drop</code> 事件处理程序中使用</li>
+<li>属性：<code>dropEffect</code>
+
+<ul>
+<li>值：none/move/copy/link，</li>
+<li>表示元素拖动到 droptarget 上时鼠标的效果</li>
+<li>必须在 ondragenter 事件中使用</li>
+</ul></li>
+<li>属性：<code>effectAllowed</code>
+
+<ul>
+<li>值：none/move/copt/link/all/&hellip;</li>
+<li>跟 dropeffect 搭配使用，表示允许拖动元素的哪种 dropeffect</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h4 id="代码示例">代码示例：</h4>
+
+<pre><code class="language-javascript">    $(被拖动元素).on(&quot;dragstart&quot;, function (e) {
+        /*开始拖拽源文本*/         
+        e.preventDefault();
+        e.dataTransfer.effectAllowed = &quot;move&quot;;
+        e.originalEvent.dataTransfer.setData(&quot;text&quot;, '要传递的数据');
+        return true;
+    });
+
+    $(被拖动元素).on(&quot;dragend&quot;,  function(ev) {
+        /*拖拽结束*/
+        ev.dataTransfer.clearData(&quot;text&quot;);
+        eleDrag = null;
+        return false
+    });
+
+    $(放置目标元素).on(&quot;dragover&quot;, function (e) {
+        /*拖拽元素在目标元素头上移动的时候*/
+        e.preventDefault();
+        return true;
+    });
+
+    $(放置目标元素).on(&quot;dragenter&quot;,  function(ev) {
+        /*拖拽元素进入目标元素头上的时候*/
+        return true;
+    });
+
+    $(放置目标元素).on(&quot;drop&quot;, function (e) {               
+        /*拖拽元素进入目标元素头上，同时鼠标松开的时候*/
+        var data = e.originalEvent.dataTransfer.getData(&quot;text&quot;);
+        /*阻止在Firefox中拖拽打开新标签*/
+        return false;
+    });
+</code></pre>
+
+<hr />
+
+<h4 id="注意点">注意点：</h4>
+
+<ul>
+<li>在 dragstart 事件中必须使用 <code>event.preventDefault()</code>，否则 drag 事件不能触发，也就不能实现拖拽</li>
+<li>在 dragover 事件中也必须使用 <code>event.preventDefault()</code>，否则 drop 事件不会触发</li>
+<li>需在 drop 事件中使用 <code>return false;</code>， 解决 Firefox 中拖拽元素会直接打开新标签的问题</li>
+<li>为了减少事件，可以在 dragenter 的时候绑定方法 ，而 dragleave 的时候删除方法</li>
+<li>在 dragover 上不要做数据处理，它类似mouseover，在拖动的过程中会不断触发，可能会导致浏览器崩溃</li>
+<li>drag 事件和 mouse 事件不能同时触发</li>
+</ul>
+
+<hr />
+
+<h4 id="兼容性">兼容性：</h4>
+
+<p>浏览器支持：IE10+、Firefox 4+、Safari 5+和Chrome。</p>
+
+<hr />
+
+<h4 id="参考文档">参考文档：</h4>
+
+<p><a href="https://developer.mozilla.org/zh-CN/docs/DragDrop/Drag_and_Drop">拖放操作</a></p>
+
+<p><a href="http://www.zhangxinxu.com/wordpress/2011/02/html5-drag-drop-%E6%8B%96%E6%8B%BD%E4%B8%8E%E6%8B%96%E6%94%BE%E7%AE%80%E4%BB%8B/">HTML5 drag &amp; drop 拖拽与拖放简介</a></p>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var VisitTable = AV.Object.extend('Visit');
+    var URLLinkId = location.pathname;
+    var author = $('.J-author').text() || '';
+    var title = $('.J-title').text() || '';
+
+    
+    function postVisitData() {
+      var visit = new VisitTable();
+      var query = new AV.Query('Visit');
+
+      query.equalTo('link', URLLinkId)
+      query.find().then(function(list) {
+        var count = 1;
+        if (list.length > 0) {
+          var item = list[0];
+          item.increment('visitCount');
+          item.save();
+          count = item.get('visitCount');
+        } else {
+          visit.increment('visitCount');
+          visit.save({
+            link: URLLinkId,
+            author: author,
+            title: title
+          });
+        }
+        $('.J-detail-option').append('· 浏览量. <span>' + count + '</span>');
+      });
+    }
+
+    postVisitData();
+  });
+</script>
+
+
+        
+<div class="ds-thread" data-thread-key="http://dxy-developer.github.io/f2e/blog/2016/04/05/html5-drag-and-drop/" data-title="HTML5 drag and drop" data-url="http://dxy-developer.github.io/f2e/blog/2016/04/05/html5-drag-and-drop/"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"dxy-developer"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+    </div>
+    <div class="right">
+    
+    <div class="assort">
+        <p>分类</p>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+</div>
+
+</div>
+<div id="gotop">
+	<a href="javascript:;">TOP</a>
+</div>
+<div class="footer">
+    <p>Establishment · 丁香园前端</p>
+</div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/script.js"></script>
+</body>
+
+</html>
+
+<div id="particles-js"></div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/particles.js"></script>
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http:\/\/dxy-developer.github.io\/f2e/json/particles.json', null);
+</script>
+

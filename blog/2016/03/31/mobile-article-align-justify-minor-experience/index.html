@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>处理移动端文章两端对齐的一点微小经验</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/init.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/particles.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/markdown.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/style.css">
+    <script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+    <script>
+      
+      function setLeanCloud() {
+        AV.initialize('PPDrp7ANvEDvzYqBF2gKC7vY-gzGzoHsz', '60o0boL7ij0mkftarA5kEfNs');
+      }
+      setLeanCloud();
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="menu"></button>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+    <div class="header">
+        <a href="http://dxy-developer.github.io/f2e">
+            <p class="title J-title">处理移动端文章两端对齐的一点微小经验</p>
+            <p class="title">回到首页</p>
+            <p class="sub-title">DXY Tech&amp;Product Division</p>
+            <hr />
+        </a>
+    </div>
+
+<div class="container">
+    <div class="left">
+        <div class="post markdown-body">
+    <p class="post-info J-detail-option">
+        Author.<span class="J-author">wangxt</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/css">CSS</a> ·
+        Thu, Mar 31, 2016
+    </p>
+    <div class="post-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/wangxt/2016033101/">
+        <p>最近处理了一个移动端的文章详情页面，产品的需求是要做到正文区块内的内容能够两端对齐。</p>
+
+<p>在这里分享实现过程中一点微小的经验。</p>
+
+<p></p>
+
+<p>注：以下演示均未添加浏览器 prefix，请各位自行添加。推荐使用 <a href="https://github.com/postcss/autoprefixer">autoprefixer</a>。</p>
+
+<p>以下代码均在 webkit/blink 引擎浏览器下测试，未考虑 Gecko。</p>
+
+<p>先来构造一个最小 demo：</p>
+
+<pre><code class="language-html">&lt;article class=&quot;content&quot;&gt;
+   &lt;p&gt;
+      政黨或了底乎實運外球便易華公你物實。人病說？容不排。  中有那童節完放回什這，麼題容。問酒後但感臺？人機資良他主金同樣合車後們義質境不經對都專天林息密了和去中我聲……間言分的門同、三行方之友一濟才？？面球發一一看消示個以麼期造，我金民家不心直能，理方斯生那不近理製室示每連態生和片得人會美……是山求寫南工，沒元身山統熱現研後我心出筆息不。件談是條國求重：  也為活國到後得常命經求？
+   &lt;/p&gt;
+&lt;/article&gt;
+</code></pre>
+
+<pre><code class="language-css">.content {
+    width: 50%;
+    background: #fff;
+    margin: 50px auto;
+}
+
+.content p {
+    padding: 5px;
+}
+</code></pre>
+
+<p>大概是这么一个效果：</p>
+
+<p><img src="../images/812DE944B087ABDAE674280AA7019BA8.png" alt="1.png" /></p>
+
+<p>看着还好嘛，不过仔细看会发现右边确实不太整齐。为了善待强迫症，让我们加上两端对齐的 css。</p>
+
+<pre><code class="language-css">p {
+    text-align: justify;
+}
+</code></pre>
+
+<p><img src="../images/A60CA2C1C3A39C6D9FB24E0C5743F6C6.png" alt="2.png" /></p>
+
+<p>搞定。不过这个属性在 Firefox 下对中文标点的支持有点问题，由于我们是处理移动端，就暂且按下不表。</p>
+
+<p>但是等等，如果有很长的英文溢出怎么办？</p>
+
+<p>比如说这样：</p>
+
+<pre><code class="language-html">...
+&lt;p&gt;
+    WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+&lt;/p&gt;
+...
+</code></pre>
+
+<p><img src="../images/35EAC982FD1C45BB53549A686EABC90F.png" alt="3.png" /></p>
+
+<p>立马就破功了。这个时候我们一般会加什么属性？</p>
+
+<ul>
+<li><code>overflow: hidden</code> : 隐藏超出部分</li>
+<li><code>word-break: break-all</code> : 强制超过容器的部分换行</li>
+</ul>
+
+<p>好，那我们都加上：</p>
+
+<pre><code class="language-css">p {
+    text-align: justify;
+    overflow: hidden;
+    word-break: break-all;
+}
+</code></pre>
+
+<p><img src="../images/BD66B650252DA552276571522723D63E.png" alt="4.png" /></p>
+
+<p>好，溢出问题也解决了。这下总可以交差了吧？等等，让我们看下如果是一篇真正的英文文章会出现什么情况：</p>
+
+<pre><code class="language-html">...
+&lt;p&gt;
+The first thing you'll want to do is to draw boxes around every component (and subcomponent) in the mock and give them all names. If you're working with a designer, they may have already done this, so go talk to them! Their Photoshop layer names may end up being the names of your React components!
+&lt;/p&gt;
+...
+</code></pre>
+
+<p><img src="../images/DBA8F9BDE0818B335A20A021EB2D18E6.png" alt="5.png" /></p>
+
+<p>我们会发现不该换行的地方全被截断了。这可怎么办？看来问题是出在 <code>word-break: break-all</code> 上了。我们来看下这个属性的详细解释：</p>
+
+<blockquote>
+<h1 id="word-break">word-break</h1>
+
+<p>The word-break CSS property is used to specify whether to break lines within words.
+* normal : Use the default line break rule.
+* break-all : Word breaks may be inserted between any character for non-CJK (Chinese/Japanese/Korean) text.
+* keep-all : Don&rsquo;t allow word breaks for CJK text.  Non-CJK text behavior is the same as for normal.</p>
+</blockquote>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/word-break">word-break - CSS | MDN</a></p>
+
+<p><code>break-all</code> 表示所有的非中日韩字符间都可能被换行，这就有点麻烦了。任意换行的英文非常难读，因此要想个办法处理才行。</p>
+
+<p>但其实 <code>word-break</code> 有个只有 webkit/blink 引擎支持的属性，<code>break-wrod</code>。通过这个属性，我们可以让英文句子在正确的位置换行，但如果实在没有地方可以打断，会进行强制打断。但它是个非标准属性，通过 Google 可知，它的效果基本等同于 <code>word-wrap: break-word</code>。</p>
+
+<blockquote>
+<h1 id="word-wrap">word-wrap</h1>
+
+<p>The word-wrap property is used to specify whether or not the browser may break lines within words in order to prevent overflow when an otherwise unbreakable string is too long to fit in its containing box.
+* normal : Indicates that lines may only break at normal word break points.
+* break-wrod : Indicates that normally unbreakable words may be broken at arbitrary points if there are no otherwise acceptable break points in the line.</p>
+</blockquote>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/word-wrap">word-wrap - CSS | MDN</a></p>
+
+<p>我们使用这个属性来替代 <code>word-break</code> 来看看效果。</p>
+
+<pre><code class="language-css">p {
+    text-align: justify;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+</code></pre>
+
+<p><img src="../images/F94AFBC735957DD932C300CBE758D922.png" alt="6.png" /></p>
+
+<p>进行到这里我们基本上已经达成了目的。但如果你还想对英文做进一步的优化的话，可以考虑添加 <code>hyphens: auto</code> 这个属性。这样英文单词会在必要的时候添加连字符换行，可以避免有时为了在空格处换行造成的每行词间距疏密差距过大的问题。</p>
+
+<p>由于这个属性对中文没有作用，而且兼容性不佳（移动端暂时只在 Safari 中有作用）因此以用得比较少，这里也不多做介绍，各位可以看看效果。</p>
+
+<pre><code class="language-css">p {
+    text-align: justify;
+    overflow: hidden;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+</code></pre>
+
+<p><img src="../images/C71770943A12A21B8FAE28C8150FF99E.png" alt="7.png" /></p>
+
+<p>要注意的是，<code>hyphens: auto</code> 是会根据 <code>lang</code> 属性中的语言来调整添加连字符的策略的，因此如果我们的网页 <code>html</code> 元素中写的是 <code>lang=&quot;zh-CN&quot;</code> ，那么这个属性完全不会有效果，因此需要换成 <code>lang=&quot;en&quot;</code>。如果不想更换整个页面的语言申明的话，也可以在需要使用这个属性的元素上单独添加 <code>lang</code> 属性。</p>
+
+<pre><code class="language-html">&lt;p lang=&quot;en&quot;&gt;xxx&lt;/p&gt;
+</code></pre>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens">hyphens - CSS | MDN</a></p>
+
+<p><a href="http://codepen.io/wxt2005/pen/pywoqR?editors=1100">最终 demo</a>（请在 webkit/blink 引擎浏览器下打开）</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var VisitTable = AV.Object.extend('Visit');
+    var URLLinkId = location.pathname;
+    var author = $('.J-author').text() || '';
+    var title = $('.J-title').text() || '';
+
+    
+    function postVisitData() {
+      var visit = new VisitTable();
+      var query = new AV.Query('Visit');
+
+      query.equalTo('link', URLLinkId)
+      query.find().then(function(list) {
+        var count = 1;
+        if (list.length > 0) {
+          var item = list[0];
+          item.increment('visitCount');
+          item.save();
+          count = item.get('visitCount');
+        } else {
+          visit.increment('visitCount');
+          visit.save({
+            link: URLLinkId,
+            author: author,
+            title: title
+          });
+        }
+        $('.J-detail-option').append('· 浏览量. <span>' + count + '</span>');
+      });
+    }
+
+    postVisitData();
+  });
+</script>
+
+
+        
+<div class="ds-thread" data-thread-key="http://dxy-developer.github.io/f2e/blog/2016/03/31/mobile-article-align-justify-minor-experience/" data-title="处理移动端文章两端对齐的一点微小经验" data-url="http://dxy-developer.github.io/f2e/blog/2016/03/31/mobile-article-align-justify-minor-experience/"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"dxy-developer"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+    </div>
+    <div class="right">
+    
+    <div class="assort">
+        <p>分类</p>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+</div>
+
+</div>
+<div id="gotop">
+	<a href="javascript:;">TOP</a>
+</div>
+<div class="footer">
+    <p>Establishment · 丁香园前端</p>
+</div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/script.js"></script>
+</body>
+
+</html>
+
+<div id="particles-js"></div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/particles.js"></script>
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http:\/\/dxy-developer.github.io\/f2e/json/particles.json', null);
+</script>
+

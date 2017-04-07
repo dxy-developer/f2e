@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hybrid on 丁香园前端小分队</title>
+    <link>http://dxy-developer.github.io/f2e/tags/hybrid/index.xml</link>
+    <description>Recent content in Hybrid on 丁香园前端小分队</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Establishment · 丁香园前端</copyright>
+    <atom:link href="http://dxy-developer.github.io/f2e/tags/hybrid/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>RDS(前端资源分发系统)</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/11/15/rds%E5%89%8D%E7%AB%AF%E8%B5%84%E6%BA%90%E5%88%86%E5%8F%91%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Tue, 15 Nov 2016 05:12:20 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/11/15/rds%E5%89%8D%E7%AB%AF%E8%B5%84%E6%BA%90%E5%88%86%E5%8F%91%E7%B3%BB%E7%BB%9F/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;RDS（前端资源包分发系统），将原有的客户端资源包更新逻辑移至服务器端实现。统一IOS，ANDROID等平台的更新逻辑，统一入口，方便资源包更新算法的调整，监控资源包的分发，进行灰度发布。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;设计&#34;&gt;设计&lt;/h2&gt;
+
+&lt;p&gt;RDS 最基本的功能就是将最最合适的资源包版本分发给不同的客户端。&lt;/p&gt;
+
+&lt;p&gt;在此基础上，需要与前端资源发布系统进行合作，根据前端发布 Hybrid 资源包的流程，添加相应的功能。如资源包测试。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;规则系统&#34;&gt;规则系统&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;规则函数：规则函数是服务器上定义的特定功能函数，以资源请求和规则作为输入，返回布尔值。&lt;/p&gt;
+
+&lt;p&gt;简单规则：简单规则由规则规则函数，规则值组成。&lt;/p&gt;
+
+&lt;p&gt;复杂规则：复杂规则由多个简单规则组成，规则间存在 and 和 or 两种关系。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;用户可以方面的根据 RDS 提供的各种已有的规则函数，创建各种规则。&lt;/p&gt;
+
+&lt;p&gt;规则将应用于资源的各个版本，用于表示当前版本所匹配的客户端请求。&lt;/p&gt;
+
+&lt;p&gt;这是在规则的易于普通用户创建和创建的灵活性之间的折中。&lt;/p&gt;
+
+&lt;h3 id=&#34;规则应用算法&#34;&gt;规则应用算法&lt;/h3&gt;
+
+&lt;p&gt;高版本优先于低版本。&lt;/p&gt;
+
+&lt;h2 id=&#34;相关文章&#34;&gt;相关文章&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://dxy-developer.github.io/f2e/f2e/blog/2016/04/04/hybrid资源包增量更新机制-起步/&#34;&gt;hybrid资源包增量更新机制: 起步&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dxy-developer.github.io/f2e/f2e/blog/2016/07/18/hybrid资源包增量更新机制-优化与安全/&#34;&gt;hybrid资源包增量更新机制: 优化与安全&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>hybrid资源包增量更新机制: 优化与安全</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/07/18/hybrid%E8%B5%84%E6%BA%90%E5%8C%85%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%E6%9C%BA%E5%88%B6-%E4%BC%98%E5%8C%96%E4%B8%8E%E5%AE%89%E5%85%A8/</link>
+      <pubDate>Mon, 18 Jul 2016 03:26:21 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/07/18/hybrid%E8%B5%84%E6%BA%90%E5%8C%85%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%E6%9C%BA%E5%88%B6-%E4%BC%98%E5%8C%96%E4%B8%8E%E5%AE%89%E5%85%A8/</guid>
+      <description>&lt;p&gt;增量更新的使用已有一段时间，面对出现的一些问题，对初始的增量更新机制进行了扩展与优化。&lt;/p&gt;
+
+&lt;p&gt;丁香医生hybrid开发遇到的问题&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;增量更新的安全&lt;/p&gt;
+
+&lt;p&gt;如何保证客户端获取到的增量包不被篡改。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;资源包 diff 的不高效&lt;/p&gt;
+
+&lt;p&gt;目前前端大多使用一些前端构建工具,如&lt;code&gt;webpack&lt;/code&gt;, &lt;code&gt;gulp&lt;/code&gt;, 将分散的源码合并成一个文件。在这种情况下，使用原先的 diff 算法并不能减少增量包的体积。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;增量包的安全&#34;&gt;增量包的安全&lt;/h2&gt;
+
+&lt;p&gt;通过采用&lt;code&gt;数字签名&lt;/code&gt;技术保证增量包不被篡改。&lt;/p&gt;
+
+&lt;p&gt;签名方案：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;前端对生成的增量包和全量包进行签名，将签名文件与源文件放在同一目录，并一起发布。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;客户端更新时，在获取增量包时，同时获取增量包的签名，通过客户端中预先存储的公钥对签名文件和源文件进行校验，校验成功才进行下一步的更新。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;签名工具：&lt;/p&gt;
+
+&lt;p&gt;安装 &lt;code&gt;npm install dxy-assets-sign --save-dev&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;使用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;	require(&#39;dxy-assets-sign&#39;)({
+        publish_folder : publish_folder, //资源发布目录
+        api : &#39;http://192.168.200.135:3000/sign&#39;, //必须
+        verify : true, // 可选，是否对签名进行验证
+        hash : &#39;sha1&#39;, //可选
+        format : &#39;base64&#39;,  //可选
+        sign : &#39;RSA-SHA256&#39;, //可选
+        hash_format : &#39;hex&#39;
+    })();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;bsdiff&#34;&gt;bsdiff&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;bsdiff&lt;/code&gt; 可以生成基于二进制的差量包，它的体积比原先算法生成的增量包小很多。尤其是对单文件这种极端情况。&lt;/p&gt;
+
+&lt;p&gt;以丁香医生的&lt;code&gt;React Native&lt;/code&gt;的资源包为例，原先的增量包的体积为&lt;code&gt;197KB&lt;/code&gt;,使用&lt;code&gt;bsdiff&lt;/code&gt;算法后的增量包体积为&lt;code&gt;5KB&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;由于兼容旧算法，如果需要使用&lt;code&gt;bsdiff&lt;/code&gt;算法，只需要添加&lt;code&gt;bsdiff&lt;/code&gt;字段&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;require(&#39;gulp-assets-incremental-update&#39;)(gulp, {
+    publish_folder : publish_folder,
+    name : &#39;article_detail.zip&#39;,
+    base_url : &#39;http://assets.dxycdn.com/assets/app/dxydoctor/hybrid-publish&#39;,
+    assets_folder : assets,
+    limit : 6,
+    bsdiff : true
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;相关文章&#34;&gt;相关文章&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://dxy-developer.github.io/f2e/f2e/blog/2016/04/04/hybrid资源包增量更新机制-起步/&#34;&gt;hybrid资源包增量更新机制: 起步&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dxy-developer.github.io/f2e/f2e/blog/2016/11/15/RDS(前端资源分发系统)/&#34;&gt;RDS(前端资源分发系统)&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>hybrid资源包增量更新机制: 起步</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/04/04/hybrid%E8%B5%84%E6%BA%90%E5%8C%85%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%E6%9C%BA%E5%88%B6-%E8%B5%B7%E6%AD%A5/</link>
+      <pubDate>Mon, 04 Apr 2016 06:32:51 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/04/04/hybrid%E8%B5%84%E6%BA%90%E5%8C%85%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%E6%9C%BA%E5%88%B6-%E8%B5%B7%E6%AD%A5/</guid>
+      <description>&lt;p&gt;从&lt;code&gt;丁香医生&lt;/code&gt;app决定使用&lt;code&gt;hybrid&lt;/code&gt;到现在已有一段时间。前端资源包的大小接近&lt;code&gt;360KB&lt;/code&gt;。并且pm会不时的提出一些小的需求，可能是一些样式的调整，也可能是新的活动页面，因此发布十分频繁。&lt;/p&gt;
+
+&lt;p&gt;丁香医生hybrid开发遇到的问题&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;频繁的发布，很小的改动，尺寸不断增加的资源包。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;丁香医生hybrid开发资源更新机制的现状&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;使用原始的全量更新,即每一次发布，对于终端用户都必须下载完整的资源包，尽管资源包的变动很小。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;面对以上问题和现状，需要新的资源更新机制。他的核心功能是&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;支持全量更新，增量更新&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;设计&#34;&gt;设计&lt;/h2&gt;
+
+&lt;p&gt;资源增量更新机制是在如下前提下设计的&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;没有后台程序员提供支持。（跨部门推一个方案感觉很麻烦）&lt;/li&gt;
+&lt;li&gt;尽量简单。(开发，部署)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;最终的增量更新机制如下&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;由前端进行历代版本资源包的diff，生成不同版本之间的增量包（增量包为变动的文件和变动详情配置文件的压缩包）&lt;/li&gt;
+&lt;li&gt;使用已有的前端资源发布机制进行资源的发布&lt;/li&gt;
+&lt;li&gt;客户端根据配置文件，获取相应的增量包，进行patch&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;diff-patch&#34;&gt;diff&amp;amp;patch&lt;/h2&gt;
+
+&lt;p&gt;找 node, swift, java都支持的 diff&amp;amp;patch 第三方库好麻烦。&lt;/p&gt;
+
+&lt;p&gt;最终采用的方案将diff的粒度增大到文件。根据文件内容的hash值是否不同，来决定是否进行文件的全量更新。因此最终的diff&amp;amp;patch算法是简单文件内容比较和文件增、删、替换操作。虽然不是最好的，但是它足够简单，实用。&lt;/p&gt;
+
+&lt;h2 id=&#34;gulp插件-https-github-com-alexayan-gulp-assets-incremental-update&#34;&gt;&lt;a href=&#34;https://github.com/alexayan/gulp-assets-incremental-update&#34;&gt;gulp插件&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;通过前端构建工具使版本方便的发布&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;npm install gulp-assets-incremental-update --save-dev&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;//gulpfile.js
+require(&#39;gulp-assets-incremental-update&#39;)(gulp, {
+    publish_folder : publish_folder,//资源发布目录
+    name : &#39;article_detail.zip&#39;,//zip包名
+    assets_folder : assets, //本地资源目录
+    base_url : base_url //线上资源路径 {base_url}/1/2/{name}
+});
+
+gulp.task(&#39;publish&#39;, [&#39;assets-incremental-update&#39;] , function(){});
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;gulp publish&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;相关文章&#34;&gt;相关文章&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://dxy-developer.github.io/f2e/f2e/blog/2016/07/18/hybrid资源包增量更新机制-优化与安全/&#34;&gt;hybrid资源包增量更新机制: 优化与安全&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dxy-developer.github.io/f2e/f2e/blog/2016/11/15/RDS(前端资源分发系统)/&#34;&gt;RDS(前端资源分发系统)&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>关于 vertical-align的一些试验</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/init.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/particles.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/markdown.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/style.css">
+    <script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+    <script>
+      
+      function setLeanCloud() {
+        AV.initialize('PPDrp7ANvEDvzYqBF2gKC7vY-gzGzoHsz', '60o0boL7ij0mkftarA5kEfNs');
+      }
+      setLeanCloud();
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="menu"></button>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+    <div class="header">
+        <a href="http://dxy-developer.github.io/f2e">
+            <p class="title J-title">关于 vertical-align的一些试验</p>
+            <p class="title">回到首页</p>
+            <p class="sub-title">DXY Tech&amp;Product Division</p>
+            <hr />
+        </a>
+    </div>
+
+<div class="container">
+    <div class="left">
+        <div class="post markdown-body">
+    <p class="post-info J-detail-option">
+        Author.<span class="J-author">徐溯阳</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/css">css</a> ·
+        Mon, Feb 6, 2017
+    </p>
+    <div class="post-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/xusy/20170206/">
+        
+
+<h1 id="前言">前言</h1>
+
+<p>关于 vertical-align，我们很容易想到，这不就是告诉我们元素在纵向上和什么对齐的属性吗？看似很简单的定义，在实战使用时却总是不按套路出牌，带来了很多误解和困惑。事实上，正是这种宽泛的说法导致了我们对其的理解存在许多不确定性。问题就在于，“对齐”这两个字其实牵涉到4个对象：即<strong>哪个对象的哪条线，与哪个对象的哪条线对齐？</strong>只有将这4者搞清楚，我们才能说是理解了这个属性。</p>
+
+<p>我们知道，vertical-align 有以下几类可选值：</p>
+
+<ol>
+<li>文字：baseline、top、bottom、text-top、text-bottom、middle、sub、super</li>
+<li>百分比</li>
+<li>数字</li>
+</ol>
+
+<p>其中，文字是出现的最多的，现在我就以这些值为例，来探讨一下vertical-align究竟是怎么对齐的。在阅读之前，有一些预备知识应该是必不可少的，它们是：</p>
+
+<ol>
+<li><p>关于行内元素的4种box模型：containing boxes、inline boxes、line box 以及 content area。</p></li>
+
+<li><p>关于 font-size 的 4 条参考线:topline、bottomline、baseline以及middleline。</p></li>
+
+<li><p>关于 font-size 和 line-height 之间的关系。</p></li>
+</ol>
+
+<p>以上知识可以在以下文章中看到
+<a href="http://www.cnblogs.com/fengzheng126/archive/2012/05/18/2507632.html">深入了解css的行高Line Height属性</a></p>
+
+<p>下面是这次我使用的例子。
+<strong>html：</strong></p>
+
+<pre><code>&lt;div class=&quot;box&quot;&gt;
+    0.Eng&lt;sub&gt;2&lt;/sub&gt;lish&lt;sup&gt;3&lt;/sup&gt;
+    &lt;span class=&quot;span&quot;&gt;Englishx&lt;/span&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p><strong>css：</strong></p>
+
+<pre><code>.box{
+    border: 1px solid #555;
+    font-size: 28px;
+    height:150px;
+    line-height: 100px;
+}
+.span{
+    display: inline-block;
+    background-color: #ddd;
+    font-size: 50px;
+    margin-right: 35px;
+    line-height: 80px;
+}
+</code></pre>
+
+<h3 id="vertical-align-top">vertical-align:top</h3>
+
+<p><img src="../1.png" alt="图片描述" /></p>
+
+<p>目标元素的 inline-box 的顶端边缘，与父元素的 line-box 的顶端边缘对齐。这很好理解。</p>
+
+<h3 id="vertical-align-bottom">vertical-align:bottom</h3>
+
+<p><img src="../2.png" alt="图片描述" /></p>
+
+<p>目标元素的 inline box 的底端边缘，与父元素的 line-box 的底端边缘对齐。同样很好理解。</p>
+
+<p>不过，这里有同学说了：不对啊，图片里目标元素的底端没有和父元素的底端对齐啊！注意，上面写的是与父元素的 line-box 的底端边缘对齐。那么父元素的底端边缘在哪里呢？并不是在下边框这里。这是因为，下边框是被父元素的 height 属性撑开的，父元素的 line box 的高度，是由 line-height 属性决定的。注意看上面的 css。这里的 line-height 比 height 要小，所以目标元素的底部达不到父元素的下边框。</p>
+
+<p>还有一部分眼尖的同学说，还是不对呀，我目测了一下，你 css 里设置的 line-height 是 100px。但是这里目标元素的底部，离父元素的顶部似乎要大于 100px 呀？是的，你说的没错。实际上这个数字是118px，原因是，内部匿名inline box 的上标(3)和下标(2)把这个匿名 inline box 的line-height 撑大了，导致其实际 line-height 达到了 118px。如果把上标下标去掉，那就完美符合啦。</p>
+
+<h3 id="vertical-align-middle">vertical-align:middle</h3>
+
+<p><img src="../5.png" alt="图片描述" /></p>
+
+<p>目标元素的 inline-box 的垂直平分线，与父元素内匿名inline boxes的 middleline 对齐。这个属性恐怕是实战中使用最频繁的属性了。</p>
+
+<p>这里出现了几个新东西，需要多说几句。垂直平分线，这个容易理解。那什么是“父元素内匿名inline boxes，什么又是“父元素内匿名 inline boxes 的 middleline”？</p>
+
+<p>首先，父元素内匿名inline boxes，你可以假设成直接写在父元素内的纯文字。由于它被父元素直接包裹，所以各种属性，包括line-height 和 font-size 等等，都是直接继承自父元素。当然，父元素内未必真的存在文字，它内部可能没有任何匿名inline boxes，但是，当 vertical-align 参与计算的时候，所参照的就是这个<strong>可能并不存在的</strong>匿名inline boxes。</p>
+
+<p>好了，轮到 middleline。middleline 之前被我放在了预备知识里，这里再多引申一点。按照规范，middleline 是文字的 baseline 往上方挪 <sup>1</sup>&frasl;<sub>2</sub> 个 x字母高度 的位置，所在的那条线。这条线并不是content area的严格中线，但和真正几何位置的中线很接近。</p>
+
+<p>为了更清楚地表示 middleline 的位置，我这里多加了3个 x 字母，很明显，middleline 穿过字母 x 的中央。</p>
+
+<p>好了，理解了 <code>vertical-align:middle</code> ，我们再理解下面几个属性就简单多了。</p>
+
+<h3 id="vertical-align-text-top">vertical-align:text-top</h3>
+
+<p><img src="../4.png" alt="图片描述" /></p>
+
+<p>目标元素的 inline-box 的顶部边缘，与父元素内匿名 inline boxes 的顶线，topline对齐。这里要注意，topline 在视觉上并不和l、h这些高字母的顶端对齐，这是因为这些字母的高度都没有达到topline。topline 要比这些字母的顶端再高一些。</p>
+
+<h3 id="vertical-align-text-bottom">vertical-align:text-bottom</h3>
+
+<p><img src="../3.png" alt="图片描述" /></p>
+
+<p>目标元素的 inline-box 的底部边缘，与父元素内匿名 inline boxes 的底线，bottomline对齐。和 topline 不同，像 g 这样的下沉字母的底端一般都会达到 bottomline 的位置。</p>
+
+<h3 id="vertical-align-baseline">vertical-align:baseline</h3>
+
+<p><img src="../8.png" alt="图片描述" /></p>
+
+<p>这个默认属性反而放到后面来说？为什么？因为这里和上面有一点不同。在上面的情况下，目标元素参与对齐的参考线，都是 inline-box 的上下边缘，而这里是 baseline!</p>
+
+<h3 id="vertical-align-sub">vertical-align:sub</h3>
+
+<p><img src="../6.png" alt="图片描述" /></p>
+
+<p>目标元素的 inline-box 的 baseline，与父元素内下标（sub 标签）的 inline boxes 的 baseline 对齐。</p>
+
+<h3 id="vertical-align-super">vertical-align:super</h3>
+
+<p><img src="../7.png" alt="图片描述" /></p>
+
+<p>目标元素的 inline-box 的 baseline，与父元素内上标（sup 标签）的 inline boxes 的 baseline 对齐。</p>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var VisitTable = AV.Object.extend('Visit');
+    var URLLinkId = location.pathname;
+    var author = $('.J-author').text() || '';
+    var title = $('.J-title').text() || '';
+
+    
+    function postVisitData() {
+      var visit = new VisitTable();
+      var query = new AV.Query('Visit');
+
+      query.equalTo('link', URLLinkId)
+      query.find().then(function(list) {
+        var count = 1;
+        if (list.length > 0) {
+          var item = list[0];
+          item.increment('visitCount');
+          item.save();
+          count = item.get('visitCount');
+        } else {
+          visit.increment('visitCount');
+          visit.save({
+            link: URLLinkId,
+            author: author,
+            title: title
+          });
+        }
+        $('.J-detail-option').append('· 浏览量. <span>' + count + '</span>');
+      });
+    }
+
+    postVisitData();
+  });
+</script>
+
+
+        
+<div class="ds-thread" data-thread-key="http://dxy-developer.github.io/f2e/blog/2017/02/06/%E5%85%B3%E4%BA%8E-vertical-align%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AF%95%E9%AA%8C/" data-title="关于 vertical-align的一些试验" data-url="http://dxy-developer.github.io/f2e/blog/2017/02/06/%E5%85%B3%E4%BA%8E-vertical-align%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AF%95%E9%AA%8C/"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"dxy-developer"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+    </div>
+    <div class="right">
+    
+    <div class="assort">
+        <p>分类</p>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+</div>
+
+</div>
+<div id="gotop">
+	<a href="javascript:;">TOP</a>
+</div>
+<div class="footer">
+    <p>Establishment · 丁香园前端</p>
+</div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/script.js"></script>
+</body>
+
+</html>
+
+<div id="particles-js"></div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/particles.js"></script>
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http:\/\/dxy-developer.github.io\/f2e/json/particles.json', null);
+</script>
+

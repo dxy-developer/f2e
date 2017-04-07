@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>前端性能优化：从入门到放弃？</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/init.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/particles.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/markdown.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/style.css">
+    <script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+    <script>
+      
+      function setLeanCloud() {
+        AV.initialize('PPDrp7ANvEDvzYqBF2gKC7vY-gzGzoHsz', '60o0boL7ij0mkftarA5kEfNs');
+      }
+      setLeanCloud();
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="menu"></button>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+    <div class="header">
+        <a href="http://dxy-developer.github.io/f2e">
+            <p class="title J-title">前端性能优化：从入门到放弃？</p>
+            <p class="title">回到首页</p>
+            <p class="sub-title">DXY Tech&amp;Product Division</p>
+            <hr />
+        </a>
+    </div>
+
+<div class="container">
+    <div class="left">
+        <div class="post markdown-body">
+    <p class="post-info J-detail-option">
+        Author.<span class="J-author">罗椋仁</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a> ·
+        Sat, Apr 1, 2017
+    </p>
+    <div class="post-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/luolr/">
+        <blockquote>
+<p>作为一名合格的web开发人员，不应该仅仅满足于功能的实现，前端性能的优化也是我们必须要关注的问题。我们都不希望自己辛辛苦苦写成的代码，却因为优化不到位的问题，带给用户不好的体验。为此，我们可以做不少的事。</p>
+</blockquote>
+
+<p>对于前端性能优化的讨论，一直都不是一个过时的话题，前有雅虎的<a href="https://developer.yahoo.com/performance/rules.html">35条黄金法则</a>，后有O’Reilly 出版的两本性能优化圣经《高性﻿能网站建设指南》、《高性能网站建设进阶指南》，这些都很值得我们学习，将会是我们在探索性能优化道路上的指路明灯。那么，我们首先来看看雅虎的军规吧，我选取了其中的一部分。
+</p>
+
+<h4 id="雅虎-17-条性能优化原则及其分类">雅虎 17 条性能优化原则及其分类：</h4>
+
+<table>
+<thead>
+<tr>
+<th>优化方向</th>
+<th>优化手段</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>请求数量</td>
+<td>合并脚本和样式表，CSS Sprites，拆分初始化负载，划分主域</td>
+</tr>
+
+<tr>
+<td>请求带宽</td>
+<td>开启 GZip，精简 JavaScript，移除重复脚本，图像优化</td>
+</tr>
+
+<tr>
+<td>缓存利用</td>
+<td>使用 CDN，使用外部 JavaScript 和 CSS，添加 Expires 头，减少 DNS 查找，配置 ETag，使 AjaX 可缓存</td>
+</tr>
+
+<tr>
+<td>页面结构</td>
+<td>将样式表放在顶部，将脚本放在底部，尽早刷新文档的输出，延迟加载 JavaScript</td>
+</tr>
+
+<tr>
+<td>代码校验</td>
+<td>避免 CSS 表达式，避免重定向</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="优化原则细则">优化原则细则：</h4>
+
+<ul>
+<li>请求数量：
+
+<ul>
+<li>合并脚本和样式表：通过将脚本和样式表合并的方式，可以有效的减少http请求的次数，从而减少DNS请求所耗费的时间和对服务器的压力。</li>
+<li><code>CSS Sprites</code>：即CSS 雪碧图，通过将众多细小的图片整合成一个文件，从而减少http请求次数。</li>
+<li>拆分初始化负载：对于页面中一开始加载时不需要执行的资源，可以将其分离出来等到需要时再加载。</li>
+<li>划分主域：众所周知，在 HTTP/1.x 协议中「浏览器客户端在同一时间，针对同一域名下的请求有一定数量限制。超过限制数目的请求会被阻塞」，而不同浏览器对该限制的数目也不尽相同，划分主域、配置静态资源专用域，目的就是变相的解决浏览器针对同一域名的请求限制阻塞问题。但不易过多，否则 DNS 的查询时间也是个问题。</li>
+</ul></li>
+<li>请求宽带：
+
+<ul>
+<li>开启<code>GZip</code>：服务端启用 Gzip 可以有效的减少数据传输量，Gzip 对于基于文本的文件（CSS、JavaScript、HTML）压缩效果最好，所有现代浏览器都支持 Gzip 压缩并将自动请求该压缩
+精简JavaScript，移除重复脚本：这个就不必细说了，减少重复的代码，避免无意义的脚本执行。</li>
+<li>图像优化：对于要上传的图片，尽量保证该图片已经是经过压缩优化过的。</li>
+</ul></li>
+<li>缓存利用：
+
+<ul>
+<li>使用<code>CDN</code>：利用内容分发网络能够有效的减少资源响应时间，提升用户体验。
+使用外部JavaScript和CSS：浏览器可以将外部的 JavaScript 和 CSS 文件进行缓存，而如果将其写成内联样式，嵌入至 HTML 文档里，那么每次请求该文档时它们都会被下载。而且如果多个页面都用到了相同的脚本，那么使用浏览器缓存的外部JavaScript和CSS必然是更好的选择。</li>
+<li>添加 <code>Expires</code> 头：对于一些不怎么改变的静态资源，可以设置文件头过期时间Expires的值为“Never expire”（永不过期），而对于一些动态的资源，可以使用恰当的Cache-Control文件头来帮助浏览器进行选择性的请求，通过这样的方式，可以有效的利用浏览器的缓存机制来减少HTTP请求的大小和次数以加快页面访问速度。</li>
+<li>减少 <code>DNS</code> 查找：由于DNS的解析需要花费一定的时间，减少DNS查找次数可以节省响应时间，减少主机名的数量可以减少DNS查找次数。</li>
+<li>配置 <code>ETag</code>：服务端配置 ETag 是一种有效的 Web 缓存验证机制，并且允许客户端进行缓存协商。这就使得缓存变得更加高效，而且节省带宽。如果资源的内容没有发生改变，服务器就不需要发送一个完整的响应。ETag 也可用于乐观并发控制，作为一种防止资源同步更新而相互覆盖的方法。</li>
+<li>使 AjaX 可缓存：Ajax缓存和HTTP缓存效果相同，可以通过设置Expires、Last-Modified、Cache-Control 等HTTP响应头的方式实现，具体的实现难度偏高。</li>
+</ul></li>
+<li>页面结构：
+
+<ul>
+<li>将样式表放在顶部，将脚本放在底部：Js的下载以及执行会阻塞DOM与CSSOM的下载与构建，因此将样式表放在body的顶部，而将脚本放在底部，用于优先加载html和css。<br>「推荐阅读：<a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction?hl=zh-cn">渲染树构建、布局及绘制</a> 」</li>
+<li>延迟加载 JavaScript：默认情况下，JavaScript 执行会阻塞解析器：当浏览器在文档中遇到一个 script，它必须暂停 DOM 构建，移交控制权给 JavaScript 运行时，让脚本先执行，然后才继续处理 DOM。为了优先构建渲染树，有时候需要编写额外的代码来延迟脚本的执行<br>「推荐阅读：<a href="http://web.jobbole.com/82317/">如何延迟加载JS</a> 」</li>
+</ul></li>
+<li>代码校验：
+
+<ul>
+<li>避免 CSS 表达式：CSS 表达式是动态设置 CSS 属性的强大（但危险）方法。表达式的问题就在于它的计算频率要比我们想象的多。不仅仅是在页面显示和缩放时，就是在页面滚动、乃至移动鼠标时都会要重新计算一次，可能会对页面的性能产生影响。因此CSS表达式的使用需要慎重。</li>
+<li>避免重定向：当页面发生了重定向，在新的HTMl文档到达之前，当前页面的资源不会被加载，可能呈现空白页面。
+<br>
+在了解Yahoo军规后，想必对web性能优化有了一个大致的了解。当然，除了军规之外，也有不少其他要注意的细节。</li>
+</ul></li>
+</ul>
+
+<h4 id="javascript-优化">JavaScript 优化</h4>
+
+<ol>
+<li><p>Dom操作优化</p>
+
+<p>首先澄清两个概念——Repaint 和 Reflow：Repaint 也叫 Redraw，它指的是一种不会影响当前 DOM 的结构和布局的一种重绘动作。如下动作会产生 Repaint 动作：</p>
+
+<ul>
+<li>不可见到可见（visibility 样式属性）</li>
+<li>颜色或图片变化（background, border-color, color 样式属性）</li>
+<li>不改变页面元素大小，形状和位置，但改变其外观的变化</li>
+</ul>
+
+<p>Reflow 比起 Repaint 来讲就是一种更加显著的变化了。它主要发生在 DOM 树被操作的时候，任何改变 DOM 的结构和布局都会产生 Reflow。但一个元素的 Reflow 操作发生时，它的所有父元素和子元素都会放生 Reflow，最后 Reflow 必然会导致 Repaint 的产生。举例说明，如下动作会产生 Reflow 动作：
++ 浏览器窗口的变化
++ DOM 节点的添加删除操作
++ 一些改变页面元素大小，形状和位置的操作的触发</p>
+
+<p>实际上，Reflow 比起 Repaint 会消耗更多的资源，因此，我们应该尽量减少 Reflow 的发生，或者将其转化为只会触发 Repaint 操作的代码。</p>
+
+<pre><code class="language-javascript">var tipBox = document.createElement('div');
+document.body.appendChild('tipBox'); //reflow
+var tip1 = document.createElement('div');
+var tip2 = document.createElement('div');
+tipBox.appendChild(tip1); //reflow
+tipBox.appendChild(tip2); //reflow  
+</code></pre>
+
+<p>如上代码会产生三次reflow，优化后的代码如下：</p>
+
+<pre><code class="language-javascript">var tipBox = document.createElement('div');
+      tip1 = document.createElement('div');
+      tip2 = document.createElement('div');
+tipBox.appendChild(tip1);
+tipBox.appendChild(tip2);
+document.body.appendChild('tipBox'); //reflow 
+</code></pre>
+
+<p>经过优化，只会产生一次reflow，减少了不必要的开销。</p></li>
+
+<li><p>尽量采用点号</p>
+
+<p>在 JavaScript 中，你可以使用点号 (foo.bar) 或者方括号 (foo[&ldquo;bar&rdquo;])来访问属性。然而，点号通常是首选，因为它更加易读，简洁，也更适于 JavaScript 压缩。</p></li>
+
+<li><p>减少全局变量的使用</p>
+
+<p>JavaScript 代码解释执行，在进入函数内部时，它会预先分析当前的变量，并将变量存放在不同的层级中，一般情况下： 局部变量放入最浅的层级 1，全局变量、try - catch等则放入较深的层级 2，并根据嵌套层级依次加深。变量所在的层越浅，访问（读取或修改）速度越快，反之则越。</p></li>
+</ol>
+
+<h4 id="html-优化">HTML 优化</h4>
+
+<ol>
+<li><p>使用合适的的元素可保证代码的易读性</p>
+
+<ul>
+<li>当网站支持HTML5时，使用<code>&lt;header&gt;</code>，<code>&lt;footer&gt;</code>，<code>&lt;nav&gt;</code>等语义化标签，可以很清晰的体现出该内容的功能。</li>
+<li>使用<code>&lt;h1&gt;(&lt;h2&gt;,&lt;h3&gt;…)</code>表示标题，<code>&lt;ul&gt;</code>或<code>&lt;ol&gt;</code>实现列表。</li>
+<li>使用<code>&lt;em&gt;</code>和<code>&lt;strong&gt;</code>标签替代<code>&lt;i&gt;</code>和<code>&lt;b&gt;</code>标签。</li>
+<li>使用<code>&lt;label&gt;</code>元素，可以增强使用、、用户的使用体验。</li>
+
+<li><p>将文本和元素混合，并作为另一元素的子元素，会导致布局错误，例如：</p>
+
+<pre><code class="language-html">&lt;div class=&quot;form-control&quot;&gt;
+    Name:&lt;input type=&quot;text&quot;&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>换成这样的写法好些：</p>
+
+<pre><code class="language-html">&lt;div class=&quot;form-control&quot;&gt;
+    &lt;label for=&quot;name&quot;&gt;Name:&lt;/label&gt;
+    &lt;input type=&quot;text&quot; id=&quot;name&quot;&gt;
+&lt;/div&gt;
+</code></pre></li>
+</ul></li>
+
+<li><p>避免不合理的布局</p>
+
+<ul>
+<li>使用<code>&lt;p&gt;</code>元素修饰文本，而不是布局；默认<code>&lt;p&gt;</code>是自动提供边缘，而且其他样式也是浏览器默认提供的。</li>
+<li>避免使用<code>&lt;br&gt;</code>分行，可以使用<code>block</code>元素或CSS显示属性来代替。</li>
+<li>避免使用<code>&lt;hr&gt;</code>来添加水平线，可使用CSS的border-bottom 来代替。</li>
+<li>尽可能的避免滥用<code>div</code>。</li>
+<li>尽量少用Tables来布局。</li>
+<li>可以多多使用Flex Box。</li>
+<li>内联元素中不可嵌套块级元素。</li>
+</ul></li>
+</ol>
+
+<h4 id="css-优化">CSS 优化</h4>
+
+<p>一般来说，页面渲染所需的时间将取决于文档大小、应用的样式，以及运行文档的设备：文档越大，浏览器需要完成的工作就越多；样式越复杂，绘制需要的时间就越长。虽然现在各大浏览器的渲染引擎经过无数版本的优化，都已经十分强大，CSS对于页面渲染的性能影响基本已经很小。不过，不放弃任何可能的优化，不正是是我们广大程序员的一大优点嘛。</p>
+
+<ul>
+<li>对CSS进行合并、压缩</li>
+<li>不使用CSS表达式</li>
+<li>移除空的CSS规则</li>
+<li>不滥用Float</li>
+<li>不声明过多的Font-size</li>
+<li>值为0时不需要任何单位</li>
+<li>选用合适的CSS选择器：
+对于CSS选择器的使用建议遵循以下原则：使用时能具体则具体，不过要注意避免层级过深，对于一些相似的样式可以将其中相同的部分抽取出来单独作为一个样式。附上css选择符开销排序：</li>
+</ul>
+
+<pre><code class="language-html">ID选择符 #box
+类选择符 .box
+类型选择符 div
+相邻兄弟选择符 h4 + #pics
+子选择符 #pics li
+后代选择符 .box a{}
+通配选择符 *
+属性选择符 [href=”#pic”]
+伪类和伪元素 a:hover
+</code></pre>
+
+<h4 id="其他优化">其他优化</h4>
+
+<p>除了以上优化之外，许多大公司（例如腾讯）会选择对网络以及服务器端进行优化，感兴趣的同学可以Google相关资料。<br>
+「推荐阅读：<a href="http://velocity.oreilly.com.cn/2013/ppts/16_ms_optimization--web_front-end_performance_optimization.pdf">16毫秒的优化</a> 」</p>
+
+<h4 id="参考资料">参考资料</h4>
+
+<ul>
+<li><a href="http://fex.baidu.com/blog/2014/03/fis-optimize/">前端工程与性能优化</a></li>
+<li><a href="https://isux.tencent.com/h5-performance.html">移动H5前端性能优化指南</a></li>
+<li><a href="http://www.imooc.com/article/4307">你不可不知的HTML优化技巧</a></li>
+</ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var VisitTable = AV.Object.extend('Visit');
+    var URLLinkId = location.pathname;
+    var author = $('.J-author').text() || '';
+    var title = $('.J-title').text() || '';
+
+    
+    function postVisitData() {
+      var visit = new VisitTable();
+      var query = new AV.Query('Visit');
+
+      query.equalTo('link', URLLinkId)
+      query.find().then(function(list) {
+        var count = 1;
+        if (list.length > 0) {
+          var item = list[0];
+          item.increment('visitCount');
+          item.save();
+          count = item.get('visitCount');
+        } else {
+          visit.increment('visitCount');
+          visit.save({
+            link: URLLinkId,
+            author: author,
+            title: title
+          });
+        }
+        $('.J-detail-option').append('· 浏览量. <span>' + count + '</span>');
+      });
+    }
+
+    postVisitData();
+  });
+</script>
+
+
+        
+<div class="ds-thread" data-thread-key="http://dxy-developer.github.io/f2e/blog/2017/04/01/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/" data-title="前端性能优化：从入门到放弃？" data-url="http://dxy-developer.github.io/f2e/blog/2017/04/01/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"dxy-developer"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+    </div>
+    <div class="right">
+    
+    <div class="assort">
+        <p>分类</p>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+</div>
+
+</div>
+<div id="gotop">
+	<a href="javascript:;">TOP</a>
+</div>
+<div class="footer">
+    <p>Establishment · 丁香园前端</p>
+</div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/script.js"></script>
+</body>
+
+</html>
+
+<div id="particles-js"></div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/particles.js"></script>
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http:\/\/dxy-developer.github.io\/f2e/json/particles.json', null);
+</script>
+

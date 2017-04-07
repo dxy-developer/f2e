@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>设计模式 on 丁香园前端小分队</title>
+    <link>http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml</link>
+    <description>Recent content in 设计模式 on 丁香园前端小分队</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Establishment · 丁香园前端</copyright>
+    <atom:link href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>设计模式在JavaScript中的应用</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/04/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9C%A8javascript%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</link>
+      <pubDate>Mon, 04 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/04/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9C%A8javascript%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</guid>
+      <description>
+
+&lt;h3 id=&#34;设计模式&#34;&gt;设计模式&lt;/h3&gt;
+
+&lt;p&gt;关于设计模式，文诌诌的描述定义我就不说了，大家问下度娘即可。&lt;/p&gt;
+
+&lt;h1 id=&#34;设计模式在javascript中的应用&#34;&gt;设计模式在JavaScript中的应用&lt;/h1&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;本文用大白话的形式描述下个人理解。首先“设计模式”翻译下就是在设计程序业务流的套路，这种“套路”都是前车之鉴，被历史反复实践和总结，所以还是值得学习了解的，毕竟每个程序员的代码不仅仅是让机器解释，而是给他人阅读的（让每个同行都能看的懂并能维护你的代码）！以下是以本人理解的设计模式在Javascript中应用描述：&lt;/p&gt;
+
+&lt;h3 id=&#34;1-单例模式&#34;&gt;1.单例模式&lt;/h3&gt;
+
+&lt;p&gt;类中操作一个实例&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function c1(){};
+function A(){
+    if(!this.instance){
+       this.instance = new c1();
+    }
+    return this.instance
+}
+
+var a=A(&amp;quot;hello&amp;quot;);
+var b=A(&amp;quot;world&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;2-策略模式&#34;&gt;2.策略模式&lt;/h3&gt;
+
+&lt;p&gt;使用分支判断&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function B(name){
+if(!name==&amp;quot;hello&amp;quot;){
+    return &amp;quot;a&amp;quot;;
+}
+if(!name==&amp;quot;world&amp;quot;){
+    return &amp;quot;b&amp;quot;;
+}
+}
+
+B(&amp;quot;hello&amp;quot;);
+B(&amp;quot;world&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;3-代理模式&#34;&gt;3.代理模式&lt;/h3&gt;
+
+&lt;p&gt;你调用的方法可能只是一个中间件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var c={f1:function(){
+
+}}
+
+va d={f2:function(){
+    c.f1();
+}}
+
+d();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;4-迭代器模式&#34;&gt;4.迭代器模式&lt;/h3&gt;
+
+&lt;p&gt;循环遍历！for , while &amp;hellip;&lt;/p&gt;
+
+&lt;h3 id=&#34;5-发布-订阅模式&#34;&gt;5.发布/订阅模式&lt;/h3&gt;
+
+&lt;p&gt;DOM事件 or 自定义事件&lt;/p&gt;
+
+&lt;h3 id=&#34;6-命令模式&#34;&gt;6.命令模式&lt;/h3&gt;
+
+&lt;p&gt;将要执行的【方法】和【参数对象】一并传入到另一个方法中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var e=function(fn,arg){
+    fn(arg);
+}
+e(function(e){
+    alert(e);
+},&amp;quot;hello&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;其它：组合模式，模版方法模式，享元模式，职责链模式，中介者模式，装饰者模式，状态模式，适配器模式&amp;hellip;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;结语&#34;&gt;结语&lt;/h2&gt;
+
+&lt;p&gt;设计模式就好比《三十六计》，不了解也能编码，只是编码后表述起来方便、专业些。仔细的人可能会发觉当设计一套语言或框架、类库时，设计模式都是理论基础！&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Q：经常有人问为什么要用这种设计模式编码？
+A：条条大道通罗马，只要&lt;strong&gt;编码有规律可循&lt;/strong&gt;，且能解决需求就可以了。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;作者 &lt;a href=&#34;http://weibo.com/uojo&#34;&gt;@uojo&lt;/a&gt;
+2016年04月04日&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

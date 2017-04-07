@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Css on 丁香园前端小分队</title>
+    <link>http://dxy-developer.github.io/f2e/tags/css/index.xml</link>
+    <description>Recent content in Css on 丁香园前端小分队</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Establishment · 丁香园前端</copyright>
+    <atom:link href="http://dxy-developer.github.io/f2e/tags/css/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>关于 vertical-align的一些试验</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/02/06/%E5%85%B3%E4%BA%8E-vertical-align%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AF%95%E9%AA%8C/</link>
+      <pubDate>Mon, 06 Feb 2017 17:45:00 +0800</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/02/06/%E5%85%B3%E4%BA%8E-vertical-align%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AF%95%E9%AA%8C/</guid>
+      <description>
+
+&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
+
+&lt;p&gt;关于 vertical-align，我们很容易想到，这不就是告诉我们元素在纵向上和什么对齐的属性吗？看似很简单的定义，在实战使用时却总是不按套路出牌，带来了很多误解和困惑。事实上，正是这种宽泛的说法导致了我们对其的理解存在许多不确定性。问题就在于，“对齐”这两个字其实牵涉到4个对象：即&lt;strong&gt;哪个对象的哪条线，与哪个对象的哪条线对齐？&lt;/strong&gt;只有将这4者搞清楚，我们才能说是理解了这个属性。&lt;/p&gt;
+
+&lt;p&gt;我们知道，vertical-align 有以下几类可选值：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;文字：baseline、top、bottom、text-top、text-bottom、middle、sub、super&lt;/li&gt;
+&lt;li&gt;百分比&lt;/li&gt;
+&lt;li&gt;数字&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;其中，文字是出现的最多的，现在我就以这些值为例，来探讨一下vertical-align究竟是怎么对齐的。在阅读之前，有一些预备知识应该是必不可少的，它们是：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;关于行内元素的4种box模型：containing boxes、inline boxes、line box 以及 content area。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;关于 font-size 的 4 条参考线:topline、bottomline、baseline以及middleline。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;关于 font-size 和 line-height 之间的关系。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;以上知识可以在以下文章中看到
+&lt;a href=&#34;http://www.cnblogs.com/fengzheng126/archive/2012/05/18/2507632.html&#34;&gt;深入了解css的行高Line Height属性&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;下面是这次我使用的例子。
+&lt;strong&gt;html：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div class=&amp;quot;box&amp;quot;&amp;gt;
+    0.Eng&amp;lt;sub&amp;gt;2&amp;lt;/sub&amp;gt;lish&amp;lt;sup&amp;gt;3&amp;lt;/sup&amp;gt;
+    &amp;lt;span class=&amp;quot;span&amp;quot;&amp;gt;Englishx&amp;lt;/span&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;css：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.box{
+    border: 1px solid #555;
+    font-size: 28px;
+    height:150px;
+    line-height: 100px;
+}
+.span{
+    display: inline-block;
+    background-color: #ddd;
+    font-size: 50px;
+    margin-right: 35px;
+    line-height: 80px;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;vertical-align-top&#34;&gt;vertical-align:top&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../1.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的顶端边缘，与父元素的 line-box 的顶端边缘对齐。这很好理解。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-bottom&#34;&gt;vertical-align:bottom&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../2.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline box 的底端边缘，与父元素的 line-box 的底端边缘对齐。同样很好理解。&lt;/p&gt;
+
+&lt;p&gt;不过，这里有同学说了：不对啊，图片里目标元素的底端没有和父元素的底端对齐啊！注意，上面写的是与父元素的 line-box 的底端边缘对齐。那么父元素的底端边缘在哪里呢？并不是在下边框这里。这是因为，下边框是被父元素的 height 属性撑开的，父元素的 line box 的高度，是由 line-height 属性决定的。注意看上面的 css。这里的 line-height 比 height 要小，所以目标元素的底部达不到父元素的下边框。&lt;/p&gt;
+
+&lt;p&gt;还有一部分眼尖的同学说，还是不对呀，我目测了一下，你 css 里设置的 line-height 是 100px。但是这里目标元素的底部，离父元素的顶部似乎要大于 100px 呀？是的，你说的没错。实际上这个数字是118px，原因是，内部匿名inline box 的上标(3)和下标(2)把这个匿名 inline box 的line-height 撑大了，导致其实际 line-height 达到了 118px。如果把上标下标去掉，那就完美符合啦。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-middle&#34;&gt;vertical-align:middle&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../5.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的垂直平分线，与父元素内匿名inline boxes的 middleline 对齐。这个属性恐怕是实战中使用最频繁的属性了。&lt;/p&gt;
+
+&lt;p&gt;这里出现了几个新东西，需要多说几句。垂直平分线，这个容易理解。那什么是“父元素内匿名inline boxes，什么又是“父元素内匿名 inline boxes 的 middleline”？&lt;/p&gt;
+
+&lt;p&gt;首先，父元素内匿名inline boxes，你可以假设成直接写在父元素内的纯文字。由于它被父元素直接包裹，所以各种属性，包括line-height 和 font-size 等等，都是直接继承自父元素。当然，父元素内未必真的存在文字，它内部可能没有任何匿名inline boxes，但是，当 vertical-align 参与计算的时候，所参照的就是这个&lt;strong&gt;可能并不存在的&lt;/strong&gt;匿名inline boxes。&lt;/p&gt;
+
+&lt;p&gt;好了，轮到 middleline。middleline 之前被我放在了预备知识里，这里再多引申一点。按照规范，middleline 是文字的 baseline 往上方挪 &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; 个 x字母高度 的位置，所在的那条线。这条线并不是content area的严格中线，但和真正几何位置的中线很接近。&lt;/p&gt;
+
+&lt;p&gt;为了更清楚地表示 middleline 的位置，我这里多加了3个 x 字母，很明显，middleline 穿过字母 x 的中央。&lt;/p&gt;
+
+&lt;p&gt;好了，理解了 &lt;code&gt;vertical-align:middle&lt;/code&gt; ，我们再理解下面几个属性就简单多了。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-text-top&#34;&gt;vertical-align:text-top&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../4.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的顶部边缘，与父元素内匿名 inline boxes 的顶线，topline对齐。这里要注意，topline 在视觉上并不和l、h这些高字母的顶端对齐，这是因为这些字母的高度都没有达到topline。topline 要比这些字母的顶端再高一些。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-text-bottom&#34;&gt;vertical-align:text-bottom&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../3.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的底部边缘，与父元素内匿名 inline boxes 的底线，bottomline对齐。和 topline 不同，像 g 这样的下沉字母的底端一般都会达到 bottomline 的位置。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-baseline&#34;&gt;vertical-align:baseline&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../8.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这个默认属性反而放到后面来说？为什么？因为这里和上面有一点不同。在上面的情况下，目标元素参与对齐的参考线，都是 inline-box 的上下边缘，而这里是 baseline!&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-sub&#34;&gt;vertical-align:sub&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../6.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的 baseline，与父元素内下标（sub 标签）的 inline boxes 的 baseline 对齐。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-super&#34;&gt;vertical-align:super&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../7.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的 baseline，与父元素内上标（sup 标签）的 inline boxes 的 baseline 对齐。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Normalize.css学习</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/04/25/normalize.css%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Mon, 25 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/04/25/normalize.css%E5%AD%A6%E4%B9%A0/</guid>
+      <description>&lt;hr /&gt;
+
+&lt;p&gt;Normalize.css 只是一个很小的CSS文件，但它在默认的HTML元素样式上提供了跨浏览器的高度一致性。相比于传统的CSS reset，Normalize.css是一种现代的、为HTML5准备的优质替代方案。&lt;/p&gt;
+
+&lt;h4 id=&#34;综述&#34;&gt;综述&lt;/h4&gt;
+
+&lt;p&gt;由于不同浏览器渲染Html元素时的各种默认样式不同，导致渲染页面时效果不一致，css Reset正是为了解决这一问题出现的。但是 css Reset 的激进派的，完全去掉浏览器默认的样式。
+所有的样式都由自己实现，即使跟浏览器默认样式一致。&lt;/p&gt;
+
+&lt;h2 id=&#34;hugomore42&#34;&gt;&lt;/h2&gt;
+
+&lt;p&gt;而Normalize.css是改良派,依赖于研究浏览器默认元素风格之间的差异，精确定位需要重置的样式。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;保护有用的浏览器默认样式而不是完全去掉它们&lt;/li&gt;
+&lt;li&gt;为大部分HTML元素提供一般化的样式&lt;/li&gt;
+&lt;li&gt;修复浏览器自身的bug并保证各浏览器的一致性。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;相比于传统的reset，Normalize.css是一种现代的、为HTML5准备的优质替代方案,目前像 Bootstrap Amaze UI等框架都在使用。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/necolas/normalize.css&#34;&gt;Normalize.css 项目地址&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;源码分析&#34;&gt;源码分析&lt;/h4&gt;
+
+&lt;p&gt;Css Reset发展至今，进过了几个版本。第一份css Reset应该是 YUI团队提供的,核心还是清除所有浏览器默认样式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;:link,:visited { text-decoration:none }
+ul,ol { list-style:none }
+h1,h2,h3,h4,h5,h6,pre,code { font-size:1em; }
+ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,
+fieldset,input{ margin:0; padding:0 }
+a img,:link img,:visited img { border:none }
+address { font-style:normal }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;之后出现阿里的Kissy框架，自己定制了一份css Reset，这应该是国内第一份CSS Reset。我们使用的reset.css大部分都是拷贝这个版本。但是所有版本的 CSS Reset 作者 都叮嘱使用者
+&amp;gt; 请根据具体需求，适量裁剪和修改后再使用。&lt;/p&gt;
+
+&lt;p&gt;Normalize.css并没有完全去除默认样式，否则跟全部用div跟li有什么区别呢。改良的Normalize.css具体改了哪些地方，下面举几个例子&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;/**
+ * Correct `block` display not defined for any HTML5 element in IE 8/9.
+ * Correct `block` display not defined for `details` or `summary` in IE 10/11
+ * and Firefox.
+ * Correct `block` display not defined for `main` in IE 11.
+ */
+
+/**
+ * Add the correct display in IE 9-.
+ * 1. Add the correct display in Edge, IE, and Firefox.
+ * 2. Add the correct display in IE.
+ */
+
+article,
+aside,
+details, /* 1 */
+figcaption,
+figure,
+footer,
+header,
+main, /* 2 */
+menu,
+nav,
+section,
+summary { /* 1 */
+  display: block;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;主要为低版本的IE们补充一些HTML5元素的正确显示方法。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在遇到不识别的标签时，浏览器会解析称内联元素，
+但是测试了下并不能解决实际性的问题，IE8下还是不识别；主要可以统一各元素的显示方式。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;/**
+ * Prevent `sub` and `sup` elements from affecting the line height in
+ * all browsers.
+ */
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;防止所有浏览器中的sub和sup影响行高，就把两者的line-height设为0，然后用top和bottom手动设置两者偏移量。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;如何使用&#34;&gt;如何使用&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;npm install normalize.css&lt;/li&gt;
+&lt;li&gt;引入 normalize.css 源码并在此基础上构建，在必要的时候用你自己写的CSS覆盖默认值&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Normalize.css 被拆分为多个独立的部分，这样你就可以定制自己所需要的，可以选择性地移除掉不会用到部分。
+比如在移动端使用的时候，就可以把为了兼容IE的部分移除。&lt;/p&gt;
+
+&lt;h4 id=&#34;参考资料&#34;&gt;参考资料&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://segmentfault.com/a/1190000003025718&#34;&gt;https://segmentfault.com/a/1190000003025718&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://jerryzou.com/posts/aboutNormalizeCss/&#34;&gt;http://jerryzou.com/posts/aboutNormalizeCss/&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>rem 的使用</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/04/05/rem-%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Tue, 05 Apr 2016 15:50:37 +0800</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/04/05/rem-%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;hr /&gt;
+
+&lt;h3 id=&#34;背景&#34;&gt;背景：&lt;/h3&gt;
+
+&lt;p&gt;最近因为调查问卷的需求，需要在移动端整体缩放页面，故考虑使用 rem 。&lt;/p&gt;
+
+&lt;h3 id=&#34;简介&#34;&gt;简介：&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;px 相对于显示器屏幕分辨率而言的。&lt;/p&gt;
+&lt;p&gt;em 相对于当前对象内文本的字体尺寸。如当前对行内文本的字体尺寸未被人为设置，则相对于浏览器的默认字体尺寸。&lt;/p&gt;
+&lt;p&gt;rem 相对于根元素的字体大小的单位。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;原因&#34;&gt;原因：&lt;/h3&gt;
+
+&lt;h4 id=&#34;为什么选择-rem-我的理由如下&#34;&gt;为什么选择 rem ,我的理由如下：&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;精准缩放，等比例适应所有屏幕
+&lt;p&gt;不少页面采用流体布局或者百分比来设置宽度间距，高度被定死。当设备宽度较大时，页面会被横向拉长，变形。同时过多的百分比，对设计造成阻碍，兼容也比较难调。当页面采用响应式设计的时候，虽然能够很好的兼容不同手机，但是维护成本相继增大，大量的媒体查询样式难以管理，并且只有在固定的几个分辨率下才能有最好的体验。&lt;/p&gt;
+&lt;p&gt;还有种粗暴的方式就是直接 viewport 缩放，不过实测有的时候感觉画面某部分会糊，并且页面部分高度不足的情况下强行缩放，会造成手机上页面只占很小的高度，甚至不超过手机屏幕的高度，很难控制外观样式。&lt;/p&gt;
+&lt;p&gt;最后，rem 就是很好的选择了。移动端兼容良好，所有的长度都根据根元素的字体大小值来改变，根元素的字体大小只要跟随屏幕大小动态变化，就可以精准缩放页面且画面保真。&lt;/p&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;移动端兼容性良好，使用简单&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;易于维护修改&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;使用&#34;&gt;使用：&lt;/h3&gt;
+
+&lt;h4 id=&#34;动态赋值页面根元素-html-的字体大小&#34;&gt;动态赋值页面根元素(html)的字体大小&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;(function (doc, win) {
+    var docEl = doc.documentElement,
+    resizeEvt = &#39;orientationchange&#39; in window ? &#39;orientationchange&#39; : &#39;resize&#39;;
+
+    var recalc = function () {
+        var width = docEl.clientWidth;
+
+        if (width &amp;gt; 640) {
+            width = 640 ;
+        }
+        if (width &amp;lt; 320) {
+            width = 320 ;
+        }
+
+        docEl.style.fontSize = 100 * (width / 1080) + &#39;px&#39;;     //1080 是设计图的宽度  
+      };
+    recalc();
+
+
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+})(document, window);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;页面引入这段脚本，再根据实际设计图取值，给相应的部位设置 css。&lt;/p&gt;
+
+&lt;p&gt;例如根元素(html)字体大小为 100 像素时，宽为 100 像素的 div，其样式设置为 width:1rem; 。&lt;/p&gt;
+
+&lt;h3 id=&#34;心得&#34;&gt;心得：&lt;/h3&gt;
+
+&lt;p&gt;1080 是设计图宽度，这样可以直接在图上量取数值，写在样式中。例如间距 40px ，赋值 0.4rem 。&lt;/p&gt;
+
+&lt;p&gt;chrome 支持的最小字体为 12px，所以设置为 100px，方便取值。&lt;/p&gt;
+
+&lt;h3 id=&#34;兼容&#34;&gt;兼容：&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../rem.jpg&#34; alt=&#34;rem 兼容性&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;坑&#34;&gt;坑：&lt;/h3&gt;
+
+&lt;p&gt;随着越来越多的项目使用，后面在此补上具体坑。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>CSS 自定义滚动条</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/04/04/css-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%BB%9A%E5%8A%A8%E6%9D%A1/</link>
+      <pubDate>Mon, 04 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/04/04/css-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%BB%9A%E5%8A%A8%E6%9D%A1/</guid>
+      <description>&lt;p&gt;最近遇到的一个需求，由于移动端空间有限，表格不能完整显示，为了让用户知道可以通过左右滑动来查看表格的完整信息，PM 希望能模拟一个水平滚动条来提醒用户。具体需求如下（或者您也可以查看线上实例，&lt;a href=&#34;http://hz.dxy.com&#34;&gt;丁香诊所&lt;/a&gt; → 医疗团队 → 排班信息）：&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;PC 端效果&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&#34;../duty-info-pc.png&#34; alt=&#34;排版信息 - PC&#34; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;移动端效果&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&#34;../duty-info-mobile.png&#34; alt=&#34;排版信息 - Mobile&#34; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;移动端效果（期望）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&#34;../duty-info-mobile-scroll.png&#34; alt=&#34;排版信息 - Mobile Expect&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;要解决这个问题，我们可以去使用一些开源的滚动条插件，或者自己模拟。但是为了这么一个小功能就额外引用插件，而且为了保证设计上没有违和感，或许连同&lt;code&gt;HTML&lt;/code&gt;和&lt;code&gt;CSS&lt;/code&gt;也得跟着一起调整，未免小题大做了。&lt;/p&gt;
+
+&lt;p&gt;目前主要有两种通过&lt;code&gt;CSS&lt;/code&gt;来自定义滚动条的样式，但也还是做不到兼容所有的浏览器。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-在-webkit-中自定义滚动条&#34;&gt;1. 在&lt;code&gt;WebKit&lt;/code&gt;中自定义滚动条&lt;/h3&gt;
+
+&lt;p&gt;通过伪元素和 &lt;a href=&#34;http://www.toobug.net/article/what_is_shadow_dom.html&#34;&gt;Shadow DOM&lt;/a&gt; 来实现，David Hyatt 2009 年就在 &lt;a href=&#34;https://webkit.org/blog/363/styling-scrollbars/&#34;&gt;WebKit 官网&lt;/a&gt;介绍过这种方法，并列出了&lt;a href=&#34;http://trac.webkit.org/export/41842/trunk/LayoutTests/scrollbars/overflow-scrollbar-combinations.html&#34;&gt;所有可能的组合&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h4 id=&#34;1-1-伪元素所代表的不同部分&#34;&gt;1.1 伪元素所代表的不同部分&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;::-webkit-scrollbar              { /* 1 */ }
+::-webkit-scrollbar-button       { /* 2 */ }
+::-webkit-scrollbar-track        { /* 3 */ }
+::-webkit-scrollbar-track-piece  { /* 4 */ }
+::-webkit-scrollbar-thumb        { /* 5 */ }
+::-webkit-scrollbar-corner       { /* 6 */ }
+::-webkit-resizer                { /* 7 */ }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;../scrollbar-parts.png&#34; alt=&#34;Scrollbar Parts&#34; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;1-2-伪类所代表的不同状态&#34;&gt;1.2 伪类所代表的不同状态&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;:horizontal         //应用于水平滚动条
+:vertical           //应用于垂直滚动条
+:decrement          //应用于按钮和内层轨道，用来指示按钮或内层轨道是否会减小视窗的位置(如，垂直滚动条的上面，水平滚动条的左边)
+:increment          //应用于按钮和内层轨道，用来指示按钮或内层轨道是否会增大视窗的位置(如，垂直滚动条的下面，水平滚动条的右边)
+:start              //应用于按钮和滑块，用来定义对象是否放到滑块的前面
+:end                //应用于按钮和滑块，用来定义对象是否放到滑块的后面
+:double-button      //应用于按钮和内层轨道，用来判断一个按钮是不是放在滚动条同一端一对按钮中的一个，对于内层轨道来说，它表示内层轨道是否紧靠一对按钮
+:single-button      //应用于判断一个按钮是否自己独立的在滚动条的一端，对内层轨道来说，它表示内层轨道是否紧靠一个`single-button`
+:no-button          //应用于内层轨道，表示内层轨道是否要滚动到滚动条的终端，如，滚动条两端没有按钮
+:corner-present     //应用于所有滚动条轨道，指示滚动条圆角是否显示
+:window-inactive    //应用于所有滚动条轨道，指示应用滚动条的某个页面容器(元素)是否当前被激活(在webkit最近的版本中，该伪类也可以用于`::selection`伪元素，Webkit团队有计划扩展它并推动成为一个标准的伪类)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;1-3-伪元素和伪类的组合使用&#34;&gt;1.3 伪元素和伪类的组合使用&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;::-webkit-scrollbar-track-piece:start {
+   /* Select the top half (or left half) or scrollbar track individually */
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+   /* Select the thumb when the browser window isn&#39;t in focus */
+}
+
+::-webkit-scrollbar-button:horizontal:decrement:hover {
+   /* Select the down or left scroll button when it&#39;s being hovered by the mouse */
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;1-4-简单示例&#34;&gt;1.4 简单示例&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;配合&lt;code&gt;WebKit&lt;/code&gt;的伪类和伪元素，我们可以同时使用&lt;code&gt;:enabled&lt;/code&gt;，&lt;code&gt;:disabled&lt;/code&gt;，&lt;code&gt;:hover&lt;/code&gt;等伪类，也可以去应用一些&lt;code&gt;CSS&lt;/code&gt;属性，如渐变、圆角、gbba 等。具体可以看看官网给出的 &lt;a href=&#34;http://trac.webkit.org/export/41842/trunk/LayoutTests/scrollbars/overflow-scrollbar-combinations.html&#34;&gt;demo&lt;/a&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;2-在-ie-中自定义滚动条&#34;&gt;2. 在&lt;code&gt;IE&lt;/code&gt;中自定义滚动条&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.dengjie.com/temp/scroller.swf&#34;&gt;在线的可视化工具&lt;/a&gt;，简单好用。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;scrollbar-arrow-color: color;       //三角箭头的颜色
+scrollbar-face-color: color;        //立体滚动条的颜色，包括箭头部分的背景色
+scrollbar-3dlight-color: color;     //立体滚动条亮边的颜色
+scrollbar-highlight-color: color;   //滚动条的高亮颜色
+scrollbar-shadow-color: color;      //立体滚动条阴影的颜色
+scrollbar-darkshadow-color: color;  //立体滚动条外阴影的颜色
+scrollbar-track-color: color;       //立体滚动条背景颜色
+scrollbar-base-color:color;         //滚动条的基色
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;参考资料&#34;&gt;参考资料&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://css-tricks.com/custom-scrollbars-in-webkit&#34;&gt;Custom Scrollbars in WebKit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.toobug.net/article/what_is_shadow_dom.html&#34;&gt;[译] 什么是Shadow DOM？&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>处理移动端文章两端对齐的一点微小经验</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/03/31/mobile-article-align-justify-minor-experience/</link>
+      <pubDate>Thu, 31 Mar 2016 17:23:13 +0800</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/03/31/mobile-article-align-justify-minor-experience/</guid>
+      <description>&lt;p&gt;最近处理了一个移动端的文章详情页面，产品的需求是要做到正文区块内的内容能够两端对齐。&lt;/p&gt;
+
+&lt;p&gt;在这里分享实现过程中一点微小的经验。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;注：以下演示均未添加浏览器 prefix，请各位自行添加。推荐使用 &lt;a href=&#34;https://github.com/postcss/autoprefixer&#34;&gt;autoprefixer&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;以下代码均在 webkit/blink 引擎浏览器下测试，未考虑 Gecko。&lt;/p&gt;
+
+&lt;p&gt;先来构造一个最小 demo：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;article class=&amp;quot;content&amp;quot;&amp;gt;
+   &amp;lt;p&amp;gt;
+      政黨或了底乎實運外球便易華公你物實。人病說？容不排。  中有那童節完放回什這，麼題容。問酒後但感臺？人機資良他主金同樣合車後們義質境不經對都專天林息密了和去中我聲……間言分的門同、三行方之友一濟才？？面球發一一看消示個以麼期造，我金民家不心直能，理方斯生那不近理製室示每連態生和片得人會美……是山求寫南工，沒元身山統熱現研後我心出筆息不。件談是條國求重：  也為活國到後得常命經求？
+   &amp;lt;/p&amp;gt;
+&amp;lt;/article&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;.content {
+    width: 50%;
+    background: #fff;
+    margin: 50px auto;
+}
+
+.content p {
+    padding: 5px;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大概是这么一个效果：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;../images/812DE944B087ABDAE674280AA7019BA8.png&#34; alt=&#34;1.png&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;看着还好嘛，不过仔细看会发现右边确实不太整齐。为了善待强迫症，让我们加上两端对齐的 css。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;p {
+    text-align: justify;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;../images/A60CA2C1C3A39C6D9FB24E0C5743F6C6.png&#34; alt=&#34;2.png&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;搞定。不过这个属性在 Firefox 下对中文标点的支持有点问题，由于我们是处理移动端，就暂且按下不表。&lt;/p&gt;
+
+&lt;p&gt;但是等等，如果有很长的英文溢出怎么办？&lt;/p&gt;
+
+&lt;p&gt;比如说这样：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;...
+&amp;lt;p&amp;gt;
+    WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+&amp;lt;/p&amp;gt;
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;../images/35EAC982FD1C45BB53549A686EABC90F.png&#34; alt=&#34;3.png&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;立马就破功了。这个时候我们一般会加什么属性？&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;overflow: hidden&lt;/code&gt; : 隐藏超出部分&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;word-break: break-all&lt;/code&gt; : 强制超过容器的部分换行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;好，那我们都加上：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;p {
+    text-align: justify;
+    overflow: hidden;
+    word-break: break-all;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;../images/BD66B650252DA552276571522723D63E.png&#34; alt=&#34;4.png&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;好，溢出问题也解决了。这下总可以交差了吧？等等，让我们看下如果是一篇真正的英文文章会出现什么情况：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;...
+&amp;lt;p&amp;gt;
+The first thing you&#39;ll want to do is to draw boxes around every component (and subcomponent) in the mock and give them all names. If you&#39;re working with a designer, they may have already done this, so go talk to them! Their Photoshop layer names may end up being the names of your React components!
+&amp;lt;/p&amp;gt;
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;../images/DBA8F9BDE0818B335A20A021EB2D18E6.png&#34; alt=&#34;5.png&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;我们会发现不该换行的地方全被截断了。这可怎么办？看来问题是出在 &lt;code&gt;word-break: break-all&lt;/code&gt; 上了。我们来看下这个属性的详细解释：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;h1 id=&#34;word-break&#34;&gt;word-break&lt;/h1&gt;
+
+&lt;p&gt;The word-break CSS property is used to specify whether to break lines within words.
+* normal : Use the default line break rule.
+* break-all : Word breaks may be inserted between any character for non-CJK (Chinese/Japanese/Korean) text.
+* keep-all : Don&amp;rsquo;t allow word breaks for CJK text.  Non-CJK text behavior is the same as for normal.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/CSS/word-break&#34;&gt;word-break - CSS | MDN&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;break-all&lt;/code&gt; 表示所有的非中日韩字符间都可能被换行，这就有点麻烦了。任意换行的英文非常难读，因此要想个办法处理才行。&lt;/p&gt;
+
+&lt;p&gt;但其实 &lt;code&gt;word-break&lt;/code&gt; 有个只有 webkit/blink 引擎支持的属性，&lt;code&gt;break-wrod&lt;/code&gt;。通过这个属性，我们可以让英文句子在正确的位置换行，但如果实在没有地方可以打断，会进行强制打断。但它是个非标准属性，通过 Google 可知，它的效果基本等同于 &lt;code&gt;word-wrap: break-word&lt;/code&gt;。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;h1 id=&#34;word-wrap&#34;&gt;word-wrap&lt;/h1&gt;
+
+&lt;p&gt;The word-wrap property is used to specify whether or not the browser may break lines within words in order to prevent overflow when an otherwise unbreakable string is too long to fit in its containing box.
+* normal : Indicates that lines may only break at normal word break points.
+* break-wrod : Indicates that normally unbreakable words may be broken at arbitrary points if there are no otherwise acceptable break points in the line.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/CSS/word-wrap&#34;&gt;word-wrap - CSS | MDN&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;我们使用这个属性来替代 &lt;code&gt;word-break&lt;/code&gt; 来看看效果。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;p {
+    text-align: justify;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;../images/F94AFBC735957DD932C300CBE758D922.png&#34; alt=&#34;6.png&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;进行到这里我们基本上已经达成了目的。但如果你还想对英文做进一步的优化的话，可以考虑添加 &lt;code&gt;hyphens: auto&lt;/code&gt; 这个属性。这样英文单词会在必要的时候添加连字符换行，可以避免有时为了在空格处换行造成的每行词间距疏密差距过大的问题。&lt;/p&gt;
+
+&lt;p&gt;由于这个属性对中文没有作用，而且兼容性不佳（移动端暂时只在 Safari 中有作用）因此以用得比较少，这里也不多做介绍，各位可以看看效果。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;p {
+    text-align: justify;
+    overflow: hidden;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;../images/C71770943A12A21B8FAE28C8150FF99E.png&#34; alt=&#34;7.png&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;要注意的是，&lt;code&gt;hyphens: auto&lt;/code&gt; 是会根据 &lt;code&gt;lang&lt;/code&gt; 属性中的语言来调整添加连字符的策略的，因此如果我们的网页 &lt;code&gt;html&lt;/code&gt; 元素中写的是 &lt;code&gt;lang=&amp;quot;zh-CN&amp;quot;&lt;/code&gt; ，那么这个属性完全不会有效果，因此需要换成 &lt;code&gt;lang=&amp;quot;en&amp;quot;&lt;/code&gt;。如果不想更换整个页面的语言申明的话，也可以在需要使用这个属性的元素上单独添加 &lt;code&gt;lang&lt;/code&gt; 属性。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;p lang=&amp;quot;en&amp;quot;&amp;gt;xxx&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens&#34;&gt;hyphens - CSS | MDN&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://codepen.io/wxt2005/pen/pywoqR?editors=1100&#34;&gt;最终 demo&lt;/a&gt;（请在 webkit/blink 引擎浏览器下打开）&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>CSS哲学伪命题</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/02/24/css%E5%93%B2%E5%AD%A6%E4%BC%AA%E5%91%BD%E9%A2%98/</link>
+      <pubDate>Wed, 24 Feb 2016 00:43:23 +0800</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/02/24/css%E5%93%B2%E5%AD%A6%E4%BC%AA%E5%91%BD%E9%A2%98/</guid>
+      <description>
+
+&lt;p&gt;标题党。这篇文章断断续续的修改过好几次，也没有满意，本来是想总结一下我这些零散的 CSS 知识结构，可能由于知识体系不全面，总是没能把知识点串联成一个通顺的内容。贴出来权当大家一起讨论下“前世今生”。文章后续可能会不定时更新。&lt;/p&gt;
+
+&lt;p&gt;CSS 作为 Web 的基础部分，极其容易上手。但是 CSS 并不算的上是一门编程语言，在语言能力上略显薄弱，往往导致整体的维护性变差。但是这并没有使得大家停止对 CSS 的探索，从命名规范，目录架构，预处理器(如&lt;code&gt;SASS&lt;/code&gt;)，后处理器（&lt;code&gt;PostCSS&lt;/code&gt;），模块化等等的方向上，努力把 CSS 变得更好。&lt;/p&gt;
+
+&lt;h3 id=&#34;关于自我历程&#34;&gt;关于自我历程&lt;/h3&gt;
+
+&lt;p&gt;其实我自己并没有系统的学习过 CSS（虽然我现在也不知道如何系统的学习），看了几个视频，扫了下中文版的 API，然后就开始了切图生涯，很多的知识点也都是后来一些零散的博客中了解到的。这过程中，的的确确踩过不少的坑，有的填了，有的继续祸害着项目里其它的同学。也导致我在很长的时段时间里都是走在一个混乱无序的 CSS 书写当中。&lt;/p&gt;
+
+&lt;p&gt;最早遇到的大概的是命名的问题了吧，因为本身积累的词汇量就少，动不动就没单词可用了。那个时候好像也就是网上列出一大堆像&lt;code&gt;menu&lt;/code&gt;， &lt;code&gt;siderbar&lt;/code&gt;之类的“命名大全”来模仿。再到后来接触到了 &lt;code&gt;Bootstrap&lt;/code&gt; 这种比较系统的框架（里面有好多可以值得借鉴的地方），而后又看到一些按类别划分文件，再配有特有的前缀的管理方式(那个时候还并不知道 &lt;code&gt;SMACSS&lt;/code&gt; 的名词)，还有一些原子化，把功能和样式分离等等的。在 &lt;code&gt;SASS&lt;/code&gt; 兴起的时候其实挺兴奋的，因为终于感觉有了点编程的能力，当然了，对变量，嵌套，&lt;code&gt;mixins&lt;/code&gt;等等的使用，很大程度上提高了编程效率。在后来同事的分享中，又了解了 BEM 的命名方式（初看很乱，了解后有一种豁然开然的感觉，细细回想起来，也就是大家约定一套共用的命名规范）。以及通过 &lt;code&gt;PostCSS&lt;/code&gt; 去实现 CSS 中一些自动处理的任务。在 React/ES6/Webpack 出现后，使得很大一部分程度上，CSS 写在 JS 中的方式也开始在特定的场合中频频出现。&lt;/p&gt;
+
+&lt;p&gt;以上，通通出现过我的项目中，在项目切换维护的时候，那感觉，心如刀割。并不是说上面涉及到的知识点有对错的问题，只是在一个团队中，如果没有一些统一的架构和约定，往往到项目的后期会变得越来越不稳定。这不禁又让我想起了 CSS 的学习曲线（像PHP？又来黑了），样式大家都能写，能愉快的维护，又是另一个层次了。&lt;/p&gt;
+
+&lt;p&gt;个人觉得 CSS 中有两个比较重要的点，&lt;strong&gt;语义化&lt;/strong&gt;和&lt;strong&gt;可维护性&lt;/strong&gt;，而最终都是为了提高开发的效率。&lt;/p&gt;
+
+&lt;p&gt;语义化很大一部分程度上是为了阅读需要，简易明了。建议团队内还是要尽量的保持风格一致。其它的，可以看一下&lt;a href=&#34;http://www.tychio.net/tech/2015/03/14/thinking-in-semantic-css.html&#34;&gt;CSS语义思维&lt;/a&gt;的内容，这里不展开讲了。&lt;/p&gt;
+
+&lt;p&gt;可维护性真的是一个很虚的概念，但是涉及到了多方面的各个点。比如，该怎么保持项目的简单性，灵活性，而同时又有足够的扩展能力？又比如如何抽取模块，是以功能划分还是以样式结构？如何重用样式？如何防止样式被覆盖，避免冗余代码等等。&lt;/p&gt;
+
+&lt;p&gt;除了一次性的单页面这种外，一般项目类型的，都建议在开始的时候就搭好底层，统一一下整体风格与使用习惯，保持良好组织结构，命名规范，不然越往后面，可能会遇到更大的问题。&lt;/p&gt;
+
+&lt;p&gt;比如，对文件做一个层次划分&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;基础框架（reset，iconfont，栅格）&lt;/li&gt;
+&lt;li&gt;通用模块（原子，统一规范的模块）&lt;/li&gt;
+&lt;li&gt;页面样式（继承通用模块）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;采用类似 &lt;code&gt;BEM/SUIT&lt;/code&gt; 等等的命名方式等等。&lt;/p&gt;
+
+&lt;h3 id=&#34;现有的技术选择&#34;&gt;现有的技术选择&lt;/h3&gt;
+
+&lt;p&gt;其实我们在平时应该或多或少的接触过一些 &lt;code&gt;SASS&lt;/code&gt;, &lt;code&gt;Compass&lt;/code&gt;, &lt;code&gt;BEM&lt;/code&gt;, &lt;code&gt;SMACSS&lt;/code&gt;, &lt;code&gt;OOCSS&lt;/code&gt; 的概念与设计模式。当然并没有一种解决方案是绝对的，合适当前的项目就可以了。&lt;/p&gt;
+
+&lt;h4 id=&#34;bem&#34;&gt;BEM&lt;/h4&gt;
+
+&lt;p&gt;用于解决项目命名规则问题。BEM 通过已&lt;code&gt;block(块)&lt;/code&gt;，&lt;code&gt;element(元素)&lt;/code&gt;，&lt;code&gt;modifier(修饰符)&lt;/code&gt; 的概念，使用连接符串联父级块作为前缀，来实现功能模块命名的唯一性。有兴趣的同学可以看一下 &lt;a href=&#34;http://www.w3cplus.com/css/the-history-of-the-bem-methodology.html&#34;&gt;BEM的进化史&lt;/a&gt;。发现一句话并不太好表述清楚，想要具体了解的同学可以移步&lt;a href=&#34;https://en.bem.info/&#34;&gt;官网&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;BEM&lt;/code&gt; 这种唯一性以及元素间的平级展开，往往在稍微复杂一点的项目里，就会把名字命名的很长很长。目前也有很多是在 &lt;code&gt;BEM&lt;/code&gt; 的基础上衍生出来的一些方式(如 &lt;code&gt;SUIT&lt;/code&gt;)。&lt;/p&gt;
+
+&lt;h4 id=&#34;oocss-object-oriented-css&#34;&gt;OOCSS （Object Oriented CSS）&lt;/h4&gt;
+
+&lt;p&gt;面向对象 CSS。是一种已面向对象的维护方式去管理组织 CSS 代码。其哲学理念是模块化，功能单一性，关注点分离。&lt;/p&gt;
+
+&lt;p&gt;OOCSS 中有两个重要的原则&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;结构和外观分离。样式尽量独立，和 DOM 无关&lt;/li&gt;
+&lt;li&gt;容器和内容分离。CSS 只关注内容&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;OOCSS&lt;/code&gt; 与 &lt;code&gt;SASS&lt;/code&gt; 结合是一个不错的选择，充分强大。&lt;/p&gt;
+
+&lt;h4 id=&#34;smacss-scalable-and-modular-architecture-for-css&#34;&gt;SMACSS(Scalable and Modular Architecture for CSS)&lt;/h4&gt;
+
+&lt;p&gt;可扩展和模块化 CSS。
+把 CSS 样式划分为若干个不同类别的文件，如基础，布局，模块，主题等等。在加上一些特有前缀的组合。&lt;/p&gt;
+
+&lt;h4 id=&#34;acss-atomic-css&#34;&gt;ACSS (Atomic CSS)&lt;/h4&gt;
+
+&lt;p&gt;原子化 CSS。遵循关注点分离原则。&lt;/p&gt;
+
+&lt;h3 id=&#34;css-模块化&#34;&gt;CSS 模块化&lt;/h3&gt;
+
+&lt;p&gt;随着 &lt;code&gt;React&lt;/code&gt; 的迅速引爆，其它关于 CSS 的另一种使用方式也在兴起。将样式在 JS 中定义。借助 &lt;code&gt;require/import&lt;/code&gt; 而解决了 CSS 中的命名空间的问题，使得单文件变得简单清晰。而通过组合，也可以实现快速的重复利用。甚至有些 CSS 可以单独与组件去绑定。&lt;/p&gt;
+
+&lt;p&gt;以及其它的一些方式。上述的方式，是比较让我眼前一亮的感觉。&lt;/p&gt;
+
+&lt;h3 id=&#34;未来走向&#34;&gt;未来走向&lt;/h3&gt;
+
+&lt;p&gt;待补充&amp;hellip;&lt;/p&gt;
+
+&lt;h3 id=&#34;扩展阅读&#34;&gt;扩展阅读&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://glenmaddern.com/articles/css-modules&#34;&gt;CSS模块&lt;/a&gt;&lt;a href=&#34;http://www.w3cplus.com/css/css-modules.html&#34;&gt;(中文翻译版)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://aliceui.org/docs/rule.html&#34;&gt;CSS 规范和最佳实践&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.w3cplus.com/css/the-history-of-the-bem-methodology.html&#34;&gt;BEM 进化史&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.zhihu.com/question/21943416&#34;&gt;如何理解 CSS 类名语义化&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.w3cplus.com/css/css-layers.html&#34;&gt;CSS 分层&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,2321 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 丁香园前端小分队</title>
+    <link>http://dxy-developer.github.io/f2e/post/index.xml</link>
+    <description>Recent content in Posts on 丁香园前端小分队</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Establishment · 丁香园前端</copyright>
+    <lastBuildDate>Fri, 07 Apr 2017 17:18:13 +0800</lastBuildDate>
+    <atom:link href="http://dxy-developer.github.io/f2e/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>移动端适配初探</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/04/07/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E5%88%9D%E6%8E%A2/</link>
+      <pubDate>Fri, 07 Apr 2017 17:18:13 +0800</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/04/07/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E5%88%9D%E6%8E%A2/</guid>
+      <description>
+
+&lt;p&gt;IE时代，每一个前端同学都要费尽心力兼容各代版本IE。如今IE虽渐渐淘汰，但移动互联网崛起，我们又有了新的麻烦。因为各个手机的屏幕不同，为了保证产品视觉呈现与体验更加完美和谐，移动端的适配也显得较为棘手。&lt;/p&gt;
+
+&lt;p&gt;目前较为知名的一个方案是手淘的flexible。它具体如何实现移动端的适配，我们后面再阐述，因为在此之前，我们需要先理清一些基础概念。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;screen.width&lt;/strong&gt;
+设备屏幕的宽度，以像素计。这个属性只读，不会因为浏览器的拖拉缩放而改变。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;window.innerWidth&lt;/strong&gt;
+浏览器窗口的内部宽度。它包含滚动条，并且会随着浏览器拖拉缩放而改变。具体表现为呈现出内容的浏览器窗口的宽度。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;clientWidth&lt;/strong&gt;
+元素的可见宽度（不计滚动条）。document.documentElement.clientWidth 即整个html的可见宽度。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;offetWidth&lt;/strong&gt;
+元素的实际宽度（包含滚动条）。document.documentElement.offsetWidth即整个html的实际宽度。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;然后我们来看一个莫名其妙的事情。我手上是一只三星s7e，号称屏幕分辨率1440*2560。&lt;/p&gt;
+
+&lt;p&gt;现在我写了一个页面，body里设置了一个div，设置宽高为300px。并打印了刚阐述的那些宽度尺寸与div的宽度，没看到结果前，乍一想，应该是4个1440和一个300吧。然后屏幕蹦跶出这样的结果。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://mmbiz.qpic.cn/mmbiz_jpg/wP62YcCWCXXQMNDWBuZMFY6UsEzeayALAhEQZCesXpiaquNte82bgcqrwwNGAtDficBMMOIO5JXc7n5lWwegFHkA/640?wx_fmt=jpeg&amp;amp;tp=webp&amp;amp;wxfrom=5&amp;amp;wx_lazy=1&#34; alt=&#34;&#34; /&gt;
+ 莫名其妙吧，跟想像中完全不一样啊。屏幕宽度咋成412px了，说好的2k屏呢？还有980px又是哪儿蹦达出来的。为了搞清这当中的奥秘，我们又得来学习一些概念了。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;设备像素&lt;/strong&gt;
+顾名思义，就是设备的真实物理像素，指每英寸屏幕所拥有的像素(pixel)数目。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;设备独立像素&lt;/strong&gt;
+device independent pixel，独立于设备的用于逻辑上衡量像素的单位。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;CSS像素&lt;/strong&gt;
+指的是CSS样式代码中使用的逻辑像素，比如上面那个div，我设置了宽度300px，就是CSS像素，它并不一定等于它真实的物理像素。所以CSS像素即是用在CSS语言中的设备独立像素。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;设备像素比&lt;/strong&gt;
+device pixel ratio，即设备像素/设备独立像素，即物理像素/逻辑像素。在网页中就是设备像素与CSS像素的比值。设备像素比能通过window.devicePixelRatio获取。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;通过dpr我知道了s7e此比值为3.5。那么screen.width 就是这手机的独立像素的值，412*3.5，确实等于1442。&lt;/p&gt;
+
+&lt;p&gt;可是问题又来了，980px又是如何来的呢？为什么告诉我逻辑分辨率是412*731了，怎么html的宽度又是980呢？&lt;/p&gt;
+
+&lt;h2 id=&#34;viewport-视区&#34;&gt;Viewport（视区）&lt;/h2&gt;
+
+&lt;p&gt;Viewport可以理解成浏览器用来呈现网页的那一部分区域，它是一个移动端的特性，可以通过Meta标签来设定。&lt;/p&gt;
+
+&lt;h3 id=&#34;layout-viewport&#34;&gt;Layout viewport&lt;/h3&gt;
+
+&lt;p&gt;因为移动设备的逻辑分辨率一般都是比PC小的，为了能让移动设备也能比较好的呈现PC网页内容，各大移动端浏览器就把viewport的默认值设成了980px或者1024px。&lt;/p&gt;
+
+&lt;p&gt;也就是说，不管你设备屏幕多大，分辨率多少，浏览器窗口的逻辑宽度，就是设定的值（比如980px），如果一个元素宽度是980px，那就刚好占满屏幕宽度。如果html宽度超出980px，那窗口就出现滚动条。除非隐藏内容，或者缩放屏幕。&lt;/p&gt;
+
+&lt;p&gt;这个呈现网页的区域，就叫做layout viewport。于是，我做的页面出现了上述结果。（至于为什么会多了1px成了981，这个不同手机有不同结果，我还未探索到确切原因，猜测是分辨率不同导致处理策略不同特意设的偏差值。）&lt;/p&gt;
+
+&lt;h3 id=&#34;visual-viewport&#34;&gt;Visual viewport&lt;/h3&gt;
+
+&lt;p&gt;上面陈述到，layout viewport可能是会比浏览器可视区域大的，这个visual viewport指的就是可视的viewport区域。简单的理解，就是屏幕可视区域。可以在visual viewport上拖拉缩放，来查看layout viewport的内容。&lt;/p&gt;
+
+&lt;h3 id=&#34;ideal-viewport&#34;&gt;Ideal viewport&lt;/h3&gt;
+
+&lt;p&gt;layout默认值是980px，可是我们很多页面就是专门为了移动端设计的，我们不希望用户要缩放、横屏滚动才能看到内容，而且内容还很小。最好viewport就是屏幕宽度，这样viewport就是ideal vieaport 。&lt;/p&gt;
+
+&lt;h3 id=&#34;viewport-meta&#34;&gt;Viewport meta&lt;/h3&gt;
+
+&lt;p&gt;我们希望可以自己设定viewport值，来呈现自己想呈现的内容，那就得通过meta标签来定义viewport属性，具体如下：&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Name&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;width&lt;/td&gt;
+&lt;td&gt;正整数或device-width&lt;/td&gt;
+&lt;td&gt;定义视口的宽度，单位为像素&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;height&lt;/td&gt;
+&lt;td&gt;正整数或device-height&lt;/td&gt;
+&lt;td&gt;定义视口的高度，单位为像素&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;initial-scale&lt;/td&gt;
+&lt;td&gt;[0.0-10.0]&lt;/td&gt;
+&lt;td&gt;定义初始缩放值&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;minimum-scale&lt;/td&gt;
+&lt;td&gt;[0.0-10.0]&lt;/td&gt;
+&lt;td&gt;定义缩小最小比例，它必须小于或等于maximum-scale设置&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;maximum-scale&lt;/td&gt;
+&lt;td&gt;[0.0-10.0]&lt;/td&gt;
+&lt;td&gt;定义放大最大比例，它必须大于或等于minimum-scale设置&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;user-scalable&lt;/td&gt;
+&lt;td&gt;yes/no&lt;/td&gt;
+&lt;td&gt;定义是否允许用户手动缩放页面，默认值yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;最常用的写法就是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device‐width,
+                               initial‐scale=1,
+                               user-scalable=0&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;意思就是，设置viewport视区大小为设备宽度，即理想视区，默认缩放1.0倍（就是不缩放）,并且禁止用户缩放。&lt;/p&gt;
+
+&lt;p&gt;还有一种常用的写法，就是根据自己设备的dpr来还原设备本来宽度，如假设手机devicePixelRatio为2，则设置&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;initial-scale=0.5,
+                               maximum-scale=0.5,
+                               minimum-scale=0.5,
+                               user-scalable=no&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;开始适配&#34;&gt;开始适配&lt;/h2&gt;
+
+&lt;p&gt;了解了这些，前端适配工作总算可以开始了。但马上出现了一道大山。我们让所有设备的viewport都等于device-width，带来了一个新的问题。不同设备的device-width并不相同。即使不考虑pad，只考虑各大主流手机，也从320-400多不等。我们希望不同尺寸设备能呈现几乎一致的内容来保证用户体验。&lt;/p&gt;
+
+&lt;p&gt;在布局上，我们可以通过诸如flex布局等方法来解决。但是当涉及元素尺寸大小的时候，如果还是用px做单位，那么将会呈现天差地别的差异。那该怎么办呢？&lt;/p&gt;
+
+&lt;h3 id=&#34;css单位rem&#34;&gt;CSS单位rem&lt;/h3&gt;
+
+&lt;p&gt;传统页面尺寸我们都用px定义。而rem是相对于根元素&lt;html&gt;的font-size来做计算的。举个例子：根元素的font-size：16px; 那么1rem=16px，0.5rem = 8px。这样一来，我们只要根据不同屏幕尺寸设定不同的font-size。后面只要采用rem做尺寸单位，就能保持视觉一致。那该如何判断不同尺寸屏幕并设置相应font-size呢？&lt;/p&gt;
+
+&lt;p&gt;###　媒体查询
+媒体查询允许我们来根据设备不同来设定不同的css样式，最常用的就是根据不同屏幕尺寸来设定不同样式。举个栗子：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;@media screen and (max-width: 320px) {
+    html {
+        font-size: 20px;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;意思就是当layout viewport小于320px时，根节点的font-size为20px;&lt;/p&gt;
+
+&lt;h3 id=&#34;js判断&#34;&gt;JS判断&lt;/h3&gt;
+
+&lt;p&gt;在页面加载时判断当前屏幕尺寸，并根据尺寸设定相应的font-size到根节点。&lt;/p&gt;
+
+&lt;p&gt;这样一来，我们做前端适配的思路就清晰了。&lt;/p&gt;
+
+&lt;h2 id=&#34;适配步骤&#34;&gt;适配步骤&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;设置viewport为device-width。&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;通过媒体查询、或者js，判断不同屏幕尺寸，设定根节点font-size。&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;使用rem来设定元素尺寸单位。&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这样我们再去看手淘的&lt;a href=&#34;https://github.com/amfe/article/issues/17&#34;&gt;解决方案&lt;/a&gt;[5]，就能大致清晰它的原理了。
+但对比上述的几点，可以发现flexible并不是采用viewport设置为device-width，而是采用还原成设备物理分辨率，这样的好处是为了解决高分屏下的1px问题。具体就不展开讨论了。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.w3school.com.cn&#34;&gt;W3CSchool&lt;/a&gt;(&lt;a href=&#34;http://www.w3school.com.cn&#34;&gt;http://www.w3school.com.cn&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.quirksmode.org/blog/archives/2010/04/a_pixel_is_not.html&#34;&gt;A pixel is not a pixel is not a pixel&lt;/a&gt;(&lt;a href=&#34;http://www.quirksmode.org/blog/archives/2010/04/a_pixel_is_not.html&#34;&gt;http://www.quirksmode.org/blog/archives/2010/04/a_pixel_is_not.html&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cnblogs.com/2050/p/3877280.html&#34;&gt;移动前端开发之viewport的深入理解&lt;/a&gt;(&lt;a href=&#34;http://www.cnblogs.com/2050/p/3877280.html&#34;&gt;http://www.cnblogs.com/2050/p/3877280.html&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.kancloud.cn/jaya1992/fe-notes/86799&#34;&gt;移动前端第一弹：viewport详解&lt;/a&gt;(&lt;a href=&#34;http://www.kancloud.cn/jaya1992/fe-notes/86799&#34;&gt;http://www.kancloud.cn/jaya1992/fe-notes/86799&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/amfe/article/issues/17&#34;&gt;使用Flexible实现手淘H5页面的终端适配&lt;/a&gt;(&lt;a href=&#34;https://github.com/amfe/article/issues/17&#34;&gt;https://github.com/amfe/article/issues/17&lt;/a&gt;)&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>前端性能优化：从入门到放弃？</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/04/01/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/</link>
+      <pubDate>Sat, 01 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/04/01/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;作为一名合格的web开发人员，不应该仅仅满足于功能的实现，前端性能的优化也是我们必须要关注的问题。我们都不希望自己辛辛苦苦写成的代码，却因为优化不到位的问题，带给用户不好的体验。为此，我们可以做不少的事。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;对于前端性能优化的讨论，一直都不是一个过时的话题，前有雅虎的&lt;a href=&#34;https://developer.yahoo.com/performance/rules.html&#34;&gt;35条黄金法则&lt;/a&gt;，后有O’Reilly 出版的两本性能优化圣经《高性﻿能网站建设指南》、《高性能网站建设进阶指南》，这些都很值得我们学习，将会是我们在探索性能优化道路上的指路明灯。那么，我们首先来看看雅虎的军规吧，我选取了其中的一部分。
+&lt;/p&gt;
+
+&lt;h4 id=&#34;雅虎-17-条性能优化原则及其分类&#34;&gt;雅虎 17 条性能优化原则及其分类：&lt;/h4&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;优化方向&lt;/th&gt;
+&lt;th&gt;优化手段&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;请求数量&lt;/td&gt;
+&lt;td&gt;合并脚本和样式表，CSS Sprites，拆分初始化负载，划分主域&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;请求带宽&lt;/td&gt;
+&lt;td&gt;开启 GZip，精简 JavaScript，移除重复脚本，图像优化&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;缓存利用&lt;/td&gt;
+&lt;td&gt;使用 CDN，使用外部 JavaScript 和 CSS，添加 Expires 头，减少 DNS 查找，配置 ETag，使 AjaX 可缓存&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;页面结构&lt;/td&gt;
+&lt;td&gt;将样式表放在顶部，将脚本放在底部，尽早刷新文档的输出，延迟加载 JavaScript&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;代码校验&lt;/td&gt;
+&lt;td&gt;避免 CSS 表达式，避免重定向&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&#34;优化原则细则&#34;&gt;优化原则细则：&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;请求数量：
+
+&lt;ul&gt;
+&lt;li&gt;合并脚本和样式表：通过将脚本和样式表合并的方式，可以有效的减少http请求的次数，从而减少DNS请求所耗费的时间和对服务器的压力。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CSS Sprites&lt;/code&gt;：即CSS 雪碧图，通过将众多细小的图片整合成一个文件，从而减少http请求次数。&lt;/li&gt;
+&lt;li&gt;拆分初始化负载：对于页面中一开始加载时不需要执行的资源，可以将其分离出来等到需要时再加载。&lt;/li&gt;
+&lt;li&gt;划分主域：众所周知，在 HTTP/1.x 协议中「浏览器客户端在同一时间，针对同一域名下的请求有一定数量限制。超过限制数目的请求会被阻塞」，而不同浏览器对该限制的数目也不尽相同，划分主域、配置静态资源专用域，目的就是变相的解决浏览器针对同一域名的请求限制阻塞问题。但不易过多，否则 DNS 的查询时间也是个问题。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;请求宽带：
+
+&lt;ul&gt;
+&lt;li&gt;开启&lt;code&gt;GZip&lt;/code&gt;：服务端启用 Gzip 可以有效的减少数据传输量，Gzip 对于基于文本的文件（CSS、JavaScript、HTML）压缩效果最好，所有现代浏览器都支持 Gzip 压缩并将自动请求该压缩
+精简JavaScript，移除重复脚本：这个就不必细说了，减少重复的代码，避免无意义的脚本执行。&lt;/li&gt;
+&lt;li&gt;图像优化：对于要上传的图片，尽量保证该图片已经是经过压缩优化过的。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;缓存利用：
+
+&lt;ul&gt;
+&lt;li&gt;使用&lt;code&gt;CDN&lt;/code&gt;：利用内容分发网络能够有效的减少资源响应时间，提升用户体验。
+使用外部JavaScript和CSS：浏览器可以将外部的 JavaScript 和 CSS 文件进行缓存，而如果将其写成内联样式，嵌入至 HTML 文档里，那么每次请求该文档时它们都会被下载。而且如果多个页面都用到了相同的脚本，那么使用浏览器缓存的外部JavaScript和CSS必然是更好的选择。&lt;/li&gt;
+&lt;li&gt;添加 &lt;code&gt;Expires&lt;/code&gt; 头：对于一些不怎么改变的静态资源，可以设置文件头过期时间Expires的值为“Never expire”（永不过期），而对于一些动态的资源，可以使用恰当的Cache-Control文件头来帮助浏览器进行选择性的请求，通过这样的方式，可以有效的利用浏览器的缓存机制来减少HTTP请求的大小和次数以加快页面访问速度。&lt;/li&gt;
+&lt;li&gt;减少 &lt;code&gt;DNS&lt;/code&gt; 查找：由于DNS的解析需要花费一定的时间，减少DNS查找次数可以节省响应时间，减少主机名的数量可以减少DNS查找次数。&lt;/li&gt;
+&lt;li&gt;配置 &lt;code&gt;ETag&lt;/code&gt;：服务端配置 ETag 是一种有效的 Web 缓存验证机制，并且允许客户端进行缓存协商。这就使得缓存变得更加高效，而且节省带宽。如果资源的内容没有发生改变，服务器就不需要发送一个完整的响应。ETag 也可用于乐观并发控制，作为一种防止资源同步更新而相互覆盖的方法。&lt;/li&gt;
+&lt;li&gt;使 AjaX 可缓存：Ajax缓存和HTTP缓存效果相同，可以通过设置Expires、Last-Modified、Cache-Control 等HTTP响应头的方式实现，具体的实现难度偏高。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;页面结构：
+
+&lt;ul&gt;
+&lt;li&gt;将样式表放在顶部，将脚本放在底部：Js的下载以及执行会阻塞DOM与CSSOM的下载与构建，因此将样式表放在body的顶部，而将脚本放在底部，用于优先加载html和css。&lt;br&gt;「推荐阅读：&lt;a href=&#34;https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction?hl=zh-cn&#34;&gt;渲染树构建、布局及绘制&lt;/a&gt; 」&lt;/li&gt;
+&lt;li&gt;延迟加载 JavaScript：默认情况下，JavaScript 执行会阻塞解析器：当浏览器在文档中遇到一个 script，它必须暂停 DOM 构建，移交控制权给 JavaScript 运行时，让脚本先执行，然后才继续处理 DOM。为了优先构建渲染树，有时候需要编写额外的代码来延迟脚本的执行&lt;br&gt;「推荐阅读：&lt;a href=&#34;http://web.jobbole.com/82317/&#34;&gt;如何延迟加载JS&lt;/a&gt; 」&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;代码校验：
+
+&lt;ul&gt;
+&lt;li&gt;避免 CSS 表达式：CSS 表达式是动态设置 CSS 属性的强大（但危险）方法。表达式的问题就在于它的计算频率要比我们想象的多。不仅仅是在页面显示和缩放时，就是在页面滚动、乃至移动鼠标时都会要重新计算一次，可能会对页面的性能产生影响。因此CSS表达式的使用需要慎重。&lt;/li&gt;
+&lt;li&gt;避免重定向：当页面发生了重定向，在新的HTMl文档到达之前，当前页面的资源不会被加载，可能呈现空白页面。
+&lt;br&gt;
+在了解Yahoo军规后，想必对web性能优化有了一个大致的了解。当然，除了军规之外，也有不少其他要注意的细节。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;javascript-优化&#34;&gt;JavaScript 优化&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Dom操作优化&lt;/p&gt;
+
+&lt;p&gt;首先澄清两个概念——Repaint 和 Reflow：Repaint 也叫 Redraw，它指的是一种不会影响当前 DOM 的结构和布局的一种重绘动作。如下动作会产生 Repaint 动作：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;不可见到可见（visibility 样式属性）&lt;/li&gt;
+&lt;li&gt;颜色或图片变化（background, border-color, color 样式属性）&lt;/li&gt;
+&lt;li&gt;不改变页面元素大小，形状和位置，但改变其外观的变化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Reflow 比起 Repaint 来讲就是一种更加显著的变化了。它主要发生在 DOM 树被操作的时候，任何改变 DOM 的结构和布局都会产生 Reflow。但一个元素的 Reflow 操作发生时，它的所有父元素和子元素都会放生 Reflow，最后 Reflow 必然会导致 Repaint 的产生。举例说明，如下动作会产生 Reflow 动作：
++ 浏览器窗口的变化
++ DOM 节点的添加删除操作
++ 一些改变页面元素大小，形状和位置的操作的触发&lt;/p&gt;
+
+&lt;p&gt;实际上，Reflow 比起 Repaint 会消耗更多的资源，因此，我们应该尽量减少 Reflow 的发生，或者将其转化为只会触发 Repaint 操作的代码。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var tipBox = document.createElement(&#39;div&#39;);
+document.body.appendChild(&#39;tipBox&#39;); //reflow
+var tip1 = document.createElement(&#39;div&#39;);
+var tip2 = document.createElement(&#39;div&#39;);
+tipBox.appendChild(tip1); //reflow
+tipBox.appendChild(tip2); //reflow  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如上代码会产生三次reflow，优化后的代码如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var tipBox = document.createElement(&#39;div&#39;);
+      tip1 = document.createElement(&#39;div&#39;);
+      tip2 = document.createElement(&#39;div&#39;);
+tipBox.appendChild(tip1);
+tipBox.appendChild(tip2);
+document.body.appendChild(&#39;tipBox&#39;); //reflow 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;经过优化，只会产生一次reflow，减少了不必要的开销。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;尽量采用点号&lt;/p&gt;
+
+&lt;p&gt;在 JavaScript 中，你可以使用点号 (foo.bar) 或者方括号 (foo[&amp;ldquo;bar&amp;rdquo;])来访问属性。然而，点号通常是首选，因为它更加易读，简洁，也更适于 JavaScript 压缩。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;减少全局变量的使用&lt;/p&gt;
+
+&lt;p&gt;JavaScript 代码解释执行，在进入函数内部时，它会预先分析当前的变量，并将变量存放在不同的层级中，一般情况下： 局部变量放入最浅的层级 1，全局变量、try - catch等则放入较深的层级 2，并根据嵌套层级依次加深。变量所在的层越浅，访问（读取或修改）速度越快，反之则越。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;html-优化&#34;&gt;HTML 优化&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;使用合适的的元素可保证代码的易读性&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;当网站支持HTML5时，使用&lt;code&gt;&amp;lt;header&amp;gt;&lt;/code&gt;，&lt;code&gt;&amp;lt;footer&amp;gt;&lt;/code&gt;，&lt;code&gt;&amp;lt;nav&amp;gt;&lt;/code&gt;等语义化标签，可以很清晰的体现出该内容的功能。&lt;/li&gt;
+&lt;li&gt;使用&lt;code&gt;&amp;lt;h1&amp;gt;(&amp;lt;h2&amp;gt;,&amp;lt;h3&amp;gt;…)&lt;/code&gt;表示标题，&lt;code&gt;&amp;lt;ul&amp;gt;&lt;/code&gt;或&lt;code&gt;&amp;lt;ol&amp;gt;&lt;/code&gt;实现列表。&lt;/li&gt;
+&lt;li&gt;使用&lt;code&gt;&amp;lt;em&amp;gt;&lt;/code&gt;和&lt;code&gt;&amp;lt;strong&amp;gt;&lt;/code&gt;标签替代&lt;code&gt;&amp;lt;i&amp;gt;&lt;/code&gt;和&lt;code&gt;&amp;lt;b&amp;gt;&lt;/code&gt;标签。&lt;/li&gt;
+&lt;li&gt;使用&lt;code&gt;&amp;lt;label&amp;gt;&lt;/code&gt;元素，可以增强使用、、用户的使用体验。&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;将文本和元素混合，并作为另一元素的子元素，会导致布局错误，例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div class=&amp;quot;form-control&amp;quot;&amp;gt;
+    Name:&amp;lt;input type=&amp;quot;text&amp;quot;&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;换成这样的写法好些：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div class=&amp;quot;form-control&amp;quot;&amp;gt;
+    &amp;lt;label for=&amp;quot;name&amp;quot;&amp;gt;Name:&amp;lt;/label&amp;gt;
+    &amp;lt;input type=&amp;quot;text&amp;quot; id=&amp;quot;name&amp;quot;&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;避免不合理的布局&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用&lt;code&gt;&amp;lt;p&amp;gt;&lt;/code&gt;元素修饰文本，而不是布局；默认&lt;code&gt;&amp;lt;p&amp;gt;&lt;/code&gt;是自动提供边缘，而且其他样式也是浏览器默认提供的。&lt;/li&gt;
+&lt;li&gt;避免使用&lt;code&gt;&amp;lt;br&amp;gt;&lt;/code&gt;分行，可以使用&lt;code&gt;block&lt;/code&gt;元素或CSS显示属性来代替。&lt;/li&gt;
+&lt;li&gt;避免使用&lt;code&gt;&amp;lt;hr&amp;gt;&lt;/code&gt;来添加水平线，可使用CSS的border-bottom 来代替。&lt;/li&gt;
+&lt;li&gt;尽可能的避免滥用&lt;code&gt;div&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;尽量少用Tables来布局。&lt;/li&gt;
+&lt;li&gt;可以多多使用Flex Box。&lt;/li&gt;
+&lt;li&gt;内联元素中不可嵌套块级元素。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;css-优化&#34;&gt;CSS 优化&lt;/h4&gt;
+
+&lt;p&gt;一般来说，页面渲染所需的时间将取决于文档大小、应用的样式，以及运行文档的设备：文档越大，浏览器需要完成的工作就越多；样式越复杂，绘制需要的时间就越长。虽然现在各大浏览器的渲染引擎经过无数版本的优化，都已经十分强大，CSS对于页面渲染的性能影响基本已经很小。不过，不放弃任何可能的优化，不正是是我们广大程序员的一大优点嘛。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;对CSS进行合并、压缩&lt;/li&gt;
+&lt;li&gt;不使用CSS表达式&lt;/li&gt;
+&lt;li&gt;移除空的CSS规则&lt;/li&gt;
+&lt;li&gt;不滥用Float&lt;/li&gt;
+&lt;li&gt;不声明过多的Font-size&lt;/li&gt;
+&lt;li&gt;值为0时不需要任何单位&lt;/li&gt;
+&lt;li&gt;选用合适的CSS选择器：
+对于CSS选择器的使用建议遵循以下原则：使用时能具体则具体，不过要注意避免层级过深，对于一些相似的样式可以将其中相同的部分抽取出来单独作为一个样式。附上css选择符开销排序：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;ID选择符 #box
+类选择符 .box
+类型选择符 div
+相邻兄弟选择符 h4 + #pics
+子选择符 #pics li
+后代选择符 .box a{}
+通配选择符 *
+属性选择符 [href=”#pic”]
+伪类和伪元素 a:hover
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;其他优化&#34;&gt;其他优化&lt;/h4&gt;
+
+&lt;p&gt;除了以上优化之外，许多大公司（例如腾讯）会选择对网络以及服务器端进行优化，感兴趣的同学可以Google相关资料。&lt;br&gt;
+「推荐阅读：&lt;a href=&#34;http://velocity.oreilly.com.cn/2013/ppts/16_ms_optimization--web_front-end_performance_optimization.pdf&#34;&gt;16毫秒的优化&lt;/a&gt; 」&lt;/p&gt;
+
+&lt;h4 id=&#34;参考资料&#34;&gt;参考资料&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://fex.baidu.com/blog/2014/03/fis-optimize/&#34;&gt;前端工程与性能优化&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://isux.tencent.com/h5-performance.html&#34;&gt;移动H5前端性能优化指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.imooc.com/article/4307&#34;&gt;你不可不知的HTML优化技巧&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>浏览器渲染那些事之 Reflow、Repaint</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/03/29/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E9%82%A3%E4%BA%9B%E4%BA%8B%E4%B9%8B-reflowrepaint/</link>
+      <pubDate>Wed, 29 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/03/29/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E9%82%A3%E4%BA%9B%E4%BA%8B%E4%B9%8B-reflowrepaint/</guid>
+      <description>&lt;p&gt;在进行网页开发的时候，一般会忽略到页面渲染给浏览器带来的性能问题；在实际情况中，浏览器进行页面渲染会进行大量的计算，来确定每个可见元素在屏幕上的精确位置、大小，还需要将每个确定好的像素绘制到屏幕上，这些操作都需要消耗大量的资源；如果反复的进行这些操作，对用户设备性能损耗不容乐观，因此希望通过这篇文章加深大家对浏览器渲染过程的理解，并希望大家能够重视渲染过程带来的性能问题。
+&lt;/p&gt;
+
+&lt;h4 id=&#34;浏览器内核-渲染引擎&#34;&gt;浏览器内核（渲染引擎）&lt;/h4&gt;
+
+&lt;p&gt;在各个浏览器厂商你追我赶的形势下，截止今日，产生了很多不同的浏览器，各个浏览器本质大同小异，核心部分基本相似，由渲染引擎和 JS 引擎组成。当你在访问网站页面的时候，浏览器做了很多事情，从发送请求，到解析 HTML 源码，构建渲染树，最后将内容像素绘制到设备屏幕上，一步步完成用户最终需要的场景。然而，在浏览器完成整个渲染的过程中，最为核心的就是“渲染引擎”。以下分别列出一些主流浏览器的渲染引擎：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html&#34;&gt;chrome&lt;/a&gt; - webkit&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.apple.com/cn/safari/&#34;&gt;safari&lt;/a&gt; - webkit&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.opera.com/zh-cn&#34;&gt;opera&lt;/a&gt; - webkit（早期是 presto）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.mozilla.org/en-US/firefox/products/&#34;&gt;firefox&lt;/a&gt; - gecko&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://support.microsoft.com/zh-tw/help/17621/internet-explorer-downloads&#34;&gt;ie&lt;/a&gt; - trident&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;渲染流程&#34;&gt;渲染流程&lt;/h4&gt;
+
+&lt;p&gt;结合浏览器渲染原理，来剖析以下代码渲染构建过程：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;HTML 源码：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width,initial-scale=1&amp;quot;&amp;gt;
+    &amp;lt;link href=&amp;quot;style.css&amp;quot; rel=&amp;quot;stylesheet&amp;quot;&amp;gt;
+    &amp;lt;title&amp;gt;browser rendering&amp;lt;/title&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;p&amp;gt;Hello &amp;lt;span&amp;gt;web performance&amp;lt;/span&amp;gt; students!&amp;lt;/p&amp;gt;
+    &amp;lt;div&amp;gt;&amp;lt;img src=&amp;quot;awesome-photo.jpg&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;CSS 源码：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;body { font-size: 16px }
+p { font-weight: bold }
+span { color: red }
+p span { display: none }
+img { float: right }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;该图为以上源代码构建树：
+&lt;img src=&#34;https://acrens.github.io/css/images/render-tree-construction.png&#34; alt=&#34;构建渲染树&#34; /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;浏览器渲染页面整个过程描述：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;首先，解析 HTML Source，构建 DOM Tree；&lt;/li&gt;
+&lt;li&gt;同时，解析 CSS Style，构建 CSSOM Tree；&lt;/li&gt;
+&lt;li&gt;然后，组合 DOM Tree 与 CSSOM Tree，去除不可见元素，构建 Render Tree；&lt;/li&gt;
+&lt;li&gt;再执行 Reflow，根据 Render Tree 计算每个可见元素的布局（几何属性）；&lt;/li&gt;
+&lt;li&gt;最后，执行 Repaint，通过绘制流程，将每个像素渲染到屏幕上。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;注意：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Render Tree 只包含渲染网页所需要的节点；&lt;/li&gt;
+&lt;li&gt;Reflow 过程是布局计算每个对象的精确位置和大小；&lt;/li&gt;
+&lt;li&gt;Repaint 过程则是将 Render Tree 的每个像素渲染到屏幕上。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;哪些阶段影响渲染效率&#34;&gt;哪些阶段影响渲染效率&lt;/h4&gt;
+
+&lt;p&gt;我们都知道，网页是需要挂载在客户端的浏览器上运行，但是随着互联网的快速发展，为保证用户访问应用的流畅性，往往对客户端的设备配置要求较高。然而，对于用户的设备，我们是无法控制；因此，作为一名开发者，就需要找到除了用户设备配置之外导致访问不流畅的问题，下面就从渲染流程中找到影响性能的问题。&lt;/p&gt;
+
+&lt;p&gt;浏览器初始化渲染时会执行一次 Reflow 过程，这个过程主要是用来确定页面上每个元素在屏幕上的几何位置属性。但是，每执行一次 Reflow 会需要花费大量的时间，耗费大量的设备资源，所以尽量避免执行 Reflow 过程。同时，执行完 Reflow 都会伴随着一次 Repaint 过程，这个过程也会耗费大量的计算机资源，严重影响页面的渲染性能。所以，在浏览器渲染阶段，主要影响页面渲染的阶段是 Reflow 和 Repaint 过程，因此在编写代码时应该尽量避免 Reflow 和 Repaint 过程的执行，如：避免在 JS 代码里直接改变元素的几何属性。&lt;/p&gt;
+
+&lt;h4 id=&#34;reflow-repaint-简介&#34;&gt;reflow &amp;amp; repaint 简介&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;reflow 在渲染过程中称为回流，发生在 Render Tree 阶段，它主要是用来确定每个元素在屏幕上的几何属性，需要大量计算每个元素的位置。在代码里每改变一个元素的几何属性，均会发生一次回流过程。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;repaint 在渲染过程中称为重绘，发生在 reflow 过程之后，当元素的几何属性确定之后便要开始将元素绘制在屏幕上展示。repaint 执行过程就是将元素的颜色、背景等属性绘制出来。在代码里每改变一次元素的颜色等属性时均会对相关元素执行一次重绘。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;如何触发-reflow-和-repaint-过程&#34;&gt;如何触发 reflow 和 repaint 过程&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;改变元素 font-size：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;document.getElementsByTagName(&#39;body&#39;)[0].style.fontSize = &#39;20px&#39;; // reflow,repaint
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;改变元素盒模型margin、border、padding、width：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;let styles = document.getElementsByTagName(&#39;body&#39;)[0].style;
+styles.margin = &#39;40px&#39;; // reflow,repaint
+styles.border = &#39;40px solid #f00&#39;; // reflow,repaint
+styles.padding = &#39;40px&#39;; // reflow,repaint
+styles.width = &#39;300px&#39;; // reflow,repaint
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;改变元素颜色、背景色属性：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;let styles = document.getElementsByTagName(&#39;body&#39;)[0].style;
+styles.color = &#39;#fff&#39;; // repaint
+styles.backgroundColor = &#39;#f00&#39;; // repaint
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;特殊：offset*、scroll*、client*、getComputedStyle、currentStyle：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;由于浏览器在处理批量修改页面元素样式时，会将批量操作缓存起来，然后再做一次 reflow 过程（异步 reflow），避免每次操作都执行 reflow 消耗资源。但是如果在某个操作之后立马调用了以上执行属性，为了等够得到最新的样式，会检查缓存的操作，是否需要 reflow，这样就 flush 出最新的样式。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;如何减少-reflow-和-repaint-过程&#34;&gt;如何减少 reflow 和 repaint 过程&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;减少 JS 逐行修改元素样式：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;let body = document.getElementsByTagName(&#39;body&#39;)[0];
+body.className += &#39; class-name&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;离线处理 DOM 操作：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;通过 documentFragment 集中处理临时操作；&lt;/li&gt;
+&lt;li&gt;克隆节点进行操作，然后进行原节点替换；&lt;/li&gt;
+&lt;li&gt;使用 display:none; 进行批量操作。
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;减少样式的重新计算，即减少 offset*、scroll*、client*、getComputedStyle、currentStyle 的使用，因为每次调用都会刷新操作缓冲区，执行 reflow &amp;amp; repaint。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://acrens.github.io/2017/03/23/2017-03-22-reflow&amp;amp;repaint/&#34;&gt;阅读原文&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;参考资料&#34;&gt;参考资料&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/web/fundamentals/performance/rendering/&#34;&gt;渲染性能&lt;/a&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/&#34;&gt;Rendering: repaint, reflow/relayout, restyle&lt;/a&gt; - &lt;a href=&#34;http://www.cnblogs.com/ihardcoder/p/3927709.html&#34;&gt;译文&lt;/a&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://coolshell.cn/articles/9666.html&#34;&gt;浏览器的渲染原理简介&lt;/a&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/web/tools/chrome-devtools/rendering-tools/&#34;&gt;分析运行时性能&lt;/a&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/timeline-tool#profile-js&#34;&gt;如何使用 Timeline 工具&lt;/a&gt;。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>延迟，让你更幸福了吗？</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/03/15/%E5%BB%B6%E8%BF%9F%E8%AE%A9%E4%BD%A0%E6%9B%B4%E5%B9%B8%E7%A6%8F%E4%BA%86%E5%90%97/</link>
+      <pubDate>Wed, 15 Mar 2017 17:18:13 +0800</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/03/15/%E5%BB%B6%E8%BF%9F%E8%AE%A9%E4%BD%A0%E6%9B%B4%E5%B9%B8%E7%A6%8F%E4%BA%86%E5%90%97/</guid>
+      <description>
+
+&lt;p&gt;做前端开发的同学应该知道：在移动端使用了 WebKit 内核的浏览器上，单击操作会延迟 300ms（也有延迟 350ms 的说法，下文统称为 300ms 延迟）后再执行。&lt;/p&gt;
+
+&lt;h1 id=&#34;造成延迟的原因&#34;&gt;造成延迟的原因&lt;/h1&gt;
+
+&lt;p&gt;故事要从 2007 年第一场雪说起，当时的网站都是为大屏幕设备所设计的，
+苹果公司在发布首款 iPhone 前夕，遇到一个问题： 在用户使用像 iPhone 这种小屏幕设备的浏览器访问网站时，
+如何确保用户获得较好的浏览体验。苹果的工程师们做了一些约定来解决这个问题，其中一项约定便是
+双击缩放(double tap to zoom)：用手指在屏幕上快速点击两次，iOS 自带的 Safari 浏览器会将网页缩放
+至原始比例。&lt;/p&gt;
+
+&lt;p&gt;由于当用户一次点击屏幕之后，浏览器并不能立刻判断用户是确实要打开这个链接，还是想要进行双击操作。
+因此，iOS Safari 就等待 300ms，以判断用户是否再次点击了屏幕。&lt;/p&gt;
+
+&lt;p&gt;逐渐地，几乎现在所有的移动端浏览器都支持了了双击缩放这个交互。&lt;/p&gt;
+
+&lt;p&gt;在人们还在为通过移动设备上网而惊叹的时期，没有人会在意这 300ms 的延时。
+而当移动互联网的浪潮滚滚而来时，对于 Web 开发人员来说，点击事件的快速响应变得非常重要。
+移动端浏览器上所有的单击事件都有 300ms 延迟这件事，开始被人们诟病。&lt;/p&gt;
+
+&lt;h1 id=&#34;解决延迟的方法&#34;&gt;解决延迟的方法&lt;/h1&gt;
+
+&lt;p&gt;有问题，就会有对应的解决办法，任何一件事都逃不出这个定律。300ms 延迟也不例外。&lt;/p&gt;
+
+&lt;p&gt;常用的解决方案如下：
+- 禁用缩放
+- 更改浏览器视口的默认宽度
+- 指针事件 (Pointer Events)
+- FastClick&lt;/p&gt;
+
+&lt;h2 id=&#34;禁用缩放&#34;&gt;禁用缩放&lt;/h2&gt;
+
+&lt;p&gt;这是一个比较容易想到的解决方案：既然延迟的起因是页面缩放，那就禁止页面缩放好了。&lt;/p&gt;
+
+&lt;p&gt;代码实现起来也很容易，只需要在 html 页面头部添加如下代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;user-scalable=no&amp;quot;&amp;gt;
+&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;initial-scale=1,minimum-scale=1,maximum-scale=1&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;自古以来，“一刀切”是能解决问题的，但通常不是问题的最优解。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;这个解决方案看似完美，但也带来一个明显的缺陷 —— 你必须完全禁用缩放来达到目的，
+而从移动端站点的可用性和可访问性来看，缩放是相当关键的一环。
+你很可能已经遇到过这个问题，即你想要放大一张图片或者一段字体较小的文本，却发现无法完成操作。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;更改浏览器视口的默认宽度&#34;&gt;更改浏览器视口的默认宽度&lt;/h2&gt;
+
+&lt;p&gt;2014 年，Chrome 开发团队宣布，在 Chrome 32 这一版中，他们将在通过&lt;code&gt;&amp;lt;meta&amp;gt;&lt;/code&gt;标签设置 &lt;code&gt;width=device-width&lt;/code&gt; 或者置为比 &lt;code&gt;viewport&lt;/code&gt; 值更小的页面上禁用双击缩放。页面禁用了双击缩放，就意味着没有了 300 ms点击延迟。&lt;/p&gt;
+
+&lt;p&gt;这个方法代码实现起来依旧很简单：只需要在 html 页面头部添加一行代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;!--使浏览器将视口大小设为设备本身的尺寸--&amp;gt;
+&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;该方案只是禁用了双击缩放操作，用户依旧可以使用双指缩放(pinch to zoom)等操作与页面发生交互。
+缩放功能并非被完全禁用，也就不存在可用性和可访问性的问题了。&lt;/p&gt;
+
+&lt;p&gt;目前，主流的移动端浏览器均已支持该方案。&lt;/p&gt;
+
+&lt;p&gt;iOS 10 发布之后，通过 &lt;code&gt;&amp;lt;meta&amp;gt;&lt;/code&gt; 标签设置的 &lt;code&gt;user-scalable&lt;/code&gt;，&lt;code&gt;min-scale&lt;/code&gt; 和 &lt;code&gt;max-scale&lt;/code&gt; 会被 WebKit 忽略掉，这意味着 iOS 10 上的 Safari/Chrome 允许用户在每个页面上进行缩放。但是依旧可以通过使用 &lt;code&gt;&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;initial-scale=1.0, width=device-width&amp;quot;&amp;gt;&lt;/code&gt; 来消除延迟，从而快速响应用户的单击操作。&lt;/p&gt;
+
+&lt;p&gt;在 iOS 10 的 hybrid 应用中，可以通过在 &lt;code&gt;WKWebViewConfiguration&lt;/code&gt; 上设置新属性来阻止用户缩放：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; var ignoresViewportScaleLimits : Bool 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;默认值为 false ，这意味着 WKWebView 内容将允许内容阻止缩放。这保留了旧版本的iOS的行为。&lt;/p&gt;
+
+&lt;p&gt;实际上，正是因为 iOS 10 中的 Safari 和 SafariViewController 将值设置为 true，才会导致禁止页面缩放失效。&lt;/p&gt;
+
+&lt;h2 id=&#34;指针事件-pointer-events&#34;&gt;指针事件 (Pointer Events)&lt;/h2&gt;
+
+&lt;p&gt;除了使用 HTML 的 &lt;code&gt;&amp;lt;meta&amp;gt;&lt;/code&gt; 标签禁止页面缩放外，我们还可以通过 CSS 的方式来让页面快速响应点击操作。
+该种方式在国内通常被称作：指针事件。&lt;/p&gt;
+
+&lt;p&gt;指针事件最初由微软提出。指针事件是一个新的 web 事件系列，相应的规范旨在使用一个单独的事件模型，对所有输入类型，包括鼠标 (mouse)、触摸 (touch)、触控 (stylus) 等，进行统一的处理。&lt;/p&gt;
+
+&lt;p&gt;指针事件方案中，有一个和点击延迟直接相关的实现：一个名为 &lt;code&gt;touch-action&lt;/code&gt; 的新 CSS 属性。
+根据&lt;a href=&#34;https://w3c.github.io/pointerevents/#the-touch-action-css-property&#34;&gt;规范&lt;/a&gt; &lt;code&gt;touch-action&lt;/code&gt; 属性决定 “是否触摸操作会触发用户代理的默认行为。这包括但不限于双指缩放等行为”。&lt;/p&gt;
+
+&lt;p&gt;默认情况下，页面上的元素具有 &lt;code&gt;touch-action: auto;&lt;/code&gt;，这表示 WebKit 可以启用任何触摸行为，例如平移，捏和双击。当页面上的元素具有 &lt;code&gt;touch-action: manipulation;&lt;/code&gt; 时，WebKit 仅会支持在可点击元素上的触摸行为，仅用于平移和缩放的目的。 这味着 WebKit 不会考虑对元素执行双击手势，因此会立即调度单个点击。 当任何元素的祖先具有&lt;code&gt;touch-action: manipulation;&lt;/code&gt; 时，元素上的单个点击变得快速。 注意，页面上所有具有了&lt;code&gt;touch-action: manipulation;&lt;/code&gt;的节点的子节点都会立即调度单个点击事件。该种方式适用于各种缩放比例的页面。&lt;/p&gt;
+
+&lt;p&gt;关于 &lt;code&gt;touch-action&lt;/code&gt; 具体详情,可访问&lt;a href=&#34;https://w3c.github.io/pointerevents/&#34;&gt;W3C 规范的候选推荐标准阶段&lt;/a&gt;进行了解。&lt;/p&gt;
+
+&lt;p&gt;可以从&lt;a href=&#34;http://caniuse.com/#search=touch-action&#34;&gt;http://caniuse.com/&lt;/a&gt;来了解现阶段各个浏览器对&lt;code&gt;touch-action&lt;/code&gt;的支持情况。&lt;/p&gt;
+
+&lt;h3 id=&#34;指针事件的-polyfill&#34;&gt;指针事件的 polyfill&lt;/h3&gt;
+
+&lt;p&gt;下面列出了几种针对指针事件的 polyfill：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jquery/PEP&#34;&gt;Polymer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://handjs.codeplex.com/&#34;&gt;HandJS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Rich-Harris/Points&#34;&gt;Points&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;需要注意的是，如果你需要的仅仅是一个解决 300ms 点击延迟的方法，上述方案可能不是最理想的。
+因为它们要么是会影响页面整体性能的资源密集型的方案，要么是 touch-action 属性的非标准化模拟。&lt;/p&gt;
+
+&lt;h2 id=&#34;fastclick-https-github-com-ftlabs-fastclick&#34;&gt;&lt;a href=&#34;https://github.com/ftlabs/fastclick&#34;&gt;FastClick&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;FastClick 是 &lt;a href=&#34;http://labs.ft.com/&#34;&gt;FT Labs&lt;/a&gt; 专门为解决移动端浏览器 300 ms点击延迟问题所开发的一个轻量级的库。&lt;/p&gt;
+
+&lt;h3 id=&#34;实现原理&#34;&gt;实现原理&lt;/h3&gt;
+
+&lt;p&gt;FastClick 在检测到 touchend 事件的时候，会通过 DOM 自定义事件立即触发一个模拟 click 事件，并把浏览器在 300 ms之后真正触发的 click 事件阻止掉。&lt;/p&gt;
+
+&lt;h3 id=&#34;使用方法&#34;&gt;使用方法&lt;/h3&gt;
+
+&lt;p&gt;FastClick 的使用方法非常简单。官方推荐的使用方法为：当初始 HTML 文档已完全加载和解析时，
+调用 &lt;code&gt;FastClick.attach(document.body);&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (&#39;addEventListener&#39; in document) {
+    document.addEventListener(&#39;DOMContentLoaded&#39;, function() {
+        FastClick.attach(document.body);
+    }, false);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果使用了 jQuery，可以使用如下方式使用 FastClick：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(function() {
+    FastClick.attach(document.body);
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果使用了 npm 等模块化的方式安装了 FastClick，则可以按照如下方式使用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;const attachFastClick = require(&#39;fastclick&#39;);
+attachFastClick(document.body);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其实具体如何使用 FastClick，去看一下 FastClick 的源码就一目了然了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (typeof define === &#39;function&#39; &amp;amp;&amp;amp; typeof define.amd === &#39;object&#39; &amp;amp;&amp;amp; define.amd) {
+
+    // AMD. Register as an anonymous module.
+    define(function() {
+        return FastClick;
+    });
+} else if (typeof module !== &#39;undefined&#39; &amp;amp;&amp;amp; module.exports) {
+    module.exports = FastClick.attach;
+    module.exports.FastClick = FastClick;
+} else {
+    window.FastClick = FastClick;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;值得注意的是：attach() 方法虽可在更具体的元素上调用，直接绑定到 &lt;code&gt;&amp;lt;body&amp;gt;&lt;/code&gt; 上可以确保整个应用都能受益。当 FastClick 检测到当前页面使用了基于 &lt;code&gt;&amp;lt;meta&amp;gt;&lt;/code&gt; 标签或者 &lt;code&gt;touch-action&lt;/code&gt; 属性等解决方案时，会静默退出。可以说，这是真正的跨平台方案出来之前一种很好的变通方案。&lt;/p&gt;
+
+&lt;h1 id=&#34;移动端浏览器的现状&#34;&gt;移动端浏览器的现状&lt;/h1&gt;
+
+&lt;p&gt;目前 iOS 和 Android 两大平台的移动设备上的浏览器，以及两个平台上微信中的内置浏览器均可通过上述方案
+来解决 300 ms 延时问题。&lt;/p&gt;
+
+&lt;h1 id=&#34;备注&#34;&gt;备注&lt;/h1&gt;
+
+&lt;p&gt;目前各个浏览器使用的内核情况。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;浏览器&lt;/th&gt;
+&lt;th&gt;内核&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Safari&lt;/td&gt;
+&lt;td&gt;WebKit&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Chrome&lt;/td&gt;
+&lt;td&gt;WebKit&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Opera&lt;/td&gt;
+&lt;td&gt;WebKit&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Firefox&lt;/td&gt;
+&lt;td&gt;Gecko&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;国产浏览器极速模式&lt;/td&gt;
+&lt;td&gt;WebKit&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;微信浏览器&lt;/td&gt;
+&lt;td&gt;WKWebView&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/ftlabs/fastclick&#34;&gt;FastClick&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/web/updates/2013/12/300ms-tap-delay-gone-away&#34;&gt;300ms tap delay, gone away&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://thx.github.io/mobile/300ms-click-delay&#34;&gt;300 ms点击延迟的来龙去脉&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://labs.ft.com/&#34;&gt;FT Labs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent&#34;&gt;CustomEvent&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://webkit.org/blog/5610/more-responsive-tapping-on-ios/&#34;&gt;More Responsive Tapping on iOS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://webkit.org/blog/7367/new-interaction-behaviors-in-ios-10/&#34;&gt;New Interaction Behaviors in iOS 10&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://amazeui.org/javascript/fastclick?_ver=2.x&#34;&gt;Amaze UI JS 插件 FastClick&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cnblogs.com/vajoy/p/3735553.html&#34;&gt;各主流浏览器内核介绍&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cnblogs.com/vajoy/p/5522114.html&#34;&gt;FastClick 填坑及源码解析&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>debounce &amp;&amp; throttle 简单实现</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/02/17/debounce--throttle-%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/</link>
+      <pubDate>Fri, 17 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/02/17/debounce--throttle-%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/</guid>
+      <description>&lt;p&gt;2011 年，Twitter 曝出一个 bug：当用户在滚动页面时，网站会变慢甚至无响应。John Resig 发表了一篇关于该问题的博客，并指出把高消耗的函数执行绑定在&lt;code&gt;onscroll&lt;/code&gt;事件上是多么得不靠谱。下面以&lt;code&gt;lodash&lt;/code&gt;中的&lt;code&gt;debounce&lt;/code&gt;和&lt;code&gt;throttle&lt;/code&gt;为例，来讲解&lt;code&gt;函数节流&lt;/code&gt;在解决类似问题中的作用。
+&lt;/p&gt;
+
+&lt;h3 id=&#34;debounce&#34;&gt;debounce&lt;/h3&gt;
+
+&lt;p&gt;搜索引擎的&lt;code&gt;自动补全&lt;/code&gt;功能已司空见惯，每当用户输入一个字符就去发一次请求，显然有点浪费。我们可以考虑在用户停止输入&lt;code&gt;500 ms&lt;/code&gt;后再去请求，这样用户体验基本不会受到影响，也减少了不必要的请求，减轻了服务器的压力。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;简单实现&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function debounce(func, wait) {
+    let timer;
+
+    return function(...args) {
+        const context = this;
+
+        clearTimeout(timer);
+
+        timer = setTimeout(function() {
+            func.apply(context, args);
+        }, wait);
+    };
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;调用示例&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;/** 原来的做法 */
+input.onkeypress = doSomeThing;
+
+/** 使用函数节流 */
+input.onkeypress = debounce(doSomeThing, 500);
+
+/** 错误示例 */
+input.onkeypress = function() {
+    // 原因：返回一个函数，但没有执行
+    // debounce(doSomeThing, 500);
+
+    // 原因：每次事件触发单独创建一个闭包，会产生多个定时器
+    // debounce(doSomeThing, 500)();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;leading-edge&#34;&gt;leading edge&lt;/h3&gt;
+
+&lt;p&gt;如果用户打字速度很快，我们希望能在他输入第一个字符的时候就给出相关提示，可以使用&lt;code&gt;leading&lt;/code&gt;参数来控制。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;扩展&lt;code&gt;leading&lt;/code&gt;参数&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function debounce(func, wait, { leading = false } = {} ) {
+    let context, xargs, timer;
+    let firstInvoke = true;
+
+    function invokeFunc() {
+        func.apply(context, xargs);
+    }
+
+    function debounced(...args) {
+        context = this;
+        xargs = args;
+
+        clearTimeout(timer);
+
+        if (leading &amp;amp;&amp;amp; firstInvoke) {
+            invokeFunc();
+            firstInvoke = false;
+        }
+
+        timer = setTimeout(function() {
+            invokeFunc();
+        }, wait);
+    };
+
+    return debounced;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;maxwait&#34;&gt;maxWait&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;无限滚动&lt;/code&gt;在移动端场景中必不可少，我们希望能在页面滚动即将到达底部时去请求更多的数据。通过上面的实现，我们只有等用户停止滚动&lt;code&gt;wait ms&lt;/code&gt;后才能开始检测&lt;code&gt;到页面底部距离&lt;/code&gt;，未免有些慢了。不过我们通过&lt;code&gt;maxWait&lt;/code&gt;参数，可以每隔&lt;code&gt;maxWait ms&lt;/code&gt;就去执行检测代码来解决类似问题。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;扩展&lt;code&gt;maxWait&lt;/code&gt;参数&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function debounce(func, wait, { leading = false, maxWait = 0 } = {}) {
+    let context, xargs, timer, timeLast;
+    let firstInvoke = true;
+
+    function invokeFunc() {
+        func.apply(context, xargs);
+    }
+
+    function debounced(...args) {
+        context = this;
+        xargs = args;
+
+        const timeNow = +new Date();
+
+        clearTimeout(timer);
+
+        if (leading &amp;amp;&amp;amp; firstInvoke) {
+            invokeFunc();
+            firstInvoke = false;
+        }
+
+        if (!timeLast) {
+            timeLast = timeNow;
+        }
+
+        if (!!maxWait &amp;amp;&amp;amp; timeNow - timeLast &amp;gt;= maxWait) {
+            invokeFunc();
+            timeLast = timeNow;
+        } else {
+            timer = setTimeout(function() {
+                invokeFunc();
+            }, wait);
+        }
+    };
+
+    return debounced;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;trailing-edge&#34;&gt;trailing edge&lt;/h3&gt;
+
+&lt;p&gt;除了以上参数，&lt;code&gt;debounce&lt;/code&gt;还提供了&lt;code&gt;trailing&lt;/code&gt;参数。在调整浏览器窗口大小时会触发多次&lt;code&gt;onresize&lt;/code&gt;事件，如果我们只对操作停止时的窗口尺寸感兴趣，那么就使用&lt;code&gt;trailing = true&lt;/code&gt;来保证这一点（&lt;code&gt;debounce&lt;/code&gt;中&lt;code&gt;trailing&lt;/code&gt;默认为&lt;code&gt;true&lt;/code&gt;）。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;扩展&lt;code&gt;trailing&lt;/code&gt;参数&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function debounce(func, wait, { leading = false, maxWait = 0, trailing = true } = {}) {
+    let context, xargs, timer, timeLast;
+    let firstInvoke = true;
+
+    function invokeFunc() {
+        func.apply(context, xargs);
+    }
+
+    function debounced(...args) {
+        context = this;
+        xargs = args;
+
+        const timeNow = +new Date();
+
+        clearTimeout(timer);
+
+        if (leading &amp;amp;&amp;amp; firstInvoke) {
+            firstInvoke = false;
+            invokeFunc();
+        }
+
+        if (!timeLast) {
+            timeLast = timeNow;
+        }
+
+        if (!!maxWait &amp;amp;&amp;amp; timeNow - timeLast &amp;gt;= maxWait) {
+            invokeFunc();
+            timeLast = timeNow;
+        } else if (trailing) {
+            timer = setTimeout(function() {
+                invokeFunc();
+            }, wait);
+        }
+    };
+
+    return debounced;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;throttle&#34;&gt;throttle&lt;/h3&gt;
+
+&lt;p&gt;通过以上示例代码不难看出，使用&lt;code&gt;debounce&lt;/code&gt;就可以实现&lt;code&gt;throttle&lt;/code&gt;的功能，或者说&lt;code&gt;throttle&lt;/code&gt;就是封装后的&lt;code&gt;debounce&lt;/code&gt;。其实&lt;code&gt;lodash&lt;/code&gt;的源码也是这么做得，&lt;code&gt;underscore&lt;/code&gt;则将两个函数的实现分开了，有兴趣可以&lt;a href=&#34;https://github.com/jashkenas/underscore/blob/master/underscore.js#L880&#34;&gt;看一下&lt;/a&gt;。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;实现&lt;code&gt;throttle&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function throttle(func, wait, { leading = true, trailing = true } = {}) {
+      return debounce(func, wait, { leading, maxWait: wait, trailing });
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;私有函数&#34;&gt;私有函数&lt;/h3&gt;
+
+&lt;p&gt;除了以上参数，&lt;code&gt;lodash&lt;/code&gt;中的&lt;code&gt;debounce&lt;/code&gt;和&lt;code&gt;throttle&lt;/code&gt;还包含以下两个私有函数可供调用，&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cancel&lt;/code&gt;：取消延时函数（定时器）的执行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;flush&lt;/code&gt;：立即执行用户回调&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;调用示例&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;const debounceFunc = _.debounce(doSomething, 500);
+
+debounceFunc.cancel();
+debounceFunc.flush();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;应用场景&#34;&gt;应用场景&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;debounce&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;// 避免过分频繁得计算布局
+window.onresize = debounce(calculateLayout, 150);
+
+// 防止用户连续点击，发送重复请求
+button.onclick = debounce(sendMail, 300, { leading: true, trailing: false });
+
+// 恰当地处理批量登录
+const debounceFunc = debounce(batchLog, 250, { maxWait: 1000 });
+const source = new EventSource(&#39;/stream&#39;);
+
+source.onmessage = debounceFunc;
+
+// 取消节流调用
+window.onpopstate = debounceFunc.cancel;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;throttle&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;// 避免过分频繁得更新定位
+window.onscroll = throttle(updatePosition, 100);
+
+// 恰当地处理身份更新
+const throttleFunc = throttle(renewToken, 300000, { &#39;trailing&#39;: false });
+
+button.onclick = throttleFunc;
+
+// 取消防抖调用
+window.onpopstate = throttled.cancel;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;参考&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://css-tricks.com/debouncing-throttling-explained-examples&#34;&gt;Debouncing and Throttling Explained Through Examples&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://lodash.com/docs/4.17.4&#34;&gt;Lodash Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lodash/lodash&#34;&gt;Github/lodash&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jashkenas/underscore&#34;&gt;Github/underscore&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.alloyteam.com/2012/11/javascript-throttle&#34;&gt;浅谈 javascript 的函数节流&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://lizhiyao.github.io/2017/02/15/debounce-throttle/&#34;&gt;详解 lodash 中的 debounce 和 throttle&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>javascript 中 TDZ 的理解</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/02/17/javascript-%E4%B8%AD-tdz-%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+      <pubDate>Fri, 17 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/02/17/javascript-%E4%B8%AD-tdz-%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+      <description>&lt;p&gt;刷微博期间看见 @ruanyf 提出了一个问题与 TDZ 有关，但是貌似阮大当时还没有意识到这个问题，多亏一些其他业内同仁提出了与 TDZ 相关；当然，以阮大的能力这都不是事。由于当时我本身也还不知道 TDZ 这一回事没有看懂，所以就花了一些时间去搞清楚什么是 TDZ 及TDZ会带来一些什么问题，本文主要是用于介绍我对 TDZ 的一些理解，如有问题，多谢指出。
+&lt;/p&gt;
+
+&lt;h4 id=&#34;示例&#34;&gt;示例&lt;/h4&gt;
+
+&lt;h5 id=&#34;案例一&#34;&gt;案例一&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;代码
+&lt;code&gt;javascript
+let y = 1;
+function foo(x = y, y) {
+console.log(x);
+}
+foo();  // ReferenceError: y is not defined
+&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解读
+
+&lt;ul&gt;
+&lt;li&gt;当函数存在默认参数时，且调用方法不传任何参数，会存在三个作用域环境；&lt;/li&gt;
+&lt;li&gt;全局作用域、参数作用域、函数体作用域；&lt;/li&gt;
+&lt;li&gt;当执行 foo 函数时，参数作用域在 x = y 之后才定义 let y，注意：let 定义，所以根据 let 定义变量的作用知道 x = y 肯定会报错；&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;代码翻译：将以上代码翻译之后可以按下面代码片段阅读更易于理解&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;function analysis() {
+&amp;quot;use strict&amp;quot;;
+let y = 1;
+
+function foo() {  
+    let x = arguments[0] !== (void 0) ? arguments[0] : y;   // y not defined
+    let y = arguments[1];
+}
+foo();
+
+return {};
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&#34;案例二&#34;&gt;案例二&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;代码
+&lt;code&gt;javascript
+let y = 1;
+function foo(x = function(){console.log(y)}, y = 2) {
+x(); // 2
+y = 3;
+x(); // 3
+}
+foo();
+console.log(y); //1
+&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解读
+
+&lt;ul&gt;
+&lt;li&gt;当函数存在默认参数时，且调用方法不传任何参数，会存在三个作用域环境；&lt;/li&gt;
+&lt;li&gt;全局作用域、参数作用域、函数体作用域；&lt;/li&gt;
+&lt;li&gt;当执行 foo 函数时，x 被申明为匿名函数变量，此时函数并未被执行，所以正常；之后定义 y 值为 2，此时调用 x() 输出的当然是变量 y 的值，之后继续修改 y 的值，再继续调用 x()，输出 y 最新值 3；当执行外部 console.log(y) 时并不能访问内部函数变量，访问的变量是当前域下的 y = 1 的值 1，所以输出 1；&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;代码翻译：将以上代码翻译之后可以按下面代码片段阅读更易于理解&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;function analysis() {
+&amp;quot;use strict&amp;quot;;
+let y = 1;
+
+function foo() {  
+    let x = arguments[0] !== (void 0) ? arguments[0] : function() {
+        console.log(y);
+    };
+    let y = arguments[1] !== (void 0) ? arguments[1] : 2;
+    x(); // 2
+    y = 3;
+    x();    // 3
+}
+foo();
+console.log(y); // 1
+
+return {};
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&#34;案例三&#34;&gt;案例三&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;代码
+&lt;code&gt;javascript
+let y = 1;
+function foo(x = function(){console.log(y)}) {
+let y = 3;
+x(); // 1
+}
+foo();
+&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解读
+
+&lt;ul&gt;
+&lt;li&gt;当函数存在默认参数时，且调用方法不传任何参数，会存在三个作用域环境；&lt;/li&gt;
+&lt;li&gt;全局作用域、参数作用域、函数体作用域；&lt;/li&gt;
+&lt;li&gt;当执行 foo 函数时，x 被赋值为一个匿名函数的变量，且存在与参数作用域内，let y = 3 会被定义到函数体作用域内，属于参数作用域的内部函数；当 x() 执行时是在函数体作用域定被调用，但是其定义是在参数作用域，所以执行环境是在参数作用域内，此时在参数作用域没有定义 y 变量，也不能访问内部函数 funBody 内部定义的变量 y，此时往上级函数查找是否存在 y 被定义，如果被定义则输出其值，所以输出最外层变量 y 的值 1；&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;代码翻译：将以上代码翻译之后可以按下面代码片段阅读更易于理解&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;function analysis() {
+&amp;quot;use strict&amp;quot;;
+let y = 1;
+
+function foo() {  
+    let x = arguments[0] !== (void 0) ? arguments[0] : function() {
+        console.log(y);
+    };
+
+    function funBody() {
+        let y = 3;
+        x();
+    }
+    funBody();
+}
+foo();
+
+return {};
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&#34;案例四&#34;&gt;案例四&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;代码
+&lt;code&gt;javascript
+function foo(x = function(){console.log(y)}) {
+let y = 3;
+x(); // // ReferenceError: y is not defined
+}
+foo();
+&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解读
+
+&lt;ul&gt;
+&lt;li&gt;当函数存在默认参数时，且调用方法不传任何参数，会存在三个作用域环境；&lt;/li&gt;
+&lt;li&gt;全局作用域、参数作用域、函数体作用域；&lt;/li&gt;
+&lt;li&gt;当执行 foo 函数时，x 被赋值为一个匿名函数的变量，且存在与参数作用域内，let y = 3 会被定义到函数体作用域内，属于参数作用域的内部函数；当 x() 执行时是在函数体作用域定被调用，但是其定义是在参数作用域，所以执行环境是在参数作用域内，此时在参数作用域没有定义 y 变量，也不能访问内部函数 funBody 内部定义的变量 y，此时往上级函数查找是否存在 y 被定义，如果被定义则输出其值，否则报 y 没有被定义错误，此案例只是案例三的一种测试；&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;代码翻译：将以上代码翻译之后可以按下面代码片段阅读更易于理解&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;function analysis() {
+&amp;quot;use strict&amp;quot;;
+function foo() {  
+    let x = arguments[0] !== (void 0) ? arguments[0] : function() {
+        console.log(y);
+    };
+
+    function funBody() {
+        let y = 3;
+        x();
+    }
+    funBody();
+}
+foo();
+
+return {};
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;参考&#34;&gt;参考&lt;/h4&gt;
+
+&lt;p&gt;以上核心部分在代码翻译部分，通过配合一下资料及个人的理解，翻译出通俗易懂的代码：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let&#34;&gt;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://dmitrysoshnikov.com/ecmascript/es6-notes-default-values-of-parameters/#tdz-temporal-dead-zone-for-parameters&#34;&gt;http://dmitrysoshnikov.com/ecmascript/es6-notes-default-values-of-parameters/#tdz-temporal-dead-zone-for-parameters&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/google/traceur-compiler/issues/1604&#34;&gt;https://github.com/google/traceur-compiler/issues/1604&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于 vertical-align的一些试验</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2017/02/06/%E5%85%B3%E4%BA%8E-vertical-align%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AF%95%E9%AA%8C/</link>
+      <pubDate>Mon, 06 Feb 2017 17:45:00 +0800</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2017/02/06/%E5%85%B3%E4%BA%8E-vertical-align%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AF%95%E9%AA%8C/</guid>
+      <description>
+
+&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
+
+&lt;p&gt;关于 vertical-align，我们很容易想到，这不就是告诉我们元素在纵向上和什么对齐的属性吗？看似很简单的定义，在实战使用时却总是不按套路出牌，带来了很多误解和困惑。事实上，正是这种宽泛的说法导致了我们对其的理解存在许多不确定性。问题就在于，“对齐”这两个字其实牵涉到4个对象：即&lt;strong&gt;哪个对象的哪条线，与哪个对象的哪条线对齐？&lt;/strong&gt;只有将这4者搞清楚，我们才能说是理解了这个属性。&lt;/p&gt;
+
+&lt;p&gt;我们知道，vertical-align 有以下几类可选值：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;文字：baseline、top、bottom、text-top、text-bottom、middle、sub、super&lt;/li&gt;
+&lt;li&gt;百分比&lt;/li&gt;
+&lt;li&gt;数字&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;其中，文字是出现的最多的，现在我就以这些值为例，来探讨一下vertical-align究竟是怎么对齐的。在阅读之前，有一些预备知识应该是必不可少的，它们是：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;关于行内元素的4种box模型：containing boxes、inline boxes、line box 以及 content area。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;关于 font-size 的 4 条参考线:topline、bottomline、baseline以及middleline。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;关于 font-size 和 line-height 之间的关系。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;以上知识可以在以下文章中看到
+&lt;a href=&#34;http://www.cnblogs.com/fengzheng126/archive/2012/05/18/2507632.html&#34;&gt;深入了解css的行高Line Height属性&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;下面是这次我使用的例子。
+&lt;strong&gt;html：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div class=&amp;quot;box&amp;quot;&amp;gt;
+    0.Eng&amp;lt;sub&amp;gt;2&amp;lt;/sub&amp;gt;lish&amp;lt;sup&amp;gt;3&amp;lt;/sup&amp;gt;
+    &amp;lt;span class=&amp;quot;span&amp;quot;&amp;gt;Englishx&amp;lt;/span&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;css：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.box{
+    border: 1px solid #555;
+    font-size: 28px;
+    height:150px;
+    line-height: 100px;
+}
+.span{
+    display: inline-block;
+    background-color: #ddd;
+    font-size: 50px;
+    margin-right: 35px;
+    line-height: 80px;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;vertical-align-top&#34;&gt;vertical-align:top&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../1.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的顶端边缘，与父元素的 line-box 的顶端边缘对齐。这很好理解。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-bottom&#34;&gt;vertical-align:bottom&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../2.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline box 的底端边缘，与父元素的 line-box 的底端边缘对齐。同样很好理解。&lt;/p&gt;
+
+&lt;p&gt;不过，这里有同学说了：不对啊，图片里目标元素的底端没有和父元素的底端对齐啊！注意，上面写的是与父元素的 line-box 的底端边缘对齐。那么父元素的底端边缘在哪里呢？并不是在下边框这里。这是因为，下边框是被父元素的 height 属性撑开的，父元素的 line box 的高度，是由 line-height 属性决定的。注意看上面的 css。这里的 line-height 比 height 要小，所以目标元素的底部达不到父元素的下边框。&lt;/p&gt;
+
+&lt;p&gt;还有一部分眼尖的同学说，还是不对呀，我目测了一下，你 css 里设置的 line-height 是 100px。但是这里目标元素的底部，离父元素的顶部似乎要大于 100px 呀？是的，你说的没错。实际上这个数字是118px，原因是，内部匿名inline box 的上标(3)和下标(2)把这个匿名 inline box 的line-height 撑大了，导致其实际 line-height 达到了 118px。如果把上标下标去掉，那就完美符合啦。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-middle&#34;&gt;vertical-align:middle&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../5.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的垂直平分线，与父元素内匿名inline boxes的 middleline 对齐。这个属性恐怕是实战中使用最频繁的属性了。&lt;/p&gt;
+
+&lt;p&gt;这里出现了几个新东西，需要多说几句。垂直平分线，这个容易理解。那什么是“父元素内匿名inline boxes，什么又是“父元素内匿名 inline boxes 的 middleline”？&lt;/p&gt;
+
+&lt;p&gt;首先，父元素内匿名inline boxes，你可以假设成直接写在父元素内的纯文字。由于它被父元素直接包裹，所以各种属性，包括line-height 和 font-size 等等，都是直接继承自父元素。当然，父元素内未必真的存在文字，它内部可能没有任何匿名inline boxes，但是，当 vertical-align 参与计算的时候，所参照的就是这个&lt;strong&gt;可能并不存在的&lt;/strong&gt;匿名inline boxes。&lt;/p&gt;
+
+&lt;p&gt;好了，轮到 middleline。middleline 之前被我放在了预备知识里，这里再多引申一点。按照规范，middleline 是文字的 baseline 往上方挪 &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; 个 x字母高度 的位置，所在的那条线。这条线并不是content area的严格中线，但和真正几何位置的中线很接近。&lt;/p&gt;
+
+&lt;p&gt;为了更清楚地表示 middleline 的位置，我这里多加了3个 x 字母，很明显，middleline 穿过字母 x 的中央。&lt;/p&gt;
+
+&lt;p&gt;好了，理解了 &lt;code&gt;vertical-align:middle&lt;/code&gt; ，我们再理解下面几个属性就简单多了。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-text-top&#34;&gt;vertical-align:text-top&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../4.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的顶部边缘，与父元素内匿名 inline boxes 的顶线，topline对齐。这里要注意，topline 在视觉上并不和l、h这些高字母的顶端对齐，这是因为这些字母的高度都没有达到topline。topline 要比这些字母的顶端再高一些。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-text-bottom&#34;&gt;vertical-align:text-bottom&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../3.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的底部边缘，与父元素内匿名 inline boxes 的底线，bottomline对齐。和 topline 不同，像 g 这样的下沉字母的底端一般都会达到 bottomline 的位置。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-baseline&#34;&gt;vertical-align:baseline&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../8.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这个默认属性反而放到后面来说？为什么？因为这里和上面有一点不同。在上面的情况下，目标元素参与对齐的参考线，都是 inline-box 的上下边缘，而这里是 baseline!&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-sub&#34;&gt;vertical-align:sub&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../6.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的 baseline，与父元素内下标（sub 标签）的 inline boxes 的 baseline 对齐。&lt;/p&gt;
+
+&lt;h3 id=&#34;vertical-align-super&#34;&gt;vertical-align:super&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../7.png&#34; alt=&#34;图片描述&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;目标元素的 inline-box 的 baseline，与父元素内上标（sup 标签）的 inline boxes 的 baseline 对齐。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>什么是 HTTPS ?</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/12/27/%E4%BB%80%E4%B9%88%E6%98%AF-https-/</link>
+      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/12/27/%E4%BB%80%E4%B9%88%E6%98%AF-https-/</guid>
+      <description>&lt;p&gt;准确的说，HTTPS 不是一种协议，而是 HTTP 和 SSL 两种技术的组合，HTTP 本身所有的数据都是不加密的。&lt;/p&gt;
+
+&lt;p&gt;SSL ( Secure Socket Layer ) ，有时也称为 TLS ( Transport Layer Security ) ，是介于传输层和应用层的拓展层，可以将应用层数据加密后送入传输层。因此，使用了 SSL 传输的 HTTP &lt;code&gt;报文整体&lt;/code&gt;都是被加密的。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;真的安全吗&#34;&gt;真的安全吗？&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;为什么 HTTPS 比 HTTP 安全？下面来逐步分析其加密过程。&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;对称加密算法&#34;&gt;对称加密算法&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;对称加密算法：又称单钥加密，是指加密和解密使用相同的密钥。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;因为 HTTP 所有数据都没有被加密，一旦中间人拦截到客户端请求，就可以看到具体的报文内容。如果客户端和服务端约定好同一密钥进行通信，则中间人无法破解。&lt;/p&gt;
+
+&lt;p&gt;但是服务端在通信之前不知道客户端的密钥，&lt;code&gt;如何安全地进行密钥传递&lt;/code&gt;就是接下来要解决的问题。&lt;/p&gt;
+
+&lt;h3 id=&#34;非对称加密算法&#34;&gt;非对称加密算法&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;非对称加密算法：又称双钥加密，包括公钥和私钥。公钥/私钥一一对应，有一把公钥就必然有一把与之对应的、独一无二的私钥，反之亦成立。公钥可以解开私钥加密的信息，反之亦成立；&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;借助非对称加密算法，服务端生成自己的密钥对，私钥自己保存，公钥对外公开。&lt;/p&gt;
+
+&lt;p&gt;这样的话，客户端就可以使用服务端返回的公钥来加密自己的密钥 ( &lt;code&gt;对称加密算法&lt;/code&gt; ) 发送给服务端。即使中间人拦截，由于能解密公钥的私钥只有服务端才有，所以不能解密，保证了数据传输的安全。&lt;/p&gt;
+
+&lt;p&gt;那么问题来了，任何人都可以生成一对公钥/私钥，如果中间人在拦截请求时，把自己的公钥返回给客户端，客户端不能分辨出公钥的拥有者，只会按照之前的逻辑，使用接收到的公钥去加密自己的密钥来和服务端通信。&lt;/p&gt;
+
+&lt;p&gt;由于客户端使用中间人的公钥进行加密，所以中间人可以使用自己的私钥对客户端的请求进行解密，拿到请求的所有内容，然后再用服务端的公钥对请求进行加密并转发给服务端。整个过程“天衣无缝”，你几乎觉察不到中间人的存在，但是你的信息已经实实在在地被盗取了。&lt;/p&gt;
+
+&lt;p&gt;如果&lt;code&gt;客户端能辨别服务端公钥真伪&lt;/code&gt;，那么我们的信息又安全了。&lt;/p&gt;
+
+&lt;h3 id=&#34;数字证书&#34;&gt;数字证书&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;CA ( Certification Authority ) 是认证机构的国际通称，它是对数字证书的申请者发放、管理、取消数字证书的机构。CA的作用是检查证书持有者身份的合法性，并签发证书，以防证书被伪造或篡改。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;服务端将自己的公钥以及相关注册信息发送给 CA 申请认证，来获得数字证书，其中就包含了服务端的公钥。这样服务端就可以返回数字证书给客户端，因为通过了国际权威机构的认证，数字证书&lt;code&gt;将持有者的公钥和持有者的身份绑定起来&lt;/code&gt;，我们这次可以放心地使用公钥去和服务端进行通信了。&lt;/p&gt;
+
+&lt;p&gt;这时候中间人又出来搞事情了，我能伪造公钥，我难道不能伪造证书吗？证书没有加密，那我把证书中的公钥换成我自己 ( 中间人 ) 的不就得了？&lt;/p&gt;
+
+&lt;p&gt;可以，没毛病。不过中间者还是 SOMETIME NAIVE，CA 比他们不知道高到哪里去了，自然有应对&lt;code&gt;证书被篡改&lt;/code&gt;的办法。&lt;/p&gt;
+
+&lt;h3 id=&#34;数字签名&#34;&gt;数字签名&lt;/h3&gt;
+
+&lt;p&gt;CA 首先对证书进行 HASH，拿到摘要后使用 CA 的私钥对其加密，并把加密后的结果 ( &lt;code&gt;签名&lt;/code&gt; ) 附在证书后面，这个过程就叫&lt;code&gt;数字签名&lt;/code&gt;。客户端拿到证书后，会使用 CA 的公钥对签名解密，然后把证书 HASH 后跟解密后的结果进行对比，一致的话说明确实是&lt;code&gt;原厂出品&lt;/code&gt;，不一致的话说明&lt;code&gt;被纂改过&lt;/code&gt;，直接丢掉。&lt;/p&gt;
+
+&lt;p&gt;这次中间人发现没招了，即使修改了证书，由于没有 CA 的私钥，就不能对证书的 HASH 结果进行加密，这个&lt;code&gt;数字签名&lt;/code&gt;改不了是不会有客户端认的。正打算放弃时，他忽然想到，CA 的公钥这里貌似可以做文章，如果能替换客户端手里 CA 的公钥，那么就可以伪造证书，从而摧毁这套&lt;code&gt;信任链&lt;/code&gt;体系。&lt;/p&gt;
+
+&lt;p&gt;那客户端怎么保证 CA 的公钥 ( 或者说用于验证证书签名的公钥 ) 的可靠性？&lt;/p&gt;
+
+&lt;h3 id=&#34;证书链&#34;&gt;证书链&lt;/h3&gt;
+
+&lt;p&gt;其实，一个证书的公钥是放在他上一级证书，只要能保证他上一级证书可靠，我们就能保证本级证书可靠。&lt;/p&gt;
+
+&lt;p&gt;以此类推，每级证书都是使用上一级证书的非对称密钥进行签名和验证的，我们称这一系列证书的关系为&lt;code&gt;证书链&lt;/code&gt;。而在证书链的最顶层的是&lt;code&gt;根证书&lt;/code&gt;，那根证书的可靠性是由谁保证的？&lt;/p&gt;
+
+&lt;p&gt;根证书是由他自己进行签名和验证的，我们又称他为&lt;code&gt;自签名根证书&lt;/code&gt;。他的可靠性是不需要被证明的，或者说需要使用者去证明。&lt;/p&gt;
+
+&lt;p&gt;所以，只要我们系统中安装了一个机构的自签名根证书，就代表信任该证书下的所有证书。一旦根证书出了问题，我们的整个&lt;code&gt;证书体系的安全&lt;/code&gt;就不再可信。&lt;/p&gt;
+
+&lt;h3 id=&#34;证书撤销&#34;&gt;证书撤销&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;证书吊销列表 ( Certificate Revocation List，CRL ) ，一个被签署的列表，它指定了一套证书发布者认为无效的证书。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;当我们从服务端拿到数字证书时，会根据证书上的&lt;code&gt;CRL分发点&lt;/code&gt;从指定的 URL 下载 CRL 来检查证书的有效性，CRL 包含了其&lt;code&gt;下一次&lt;/code&gt;的更新日期。&lt;/p&gt;
+
+&lt;h1 id=&#34;q-a&#34;&gt;Q&amp;amp;A&lt;/h1&gt;
+
+&lt;h3 id=&#34;客户端通过证书拿到服务端的公钥后-为什么不采用-双钥加密-而转用-单钥加密&#34;&gt;客户端通过证书拿到服务端的公钥后，为什么不采用&lt;code&gt;双钥加密&lt;/code&gt;，而转用&lt;code&gt;单钥加密&lt;/code&gt;？&lt;/h3&gt;
+
+&lt;p&gt;这是个好问题。确实，如果客户端拿到服务端公钥的时候，生成自己的公钥/私钥，然后把自己的公钥发给服务端，采用&lt;code&gt;两对&lt;/code&gt;密钥进行通信也是可以的。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;但是&lt;/code&gt;，&lt;code&gt;非对称算法&lt;/code&gt;在性能上比&lt;code&gt;对称算法&lt;/code&gt;要慢太多。&lt;/p&gt;
+
+&lt;p&gt;采用&lt;code&gt;对称算法&lt;/code&gt;已经能确保整个通信的安全，其加密/解密带来的消耗可以忽略不计，而且理论上来说&lt;code&gt;对称算法&lt;/code&gt;比&lt;code&gt;非对称算法&lt;/code&gt;甚至更难破解。&lt;/p&gt;
+
+&lt;h3 id=&#34;ca-为什么不使用自己的私钥直接对证书加密-而采用-数字签名-的方式&#34;&gt;CA 为什么不使用自己的私钥直接对证书加密，而采用&lt;code&gt;数字签名&lt;/code&gt;的方式？&lt;/h3&gt;
+
+&lt;p&gt;其实这个问题跟上一个类似，因为&lt;code&gt;非对称加密&lt;/code&gt;的方式效率低下，比起加密原信息，不如去加密他的 HASH 来得划算，其实这两种给我们带来的作用是等效的，都能防止证书被篡改。&lt;/p&gt;
+
+&lt;h3 id=&#34;为什么不可以直接用-根证书-去给其他所有证书签名-而要设计-证书链-的概念&#34;&gt;为什么不可以直接用&lt;code&gt;根证书&lt;/code&gt;去给其他所有证书签名，而要设计&lt;code&gt;证书链&lt;/code&gt;的概念？&lt;/h3&gt;
+
+&lt;p&gt;这个问题一开始也困扰我很久，我就不阐述我&lt;code&gt;错误&lt;/code&gt;的思路了，只提醒大家一点：&lt;code&gt;两个父子证书间的映射关系是放在子证书，而不是父证书&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;如果直接使用根证书去给各服务端签署证书，那根证书的密钥就不是足够安全的，毕竟签署的过程不是手动进行，而是放在服务端进行的。一旦有人攻破 CA 的服务器，拿到根证书的密钥，那他就可以伪造根证书，该 CA 下的所有证书都不可信了。&lt;/p&gt;
+
+&lt;p&gt;所以，为了保证根证书的绝对安全，根证书的私钥都被保存在离线的&lt;code&gt;金库&lt;/code&gt;中。他一般被定期拿出来确保相关密码设备的正常工作，签署证书吊销列表，以及签署新的二级证书。&lt;/p&gt;
+
+&lt;p&gt;那么二级证书就可以用来做&lt;code&gt;在线签名&lt;/code&gt;，即使二级证书的私钥被盗 ( 可能性很小 ) ，只要根证书是安全的，那么我就可以去更新证书的吊销列表，来让被盗的二级证书失效。&lt;/p&gt;
+
+&lt;p&gt;为什么要有多个二级证书？我们可以使用不同的证书去做不同的事情，例如 A 来签署保证邮件安全的证书，B 来签署 SSL 证书。毕竟&lt;code&gt;多线程&lt;/code&gt;更高效，各自负责自己的业务场景，一定程度上也能分散风险 ( 我是这么想的，不一定对 ) 。&lt;/p&gt;
+
+&lt;h1 id=&#34;缺点&#34;&gt;缺点&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;HTTPS 相比于 HTTP 更加安全自不必说，那他都有哪些缺点呢？&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;建立连接&#34;&gt;建立连接&lt;/h3&gt;
+
+&lt;p&gt;HTTP 使用 TCP 三次握手建立连接，客户端和服务端需要交换 3 个包。 HTTPS 除了 TCP 的三个包，还需要加上 SSL 握手需要的 9 个包，一共是 12 个包。&lt;/p&gt;
+
+&lt;p&gt;这样的话，HTTPS 在建立连接阶段比 HTTP 多花费的时间包括了多出的网络延时和 SSL 本身加密/解密的开销。&lt;/p&gt;
+
+&lt;p&gt;为了避免重新握手而造成的访问效率低下，这时候引入了&lt;code&gt;Session ID&lt;/code&gt;的概念。出于某种原因，如果对话中断且在&lt;code&gt;短时间内&lt;/code&gt;重连，只要客户端给出之前的&lt;code&gt;Session ID&lt;/code&gt;，且服务器有这个&lt;code&gt;Session ID&lt;/code&gt;的记录，双方就可以重新使用已有的&lt;code&gt;对称密钥&lt;/code&gt;，而不必重新生成一把。&lt;/p&gt;
+
+&lt;p&gt;上述方式可以缓解单个连接的性能问题，但对于并发访问用户数极多的大型网站，如果频繁的重建 SSL 的&lt;code&gt;Session ID&lt;/code&gt;，对于服务器性能的影响将会是致命的。这时可以考虑在 Web 服务前配置 &lt;a href=&#34;https://en.wikipedia.org/wiki/TLS_termination_proxy&#34;&gt;SSL Termination Proxy&lt;/a&gt; ，来将 SSL 处理转移到另一起机器以减少主服务器的负载。&lt;/p&gt;
+
+&lt;h3 id=&#34;通信阶段&#34;&gt;通信阶段&lt;/h3&gt;
+
+&lt;p&gt;当 SSL 建立连接后，之后的加密方式会使用客户端传输的&lt;code&gt;对称加密算法&lt;/code&gt;。相对前面 SSL 建立连接时的非对称加密方式，对称加密方式对 CPU 的负荷基本可以忽略不记。&lt;/p&gt;
+
+&lt;h3 id=&#34;总而言之&#34;&gt;总而言之&lt;/h3&gt;
+
+&lt;p&gt;HTTPS 相比 HTTP 在建立连接阶段确实会有性能的影响，但建立连接之后的通信速度跟 HTTP 差别不大。&lt;/p&gt;
+
+&lt;p&gt;好在 HTTPS 提供了&lt;code&gt;Session ID&lt;/code&gt;这种优化的方式，再加上服务端如果能够进行恰当的配置和优化，相对于 HTTPS 带来的安全性，给客户端以及服务端造成体验上和性能上&lt;code&gt;微小&lt;/code&gt;的损失都是值得的。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ruanyifeng.com/blog/2006/12/notes_on_cryptography.html&#34;&gt;密码学笔记&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.zhihu.com/question/21518760&#34;&gt;HTTPS 要比 HTTP 多用多少服务器资源？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/22142170?utm_medium=social&amp;amp;utm_source=wechat_session&#34;&gt;深入揭秘HTTPS安全问题&amp;amp;连接建立全过程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.zhihu.com/question/47232448?from=profile_question_card&#34;&gt;怎么保证「CA 的公钥」是真实的？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.zhihu.com/question/52466748&#34;&gt;TLS 过程中，为何不用证书提供的公钥加密数据或者加密私钥，而要设计秘钥交换流程呢？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.jianshu.com/p/46e48bc517d0&#34;&gt;证书链-Digital Certificates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://unmitigatedrisk.com/?p=397&#34;&gt;What’s in a certificate chain and why?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://security.stackexchange.com/questions/59566/ssl-certificate-chain-verification&#34;&gt;SSL certificate chain verification&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;扩展&#34;&gt;扩展&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.zhihu.com/question/26161255/answer/35530559&#34;&gt;为什么 12306 页面的 HTTPS 会被划红线？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.zhihu.com/question/26600336&#34;&gt;Charles 如何抓取 HTTPS 数据包的？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.zhihu.com/question/22306245&#34;&gt;网上流传的所谓「支付宝偷偷添加根证书，将造成安全隐患」的说法是否正确？&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>RDS(前端资源分发系统)</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/11/15/rds%E5%89%8D%E7%AB%AF%E8%B5%84%E6%BA%90%E5%88%86%E5%8F%91%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Tue, 15 Nov 2016 05:12:20 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/11/15/rds%E5%89%8D%E7%AB%AF%E8%B5%84%E6%BA%90%E5%88%86%E5%8F%91%E7%B3%BB%E7%BB%9F/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;RDS（前端资源包分发系统），将原有的客户端资源包更新逻辑移至服务器端实现。统一IOS，ANDROID等平台的更新逻辑，统一入口，方便资源包更新算法的调整，监控资源包的分发，进行灰度发布。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;设计&#34;&gt;设计&lt;/h2&gt;
+
+&lt;p&gt;RDS 最基本的功能就是将最最合适的资源包版本分发给不同的客户端。&lt;/p&gt;
+
+&lt;p&gt;在此基础上，需要与前端资源发布系统进行合作，根据前端发布 Hybrid 资源包的流程，添加相应的功能。如资源包测试。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;规则系统&#34;&gt;规则系统&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;规则函数：规则函数是服务器上定义的特定功能函数，以资源请求和规则作为输入，返回布尔值。&lt;/p&gt;
+
+&lt;p&gt;简单规则：简单规则由规则规则函数，规则值组成。&lt;/p&gt;
+
+&lt;p&gt;复杂规则：复杂规则由多个简单规则组成，规则间存在 and 和 or 两种关系。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;用户可以方面的根据 RDS 提供的各种已有的规则函数，创建各种规则。&lt;/p&gt;
+
+&lt;p&gt;规则将应用于资源的各个版本，用于表示当前版本所匹配的客户端请求。&lt;/p&gt;
+
+&lt;p&gt;这是在规则的易于普通用户创建和创建的灵活性之间的折中。&lt;/p&gt;
+
+&lt;h3 id=&#34;规则应用算法&#34;&gt;规则应用算法&lt;/h3&gt;
+
+&lt;p&gt;高版本优先于低版本。&lt;/p&gt;
+
+&lt;h2 id=&#34;相关文章&#34;&gt;相关文章&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://dxy-developer.github.io/f2e/f2e/blog/2016/04/04/hybrid资源包增量更新机制-起步/&#34;&gt;hybrid资源包增量更新机制: 起步&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dxy-developer.github.io/f2e/f2e/blog/2016/07/18/hybrid资源包增量更新机制-优化与安全/&#34;&gt;hybrid资源包增量更新机制: 优化与安全&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>hybrid资源包增量更新机制: 优化与安全</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/07/18/hybrid%E8%B5%84%E6%BA%90%E5%8C%85%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%E6%9C%BA%E5%88%B6-%E4%BC%98%E5%8C%96%E4%B8%8E%E5%AE%89%E5%85%A8/</link>
+      <pubDate>Mon, 18 Jul 2016 03:26:21 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/07/18/hybrid%E8%B5%84%E6%BA%90%E5%8C%85%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%E6%9C%BA%E5%88%B6-%E4%BC%98%E5%8C%96%E4%B8%8E%E5%AE%89%E5%85%A8/</guid>
+      <description>&lt;p&gt;增量更新的使用已有一段时间，面对出现的一些问题，对初始的增量更新机制进行了扩展与优化。&lt;/p&gt;
+
+&lt;p&gt;丁香医生hybrid开发遇到的问题&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;增量更新的安全&lt;/p&gt;
+
+&lt;p&gt;如何保证客户端获取到的增量包不被篡改。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;资源包 diff 的不高效&lt;/p&gt;
+
+&lt;p&gt;目前前端大多使用一些前端构建工具,如&lt;code&gt;webpack&lt;/code&gt;, &lt;code&gt;gulp&lt;/code&gt;, 将分散的源码合并成一个文件。在这种情况下，使用原先的 diff 算法并不能减少增量包的体积。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;增量包的安全&#34;&gt;增量包的安全&lt;/h2&gt;
+
+&lt;p&gt;通过采用&lt;code&gt;数字签名&lt;/code&gt;技术保证增量包不被篡改。&lt;/p&gt;
+
+&lt;p&gt;签名方案：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;前端对生成的增量包和全量包进行签名，将签名文件与源文件放在同一目录，并一起发布。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;客户端更新时，在获取增量包时，同时获取增量包的签名，通过客户端中预先存储的公钥对签名文件和源文件进行校验，校验成功才进行下一步的更新。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;签名工具：&lt;/p&gt;
+
+&lt;p&gt;安装 &lt;code&gt;npm install dxy-assets-sign --save-dev&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;使用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;	require(&#39;dxy-assets-sign&#39;)({
+        publish_folder : publish_folder, //资源发布目录
+        api : &#39;http://192.168.200.135:3000/sign&#39;, //必须
+        verify : true, // 可选，是否对签名进行验证
+        hash : &#39;sha1&#39;, //可选
+        format : &#39;base64&#39;,  //可选
+        sign : &#39;RSA-SHA256&#39;, //可选
+        hash_format : &#39;hex&#39;
+    })();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;bsdiff&#34;&gt;bsdiff&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;bsdiff&lt;/code&gt; 可以生成基于二进制的差量包，它的体积比原先算法生成的增量包小很多。尤其是对单文件这种极端情况。&lt;/p&gt;
+
+&lt;p&gt;以丁香医生的&lt;code&gt;React Native&lt;/code&gt;的资源包为例，原先的增量包的体积为&lt;code&gt;197KB&lt;/code&gt;,使用&lt;code&gt;bsdiff&lt;/code&gt;算法后的增量包体积为&lt;code&gt;5KB&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;由于兼容旧算法，如果需要使用&lt;code&gt;bsdiff&lt;/code&gt;算法，只需要添加&lt;code&gt;bsdiff&lt;/code&gt;字段&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;require(&#39;gulp-assets-incremental-update&#39;)(gulp, {
+    publish_folder : publish_folder,
+    name : &#39;article_detail.zip&#39;,
+    base_url : &#39;http://assets.dxycdn.com/assets/app/dxydoctor/hybrid-publish&#39;,
+    assets_folder : assets,
+    limit : 6,
+    bsdiff : true
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;相关文章&#34;&gt;相关文章&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://dxy-developer.github.io/f2e/f2e/blog/2016/04/04/hybrid资源包增量更新机制-起步/&#34;&gt;hybrid资源包增量更新机制: 起步&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dxy-developer.github.io/f2e/f2e/blog/2016/11/15/RDS(前端资源分发系统)/&#34;&gt;RDS(前端资源分发系统)&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>HTML 桌面消息通知</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/07/06/html-%E6%A1%8C%E9%9D%A2%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/</link>
+      <pubDate>Wed, 06 Jul 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/07/06/html-%E6%A1%8C%E9%9D%A2%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/</guid>
+      <description>&lt;p&gt;HTML 桌面消息通知，指的是通过浏览器的 Notification 对象为用户在系统桌面设置和显示通知提醒。这样，用户就可以做自己的事情，而不用担心会错过一些消息。
+&lt;/p&gt;
+
+&lt;h3 id=&#34;如何使用&#34;&gt;如何使用？&lt;/h3&gt;
+
+&lt;h5 id=&#34;首先向用户获取在当前网站展示系统通知的权限&#34;&gt;首先向用户获取在当前网站展示系统通知的权限&lt;/h5&gt;
+
+&lt;p&gt;获取这个权限一般在网站在初始化的时候完成，使用 &lt;code&gt;Notification.requestPermission()&lt;/code&gt;方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    Notification.requestPermission().then(function(status) {
+        // 根据 status 的值做一些事情 
+        if (Notification.permission !== status) {
+            Notification.permission = status;
+        }
+    });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;返回的 status 为字符串，有三个值&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;denied (用户拒绝了通知的显示)&lt;/li&gt;
+&lt;li&gt;granted (用户允许了通知的显示)&lt;/li&gt;
+&lt;li&gt;default (默认为 default，也就是需要询问用户是否授权，浏览器的表现和 denied 一样)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;之后-就可以用-notification-构造函数建一条新的通知&#34;&gt;之后，就可以用&lt;code&gt;Notification()&lt;/code&gt;构造函数建一条新的通知&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;    var notification = new Notification(title, options);    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;这里的 title 是必传的&lt;/li&gt;
+&lt;li&gt;options 是可选的一个对象，它规定了文本的方向、通知的内容、通知的图标等等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;属性&#34;&gt;属性&lt;/h3&gt;
+
+&lt;h5 id=&#34;静态属性-notification-permission&#34;&gt;静态属性：&lt;code&gt;Notification.permission&lt;/code&gt;&lt;/h5&gt;
+
+&lt;p&gt;表明当前通知显示的授权状态，值可能为：denied、granted、default&lt;/p&gt;
+
+&lt;h5 id=&#34;只读属性&#34;&gt;只读属性：&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;dir (文字方向，经测试都不支持)&lt;/li&gt;
+&lt;li&gt;lang (语言)&lt;/li&gt;
+&lt;li&gt;body (消息体)&lt;/li&gt;
+&lt;li&gt;tag (标签)&lt;/li&gt;
+&lt;li&gt;icon (图标地址)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这些属性，可以在创建消息的时候，作为 options 的属性传入 Notificaiton 函数。&lt;/p&gt;
+
+&lt;p&gt;重点提一下tag属性，它用于给相同类别的消息做标记，如果在短时间内有很多消息，系统会只显示tag标记的消息中最新的一条&lt;/p&gt;
+
+&lt;h3 id=&#34;事件处理&#34;&gt;事件处理&lt;/h3&gt;
+
+&lt;p&gt;Notification.onclick()/onshow()/onerror()/onclose()&lt;/p&gt;
+
+&lt;p&gt;通常情况下，onclick事件用的比较多，比如点击消息后跳转到特定页面&lt;/p&gt;
+
+&lt;h3 id=&#34;方法&#34;&gt;方法&lt;/h3&gt;
+
+&lt;h5 id=&#34;静态方法&#34;&gt;静态方法：&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Notification.requestPermission() ——只能被用户行为调用，比如页面加载或用户点击&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;实例方法-仅在notification实例或其prototype中有效&#34;&gt;实例方法（仅在Notification实例或其prototype中有效）：&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Notification.close()&lt;/li&gt;
+&lt;li&gt;继承自EventTarget接口：addEventListener()/removeEventListener()/dispatchEvnet()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;举个&#34;&gt;举个🌰&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;    // 页面加载时，获取权限
+    if (window.Notification &amp;amp;&amp;amp; Notification.permission !== &amp;quot;granted&amp;quot;) {
+        Notification.requestPermission(function (status) {
+            if (Notification.permission !== status) {
+                Notification.permission = status;
+            }
+        });
+    }
+    function notifyMe() {
+        // 判断浏览器是否支持Nitifocaiton
+        if (!(&amp;quot;Notification&amp;quot; in window)) {
+            alert(&amp;quot;This browser does not support desktop notification&amp;quot;);
+        // 判断用户是否已经准许了发送桌面通知
+        } else if (window.Notification &amp;amp;&amp;amp; Notification.permission === &#39;granted&#39;) {
+        // 如果准许了，我们就发送一条消息
+            var n = new Notification(&#39;Hi!&#39;, {
+                body: &#39;hi, this is body&#39;
+            });
+        // 如果用户没有准许，我们需要向用户获取权限
+        } else if (window.Notification &amp;amp;&amp;amp; Notification.permission !== &#39;denied&#39;) {
+            Notification.requestPermission(function(status) {
+                if (Notification.permission !== status) {
+                    Notification.permission = status;
+                }
+                if (status === &#39;granted&#39;) {
+                    var n = new Notification(&#39;Hi!&#39;, {
+                    body: &#39;hi, this is body&#39;
+                    });
+                } else {
+                    alert(&#39;Hi!&#39;);
+                }
+            });
+        } else {
+            alert(&#39;Hi!&#39;);
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;（在我的 Mac 下 Chrome 中测试时，不能弹出通知，Firefox 和 Safari 都可以，但是别的电脑的 Chrome 中可以。原因我没有查到，希望查到的小伙伴告诉我一下～）&lt;/p&gt;
+
+&lt;h3 id=&#34;浏览器兼容性&#34;&gt;浏览器兼容性&lt;/h3&gt;
+
+&lt;p&gt;现代浏览器都支持基本的属性和方法，除了 IE。具体属性和方法的支持情况，可见参考资料&lt;/p&gt;
+
+&lt;p&gt;下面是 Nick Desaulniers 编写的一个可以向前向后兼容各种版本的实现&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	function sendNotification (title, options) {
+	  // Memoize based on feature detection.
+	  if (&amp;quot;Notification&amp;quot; in window) {
+	    sendNotification = function (title, options) {
+	      return new Notification(title, options);
+	    };
+	  } else if (&amp;quot;mozNotification&amp;quot; in navigator) {
+	    sendNotification = function (title, options) {
+	      // Gecko &amp;lt; 22
+	      return navigator.mozNotification
+	               .createNotification(title, options.body, options.icon)
+	               .show();
+	    };
+	  } else {
+	    sendNotification = function (title, options) {
+	      alert(title + &amp;quot;: &amp;quot; + options.body);
+	    };
+	  }
+	  return sendNotification(title, options);
+	};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;chrome-备忘&#34;&gt;Chrome 备忘&lt;/h5&gt;
+
+&lt;p&gt;在 Chrome 22 版本之前，如果要使用通知需要旧的带前缀版本的规范 ，并且使用navigator.webkitNotifications 对象创建一个新的通知实例。&lt;/p&gt;
+
+&lt;p&gt;在 Chrome 32 版本之前，不支持 Notification.permission 属性。&lt;/p&gt;
+
+&lt;p&gt;在Chrome 42 版本之前，不支持 service worker。&lt;/p&gt;
+
+&lt;p&gt;从chrome 49版本开始，匿名模式下的notifications不能运行。&lt;/p&gt;
+
+&lt;h5 id=&#34;safari-备忘&#34;&gt;Safari 备忘&lt;/h5&gt;
+
+&lt;p&gt;Safari 在 Safari 6 版本开始支持通知，但是只能在 Mac OSX 10.8+ (Mountain Lion) 中使用。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考资料&#34;&gt;参考资料&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/zh-CN/docs/Web/API/notification&#34;&gt;Notification - Web Api 接口&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/zh-CN/docs/Web/API/notification/Using_Web_Notifications&#34;&gt;使用 Web Notification&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>浅谈网站性能之前端性能优化</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/07/03/%E6%B5%85%E8%B0%88%E7%BD%91%E7%AB%99%E6%80%A7%E8%83%BD%E4%B9%8B%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</link>
+      <pubDate>Sun, 03 Jul 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/07/03/%E6%B5%85%E8%B0%88%E7%BD%91%E7%AB%99%E6%80%A7%E8%83%BD%E4%B9%8B%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</guid>
+      <description>&lt;p&gt;性能优化的目的无非是减少用户流量消耗，提升用户首屏体验，提升用户访问速度，让用户专注内容本身。
+&lt;/p&gt;
+
+&lt;h4 id=&#34;前端性能优化&#34;&gt;前端性能优化&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;减少 HTTP 请求数量&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基本原理：在浏览器与服务器进行通信时，主要是通过 HTTP 进行通信。浏览器与服务器需要经过三次握手，每次握手需要花费大量时间。而且不同浏览器对资源文件并发请求数量有限（&lt;a href=&#34;http://www.stevesouders.com/blog/2008/03/20/roundup-on-parallel-connections/&#34;&gt;不同浏览器允许并发数&lt;/a&gt;），一旦 HTTP 请求数量达到一定数量，资源请求就存在等待状态，这是很致命的，因此减少 HTTP 的请求数量可以很大程度上对网站性能进行优化。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. CSS Sprites：国内俗称 CSS 精灵，这是将多张图片合并成一张图片达到减少 HTTP 请求的一种解决方案，可以通过 CSS background 属性来访问图片内容。这种方案同时还可以减少图片总字节数，节省命名词汇量（由命名多张图片文件变成一张，哈哈哈）。
+
+2. 合并 CSS 和 JS 文件：现在前端有很多工程化打包工具，如：grunt、gulp、webpack等。为了减少 HTTP 请求数量，可以通过这些工具再发布前将多个 CSS 或者 多个 JS 合并成一个文件。
+
+3. 采用 lazyLoad：俗称懒加载，可以控制网页上的内容在一开始无需加载，不需要发请求，等到用户操作真正需要的时候立即加载出内容。这样就控制了网页资源一次性请求数量。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;控制资源文件加载优先级&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基本原理：说到这里就需要知道浏览器加载 HTML 内容的原理，浏览器在加载 HTML 内容时，是将 HTML 内容从上至下依次解析，解析到 link 或者 script 标签就会加载 href 或者 src 对应链接内容，为了第一时间展示页面给用户，就需要将 CSS 提前加载，不要受 JS 加载影响。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. 遵循原则：主要文件放在 head 内部，次要文件放在 body 底部。一般情况下都是 CSS 在头部，JS 在底部。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;利用浏览器缓存&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基本原理：浏览器缓存分强缓存和协商缓存，他们是将网络资源存储在本地，等待下次请求该资源时，如果命中就不需要到服务器重新请求该资源，直接在本地读取该资源。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. 强缓存：在 web 服务器返回的响应中添加 Expires 和 Cache-Control Header。
+
+2. 协商缓存：通过【Last-Modified，If-Modified-Since】和【ETag、If-None-Match】这两对 Header 分别管理。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用 CDN&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基本原理：CDN的全称是Content Delivery Network，即&lt;a href=&#34;http://zsvalue.com/201405/foundation-of-cdn-%E3%80%8Acdn%E6%8A%80%E6%9C%AF%E8%AF%A6%E8%A7%A3%E3%80%8Bnote/&#34;&gt;内容分发网络&lt;/a&gt;。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;减少重排（Reflow）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基本原理：重排是 DOM 的变化影响到了元素的几何属性（宽和高），浏览器会重新计算元素的几何属性，会使渲染树中受到影响的部分失效，浏览器会验证 DOM 树上的所有其它结点的 visibility 属性，这也是 Reflow 低效的原因。如果 Reflow 的过于频繁，CPU 使用率就会急剧上升。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. 减少 Reflow，如果需要在 DOM 操作时添加样式，尽量使用 增加 class 属性，而不是通过 style 操作样式。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;减少 DOM 操作&lt;/li&gt;
+&lt;li&gt;图标使用 IconFont 替换&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;花絮&#34;&gt;花絮&lt;/h4&gt;
+
+&lt;p&gt;在开始提笔写这篇博客前就遇到了一个很棘手的问题，这篇博客标题叫什么，思考了一会，我心里冒出了三个答案：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;浅谈网站性能优化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;第一个标题网站性能优化，一看标题可以理解为是讲网站性能，而且是对网站进行优化，描述的是一种解决方案，然而网站性能包括的太多了，超出了我的知识范畴，所以放弃。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;浅谈网站性能之前端性能优化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;第二个标题正适我怀，答题概括了我本期博客内容，既有性能介绍，又有前端性能优化解决方案。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;浅谈前端性能优化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;第三个标题前端性能优化，心想这不就是我要写的内容嘛，等我写完内容发现，不对，我写的内容不仅仅是解决方案，好包括的其他内容，所以放弃。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;以上内容仅为个人理解，如果本内容大家觉得哪里写的不对，望大家指出，供一起讨论。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Normalize.css学习</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/04/25/normalize.css%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Mon, 25 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/04/25/normalize.css%E5%AD%A6%E4%B9%A0/</guid>
+      <description>&lt;hr /&gt;
+
+&lt;p&gt;Normalize.css 只是一个很小的CSS文件，但它在默认的HTML元素样式上提供了跨浏览器的高度一致性。相比于传统的CSS reset，Normalize.css是一种现代的、为HTML5准备的优质替代方案。&lt;/p&gt;
+
+&lt;h4 id=&#34;综述&#34;&gt;综述&lt;/h4&gt;
+
+&lt;p&gt;由于不同浏览器渲染Html元素时的各种默认样式不同，导致渲染页面时效果不一致，css Reset正是为了解决这一问题出现的。但是 css Reset 的激进派的，完全去掉浏览器默认的样式。
+所有的样式都由自己实现，即使跟浏览器默认样式一致。&lt;/p&gt;
+
+&lt;h2 id=&#34;hugomore42&#34;&gt;&lt;/h2&gt;
+
+&lt;p&gt;而Normalize.css是改良派,依赖于研究浏览器默认元素风格之间的差异，精确定位需要重置的样式。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;保护有用的浏览器默认样式而不是完全去掉它们&lt;/li&gt;
+&lt;li&gt;为大部分HTML元素提供一般化的样式&lt;/li&gt;
+&lt;li&gt;修复浏览器自身的bug并保证各浏览器的一致性。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;相比于传统的reset，Normalize.css是一种现代的、为HTML5准备的优质替代方案,目前像 Bootstrap Amaze UI等框架都在使用。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/necolas/normalize.css&#34;&gt;Normalize.css 项目地址&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;源码分析&#34;&gt;源码分析&lt;/h4&gt;
+
+&lt;p&gt;Css Reset发展至今，进过了几个版本。第一份css Reset应该是 YUI团队提供的,核心还是清除所有浏览器默认样式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;:link,:visited { text-decoration:none }
+ul,ol { list-style:none }
+h1,h2,h3,h4,h5,h6,pre,code { font-size:1em; }
+ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,
+fieldset,input{ margin:0; padding:0 }
+a img,:link img,:visited img { border:none }
+address { font-style:normal }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;之后出现阿里的Kissy框架，自己定制了一份css Reset，这应该是国内第一份CSS Reset。我们使用的reset.css大部分都是拷贝这个版本。但是所有版本的 CSS Reset 作者 都叮嘱使用者
+&amp;gt; 请根据具体需求，适量裁剪和修改后再使用。&lt;/p&gt;
+
+&lt;p&gt;Normalize.css并没有完全去除默认样式，否则跟全部用div跟li有什么区别呢。改良的Normalize.css具体改了哪些地方，下面举几个例子&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;/**
+ * Correct `block` display not defined for any HTML5 element in IE 8/9.
+ * Correct `block` display not defined for `details` or `summary` in IE 10/11
+ * and Firefox.
+ * Correct `block` display not defined for `main` in IE 11.
+ */
+
+/**
+ * Add the correct display in IE 9-.
+ * 1. Add the correct display in Edge, IE, and Firefox.
+ * 2. Add the correct display in IE.
+ */
+
+article,
+aside,
+details, /* 1 */
+figcaption,
+figure,
+footer,
+header,
+main, /* 2 */
+menu,
+nav,
+section,
+summary { /* 1 */
+  display: block;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;主要为低版本的IE们补充一些HTML5元素的正确显示方法。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在遇到不识别的标签时，浏览器会解析称内联元素，
+但是测试了下并不能解决实际性的问题，IE8下还是不识别；主要可以统一各元素的显示方式。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;/**
+ * Prevent `sub` and `sup` elements from affecting the line height in
+ * all browsers.
+ */
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;防止所有浏览器中的sub和sup影响行高，就把两者的line-height设为0，然后用top和bottom手动设置两者偏移量。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;如何使用&#34;&gt;如何使用&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;npm install normalize.css&lt;/li&gt;
+&lt;li&gt;引入 normalize.css 源码并在此基础上构建，在必要的时候用你自己写的CSS覆盖默认值&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Normalize.css 被拆分为多个独立的部分，这样你就可以定制自己所需要的，可以选择性地移除掉不会用到部分。
+比如在移动端使用的时候，就可以把为了兼容IE的部分移除。&lt;/p&gt;
+
+&lt;h4 id=&#34;参考资料&#34;&gt;参考资料&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://segmentfault.com/a/1190000003025718&#34;&gt;https://segmentfault.com/a/1190000003025718&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://jerryzou.com/posts/aboutNormalizeCss/&#34;&gt;http://jerryzou.com/posts/aboutNormalizeCss/&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>初探 Promise</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/04/18/%E5%88%9D%E6%8E%A2-promise/</link>
+      <pubDate>Mon, 18 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/04/18/%E5%88%9D%E6%8E%A2-promise/</guid>
+      <description>&lt;p&gt;曾经有伟人说过，对于一件新鲜事物，如果需要搞明白他，就会有以下三个步骤：What、How、Why（学习、思维三部曲 或 叫做学习黄金圈）；而对于很多人，在学习一门技术时，都停留在 What 阶段，到使用时就不知道如何使用，就算使用了也不知道为什么要用。
+
+&lt;img src=&#34;../whw.png&#34; alt=&#34;黄金圈&#34; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;what-promise-是什么&#34;&gt;What（Promise 是什么）&lt;/h3&gt;
+
+&lt;h4 id=&#34;描述&#34;&gt;描述&lt;/h4&gt;
+
+&lt;p&gt;Promise 是抽象异步处理对象以及对其进行各种操作的组件，而且 Promise 并不是从 JavaScript 中发祥的概念。&lt;/p&gt;
+
+&lt;h4 id=&#34;状态&#34;&gt;状态&lt;/h4&gt;
+
+&lt;p&gt;Promise 具有三种状态，分别为 pending（执行中）、resolved（被接受）、rejected（被拒绝）。&lt;/p&gt;
+
+&lt;h4 id=&#34;方法&#34;&gt;方法&lt;/h4&gt;
+
+&lt;h5 id=&#34;实例化&#34;&gt;实例化：&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;var promise = new Promise(function(resolve, reject) {});&lt;/li&gt;
+&lt;li&gt;Promise.resolve() 等方法均可以直接返回一个新创建的 Promise 对象。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;静态方法-promise-all-promise-race-promise-resolve-promise-reject&#34;&gt;静态方法：Promise.all、Promise.race、Promise.resolve、Promise.reject：&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Promise.all()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Promise.all 方法为 Promise 组件的静态方法，无需创建 Promise 对象就可以直接使用此方法来并行执行多个 Promise 对象，且在 Promise.all([&amp;ldquo;Promise1&amp;rdquo;，&amp;rdquo;Promise2&amp;rdquo;， &amp;ldquo;Promise2&amp;rdquo;])，如果在 all 方法参数的数组中有一个 Promise 对象执行失败即停止执行，返回结果需要等到数组对象执行完成才返回最后结果，结果为多个 Promise 对象返回值组成的数组。&lt;/p&gt;
+
+&lt;p&gt;代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var p1 = Promise.resolve(1)；
+var p2 = Promise.resolve(2)；
+var p3 = Promise.resolve(3);
+Promise.all([p1, p2, p3]).then(function(results) {
+    console.log(results);  // [1, 2, 3]
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Promise.race()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Promise.race 方法性质同 Promise.all 方法，使用方式也一样，但是有一点不同是在 Promise.race([&amp;ldquo;Promise1&amp;rdquo;，&amp;rdquo;Promise2&amp;rdquo;，&amp;rdquo;Promise3&amp;rdquo;]) 等到数组参数里面第一个 Promise 对象执行完成就返回执行结果（这里说的第一个不是第一个参数，也可能是第二个，是指第一个执行完成的 Promise 对象）。
+代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;Promise.race([new Promise(), new Promise(), new Promise()])；
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Promise.resolve()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;这是一种直接到达 Promise resolved 状态的快捷方式，并且创建返回一个 Promise 对象。
+代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;Promise.resolve(&amp;quot;acrens&amp;quot;).then(function(name) {
+    console.log(name); // acrens
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Promise.reject()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;同理，这是达到 Promise rejected 状态的快捷方式，并且创建返回一个进行 reject 的新 Promise 对象。如果传入的参数为一个 Promise 对象，则返回的是一个新的 Promise 对象（和 resolve 不同）。
+代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;Promise.reject(new Error(&amp;quot;error&amp;quot;))；
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/blockquote&gt;
+
+&lt;h5 id=&#34;对象方法-new-promise-then-new-promise-catch&#34;&gt;对象方法：new Promise().then、new Promise().catch：&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;then()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;用于注册 Promise 分别达到 resolved、rejected 状态时的回调函数，如：then(resolve, reject)，当达到 resolved 状态时，执行 resolve 方法，否则，执行 reject 方法；reject 函数可以不在此注册，可以使用 catch 注册（这也是注册 reject 方式的语法糖，更方便 Promise 链方法）；如果不需要注册 resolved 状态时的回调函数，then 方法第一个参数不可以省略，但是可以 then(undefined, reject) 这样书写。
+代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var promise = new Promise(function(resolve, reject) {
+    resolve(2);
+});
+
+promise.then(function(value) {
+    console.info(&#39;Task --------- &#39; + value); // Task  --------- 2
+}).catch(function onRejected(error) {
+    console.error(error);
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;catch()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;catch 方法在此就不多赘述，其只是注册 rejected 状态回调函数的语法糖。
+代码：（参照上面 then 方法代码示例）。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;how-promise-如何运行&#34;&gt;How（Promise 如何运行）&lt;/h3&gt;
+
+&lt;p&gt;Promise 从实例化到执行完成可以参照下图并结合上述代码理解（只有认真地去理解这个流程图，才可以看到 Promise 的精髓，坏笑&amp;hellip;）：
+&lt;img src=&#34;../flow.png&#34; alt=&#34;执行流程&#34; /&gt;
+注意：fulfill 就相当 resolved 状态。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;why-promise-为什么会产生&#34;&gt;Why（Promise 为什么会产生）&lt;/h3&gt;
+
+&lt;p&gt;Promise 需要解决的问题也就是其产生的原因（废话）：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;异步问题&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;用异步的方式来表达异步的代码是艰难的，甚至很难用我们的大脑来理解。（事件轮询、并发模式）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;回调地狱&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;并不是简单地理解为代码嵌套，编辑器代码缩进空格；还包括代码的控制转移（如在回调之前进行的第三方调用，控制权转交给第三方）。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+
+&lt;p&gt;在项目开发中，时常会使用到异步处理及代码多层嵌套，这对于后期理解和维护代码是一个“坑”，因此可以尝试使用 Promise 方式去解决代码给后期带来的负担。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.web-tinker.com/search/Promise%20%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82/1.html&#34;&gt;https://www.web-tinker.com/search/Promise%20%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82/1.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://liubin.org/promises-book/#introduction&#34;&gt;http://liubin.org/promises-book/#introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.zhangxinxu.com/wordpress/2014/02/es6-javascript-promise-%E6%84%9F%E6%80%A7%E8%AE%A4%E7%9F%A5/&#34;&gt;http://www.zhangxinxu.com/wordpress/2014/02/es6-javascript-promise-%E6%84%9F%E6%80%A7%E8%AE%A4%E7%9F%A5/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.sitepoint.com/overview-javascript-promises/&#34;&gt;http://www.sitepoint.com/overview-javascript-promises/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.getify.com/promises-part-1/&#34;&gt;http://blog.getify.com/promises-part-1/&lt;/a&gt; （译文：&lt;a href=&#34;https://segmentfault.com/a/1190000000586666）&#34;&gt;https://segmentfault.com/a/1190000000586666）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise&#34;&gt;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;注：下一篇更新 Promise 扩展阅读版&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>rem 的使用</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/04/05/rem-%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Tue, 05 Apr 2016 15:50:37 +0800</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/04/05/rem-%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;hr /&gt;
+
+&lt;h3 id=&#34;背景&#34;&gt;背景：&lt;/h3&gt;
+
+&lt;p&gt;最近因为调查问卷的需求，需要在移动端整体缩放页面，故考虑使用 rem 。&lt;/p&gt;
+
+&lt;h3 id=&#34;简介&#34;&gt;简介：&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;px 相对于显示器屏幕分辨率而言的。&lt;/p&gt;
+&lt;p&gt;em 相对于当前对象内文本的字体尺寸。如当前对行内文本的字体尺寸未被人为设置，则相对于浏览器的默认字体尺寸。&lt;/p&gt;
+&lt;p&gt;rem 相对于根元素的字体大小的单位。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;原因&#34;&gt;原因：&lt;/h3&gt;
+
+&lt;h4 id=&#34;为什么选择-rem-我的理由如下&#34;&gt;为什么选择 rem ,我的理由如下：&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;精准缩放，等比例适应所有屏幕
+&lt;p&gt;不少页面采用流体布局或者百分比来设置宽度间距，高度被定死。当设备宽度较大时，页面会被横向拉长，变形。同时过多的百分比，对设计造成阻碍，兼容也比较难调。当页面采用响应式设计的时候，虽然能够很好的兼容不同手机，但是维护成本相继增大，大量的媒体查询样式难以管理，并且只有在固定的几个分辨率下才能有最好的体验。&lt;/p&gt;
+&lt;p&gt;还有种粗暴的方式就是直接 viewport 缩放，不过实测有的时候感觉画面某部分会糊，并且页面部分高度不足的情况下强行缩放，会造成手机上页面只占很小的高度，甚至不超过手机屏幕的高度，很难控制外观样式。&lt;/p&gt;
+&lt;p&gt;最后，rem 就是很好的选择了。移动端兼容良好，所有的长度都根据根元素的字体大小值来改变，根元素的字体大小只要跟随屏幕大小动态变化，就可以精准缩放页面且画面保真。&lt;/p&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;移动端兼容性良好，使用简单&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;易于维护修改&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;使用&#34;&gt;使用：&lt;/h3&gt;
+
+&lt;h4 id=&#34;动态赋值页面根元素-html-的字体大小&#34;&gt;动态赋值页面根元素(html)的字体大小&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;(function (doc, win) {
+    var docEl = doc.documentElement,
+    resizeEvt = &#39;orientationchange&#39; in window ? &#39;orientationchange&#39; : &#39;resize&#39;;
+
+    var recalc = function () {
+        var width = docEl.clientWidth;
+
+        if (width &amp;gt; 640) {
+            width = 640 ;
+        }
+        if (width &amp;lt; 320) {
+            width = 320 ;
+        }
+
+        docEl.style.fontSize = 100 * (width / 1080) + &#39;px&#39;;     //1080 是设计图的宽度  
+      };
+    recalc();
+
+
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+})(document, window);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;页面引入这段脚本，再根据实际设计图取值，给相应的部位设置 css。&lt;/p&gt;
+
+&lt;p&gt;例如根元素(html)字体大小为 100 像素时，宽为 100 像素的 div，其样式设置为 width:1rem; 。&lt;/p&gt;
+
+&lt;h3 id=&#34;心得&#34;&gt;心得：&lt;/h3&gt;
+
+&lt;p&gt;1080 是设计图宽度，这样可以直接在图上量取数值，写在样式中。例如间距 40px ，赋值 0.4rem 。&lt;/p&gt;
+
+&lt;p&gt;chrome 支持的最小字体为 12px，所以设置为 100px，方便取值。&lt;/p&gt;
+
+&lt;h3 id=&#34;兼容&#34;&gt;兼容：&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;../rem.jpg&#34; alt=&#34;rem 兼容性&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;坑&#34;&gt;坑：&lt;/h3&gt;
+
+&lt;p&gt;随着越来越多的项目使用，后面在此补上具体坑。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

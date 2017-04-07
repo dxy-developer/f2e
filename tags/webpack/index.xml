@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Webpack on 丁香园前端小分队</title>
+    <link>http://dxy-developer.github.io/f2e/tags/webpack/index.xml</link>
+    <description>Recent content in Webpack on 丁香园前端小分队</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Establishment · 丁香园前端</copyright>
+    <atom:link href="http://dxy-developer.github.io/f2e/tags/webpack/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>webpack学习笔记</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/03/26/webpack%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Sat, 26 Mar 2016 17:18:13 +0800</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/03/26/webpack%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>
+
+&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
+
+&lt;p&gt;以下内容为小帅在学习Webpack过程中整理的笔记。持续完善中&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/lizhiyao/learn_webpack&#34;&gt;Demo的Github地址&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;webpack是什么&#34;&gt;Webpack是什么&lt;/h1&gt;
+
+&lt;p&gt;简而言之，Webpack是一个模块化管理和打包前端资源的工具。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;what-is-webpack.png&#34; alt=&#34;webpack&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;它可以将许多松散的模块按照依赖和规则打包成符合生产环境部署的前端资源，&lt;/p&gt;
+
+&lt;p&gt;还可以将按需加载的模块进行代码分隔，等到实际需要的时候再异步加载。&lt;/p&gt;
+
+&lt;p&gt;通过加载器（loader）的转换，任何形式的资源都可以视作模块，
+比如 CommonJs 模块、 AMD 模块、 ES6 模块、CSS、图片、 JSON、Coffeescript、 LESS 等。&lt;/p&gt;
+
+&lt;h2 id=&#34;webpack的目标&#34;&gt;Webpack的目标&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;把依赖树拆成可按需加载的块&lt;/li&gt;
+&lt;li&gt;让初始化加载时间尽可能地少&lt;/li&gt;
+&lt;li&gt;每个静态资源都是一个模块&lt;/li&gt;
+&lt;li&gt;模块化集成第三方库&lt;/li&gt;
+&lt;li&gt;尽可能地自定义打包器的每一部分&lt;/li&gt;
+&lt;li&gt;尽可能地自定义打包器的每一部分&lt;/li&gt;
+&lt;li&gt;适合大型项目&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;webpack的特别之处&#34;&gt;webpack的特别之处&lt;/h2&gt;
+
+&lt;h3 id=&#34;代码拆分&#34;&gt;代码拆分&lt;/h3&gt;
+
+&lt;p&gt;webpack 的依赖树中有同步和异步两种依赖方式。其中，异步模块将会被拆成一个新的块，
+并且在被优化后，生成一个对应的文件。&lt;/p&gt;
+
+&lt;h3 id=&#34;加载器&#34;&gt;加载器&lt;/h3&gt;
+
+&lt;p&gt;webpack 本身只支持处理 JavaScript，但可以通过加载器来把别的资源转为 JavaScript。
+因此，每个资源都被当作一个模块。&lt;/p&gt;
+
+&lt;h3 id=&#34;智能解析&#34;&gt;智能解析&lt;/h3&gt;
+
+&lt;p&gt;webpack 有一个基本支持所有第三方库的智能解析器，甚至还支持带有表达式的依赖表述法，
+如 require(&amp;ldquo;./templates/&amp;rdquo; + name + &amp;ldquo;.jade&amp;rdquo;)。支持最常用的 CommonJs 和 AMD 这两种模块风格。&lt;/p&gt;
+
+&lt;h3 id=&#34;插件系统&#34;&gt;插件系统&lt;/h3&gt;
+
+&lt;p&gt;webpack 有一个很出色的插件系统，甚至大部分内置功能都是基于这个插件系统而来的。
+这个插件系统允许你根据需要来自定义 webpack，以及通过开源的方式来分发通用插件。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;创建webpack的动机&#34;&gt;创建Webpack的动机&lt;/h1&gt;
+
+&lt;p&gt;如今的网站正在朝着Web app演化，具体体现在：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在一个页面中包含越来越多的JavaScript代码&lt;/li&gt;
+&lt;li&gt;我们可以在现代的浏览器中做更多的事情&lt;/li&gt;
+&lt;li&gt;即使一个页面中有着越来越多的代码，但是几乎不会再进行整个页面的刷新&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以上这几点会导致客户端（浏览器端）有着大量的代码。&lt;/p&gt;
+
+&lt;p&gt;如此多的代码需要被组织起来。模块系统给我们提供了把代码拆分成模块的可能。&lt;/p&gt;
+
+&lt;h2 id=&#34;现有的常用的模块系统风格&#34;&gt;现有的常用的模块系统风格&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; 标签方式（无模块系统）&lt;/li&gt;
+&lt;li&gt;CommonJs&lt;/li&gt;
+&lt;li&gt;AMD 及其变种&lt;/li&gt;
+&lt;li&gt;ES6 模块&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;标签方式-无模块系统&#34;&gt;标签方式（无模块系统）&lt;/h3&gt;
+
+&lt;p&gt;这是在不使用模块系统的前提下来管理模块代码库的方式。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;script src=&amp;quot;libary1.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;libary2.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;plugin1.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;module1.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;module2.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;模块导出接口到全局对象中，如 window 对象，也通过全局对象来访问依赖模块的接口。&lt;/p&gt;
+
+&lt;p&gt;普遍的问题&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;全局变量冲突
+强依赖加载顺序
+开发者需要解决模块和库的依赖关系
+大项目中列表越来越长而难以维护&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;commonjs-同步-require&#34;&gt;CommonJs：同步 require&lt;/h3&gt;
+
+&lt;p&gt;这是node.js使用的方式&lt;/p&gt;
+
+&lt;p&gt;这种方式使用同步的 require 来加载依赖并且通过给 exports 添加属性或给 module.exports 赋值来导出接口。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require(&amp;quot;module&amp;quot;);
+require(&amp;quot;../file.js&amp;quot;);
+exports.doStuff = function() {};
+module.exports = someValue;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;优点&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;重用服务端模块
+npm 上已经有很多这种模块
+简单且易于使用&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;缺点&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;网络请求不适用于同步请求，更适合异步请求
+不能并行请求多个模块&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;amd-异步-require&#34;&gt;AMD：异步 require&lt;/h3&gt;
+
+&lt;p&gt;因为 CommonJs 的同步 require 方案不适合如浏览器等环境，所以有了异步的定义和导出模块方案。例如：require.js&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require([&amp;quot;module&amp;quot;, &amp;quot;../file&amp;quot;], function(module, file) { /* ... */ });
+define(&amp;quot;mymodule&amp;quot;, [&amp;quot;dep1&amp;quot;, &amp;quot;dep2&amp;quot;], function(d1, d2) {
+return someExportedValue;
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;优点&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;适合异步网络请求方式
+并行加载多模块&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;缺点&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;更多的编码，更难阅读和编写
+有不同的方案&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;es6-模块&#34;&gt;ES6 模块&lt;/h3&gt;
+
+&lt;p&gt;EcmaScript6 给 JavaScript 增加了模块系统。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;import &amp;quot;jquery&amp;quot;;
+export function doStuff() {}
+module &amp;quot;localModule&amp;quot; {}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;优点&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;易于静态分析（Typescript）
+未来的标准&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;缺点&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;浏览器原生支持需要时间（Babel）
+这种风格的模块还很少&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;模块的加载方式&#34;&gt;模块的加载方式&lt;/h2&gt;
+
+&lt;p&gt;因为模块是在客户端执行的，所以首先需要把模块从服务端加载到浏览器。&lt;/p&gt;
+
+&lt;p&gt;关于模块加载，有两个极端的方案：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;一个模块一个请求&lt;/li&gt;
+&lt;li&gt;所有模块一个请求&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这两种方案都被广泛使用，但都不是最佳的。&lt;/p&gt;
+
+&lt;h3 id=&#34;一个模块一个请求&#34;&gt;一个模块一个请求&lt;/h3&gt;
+
+&lt;p&gt;优点：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;按需加载&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;缺点：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;过多请求导致负载过多，延迟过大，初始化慢&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;所有模块一个请求&#34;&gt;所有模块一个请求&lt;/h3&gt;
+
+&lt;p&gt;优点：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;更少的负载，更少的延迟&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;缺点：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;不需要或还不需要的模块也被加载了&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;分块加载&#34;&gt;分块加载&lt;/h3&gt;
+
+&lt;p&gt;在大多数情况下，各种极端方案的相互妥协会得到一个更好地方案。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;编译模块时，把模块拆成更小的块（chunks）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这样，将得到多个更小的请求。模块的每个块（chunks）将是按需加载，初始请求中不包含完整的代码库，从而可以更小。&lt;/p&gt;
+
+&lt;p&gt;「拆分点」是可选的，并且可以由开发者自定义。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;可以组成一个大的代码库&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;注：此思路来自&lt;a href=&#34;http://www.gwtproject.org/doc/latest/DevGuideCodeSplitting.html&#34;&gt;GWT&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;更多可参考&lt;a href=&#34;https://github.com/liunian/webpack-doc/blob/master/code-splitting.md&#34;&gt;代码拆分&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h2 id=&#34;为何仅打包-javascript&#34;&gt;为何仅打包 JavaScript？&lt;/h2&gt;
+
+&lt;p&gt;为什么一个模块系统只能帮助开发者打包（模块化）JavaScript？实际上我们还有很多别的静态资源需要处理，如：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;样式&lt;/li&gt;
+&lt;li&gt;图片&lt;/li&gt;
+&lt;li&gt;web 字体&lt;/li&gt;
+&lt;li&gt;html 模板&lt;/li&gt;
+&lt;li&gt;其他静态资源（.txt .pdf等）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;另外还有一些预编译资源：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;typescript/coffeescript -&amp;gt; javascript&lt;/li&gt;
+&lt;li&gt;less/sass -&amp;gt; css&lt;/li&gt;
+&lt;li&gt;jade -&amp;gt; 生成模板的 javascript&lt;/li&gt;
+&lt;li&gt;i18n 文件 -&amp;gt; 别的资源&lt;/li&gt;
+&lt;li&gt;其他&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这些应该同样的使用才对，如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require(&amp;quot;./style.css&amp;quot;);
+require(&amp;quot;./style.less&amp;quot;);
+require(&amp;quot;./template.jade&amp;quot;);
+require(&amp;quot;./image.png&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;静态分析&#34;&gt;静态分析&lt;/h2&gt;
+
+&lt;p&gt;在编译模块时，会尝试用静态分析来获取依赖关系。&lt;/p&gt;
+
+&lt;p&gt;一般来说，这只能找到没有表达式的简单形式，但像 require(&amp;ldquo;./template/&amp;rdquo; + templateName + &amp;ldquo;.jade&amp;rdquo;) 确实一种常见的用法。&lt;/p&gt;
+
+&lt;p&gt;不同的代码库往往使用不同的风格，其中不少的风格还是比较怪异的……&lt;/p&gt;
+
+&lt;h3 id=&#34;解决问题的策略&#34;&gt;解决问题的策略&lt;/h3&gt;
+
+&lt;p&gt;一个好的解析器应当支持绝大多数的现存代码。如果开发者用了一些不寻常的方法，那么解析器应该提供一个兼容性最好的解决方案。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;webpack安装&#34;&gt;Webpack安装&lt;/h1&gt;
+
+&lt;h2 id=&#34;node-js&#34;&gt;node.js&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://nodejs.org/en/&#34;&gt;安装node.js&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;node.js自带了一个叫做npm的包管理工具&lt;/p&gt;
+
+&lt;h2 id=&#34;webpack&#34;&gt;Webpack&lt;/h2&gt;
+
+&lt;p&gt;我们使用npm安装Webpack&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm install webpack -g    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;在项目中使用webpack&#34;&gt;在项目中使用Webpack&lt;/h2&gt;
+
+&lt;p&gt;最好的方法是把 webpack 作为项目的依赖，这样，每个项目都可以使用自己所需要的版本而不必依赖于全局的 webpack。&lt;/p&gt;
+
+&lt;p&gt;通过 npm 来创建一个 package.json 文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm init
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果不把项目发布到 npm 上，在执行 &lt;code&gt;npm init&lt;/code&gt; 命令中要求回答的问题的答案则不是很重要。&lt;/p&gt;
+
+&lt;p&gt;使用下面的命令来安装 webpack 并把其添加到 packeage.json 中：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm install webpack --save-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;由于网络问题安装失败的朋友可以使用如下命令进行安装：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm install webpack --save-dev --registry=https://registry.npm.taobao.org
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;webpack版本选择&#34;&gt;Webpack版本选择&lt;/h2&gt;
+
+&lt;p&gt;webpack 有稳定版和 beta 版两个可用的版本，其中，beta 版本在版本号中添加了 -beta 的标识。
+beta 版本可能带有很多不稳定变更或实验性的功能，并且未完全测试。
+可查看变更记录来看各版本的差别。正式项目中应该使用稳定版本。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm install webpack@1.2.x --save-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;webpack开发者工具&#34;&gt;Webpack开发者工具&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;npm install webpack-dev-server --save-dev 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;复制如下代码到命令行执行-可快速安装&#34;&gt;复制如下代码到命令行执行，可快速安装&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;npm install webpack webpack-dev-server --save-dev --registry=https://registry.npm.taobao.org
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;使用webpack&#34;&gt;使用Webpack&lt;/h1&gt;
+
+&lt;h2 id=&#34;基本使用方式&#34;&gt;基本使用方式&lt;/h2&gt;
+
+&lt;p&gt;最基本的使用webpack的方式是在命令行中输入webpack相关的命令并执行，
+此时webpack 会分析入口文件（entry.js）来找寻依赖文件。这些依赖文件（又称之为模块）会包括到 bundle.js 中。
+webpack 会给每个模块一个唯一的 id，然后在 bundle.js 中通过该 id 来访问对应的模块。
+启动时，只会执行入口模块。一个短小的运行时提供了 require 函数，在引用模块时会执行依赖模块。&lt;/p&gt;
+
+&lt;p&gt;如果项目变得越来越大，编译耗时将会越来越长。
+所以，我们希望能够展示一些进度条，同时增加颜色&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ webpack --progress --colors
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我们并不希望每一个变更都需要去手动编译，则可以通过以下命令来改善。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ webpack --watch --progress --colors 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样，webpack 会缓存未变更的模块而输出变更的模块。&lt;/p&gt;
+
+&lt;p&gt;开启 webpack 监控模式后，webpack 会给所有文件添加用于编译的文件监控。
+如果有任何变更，将会触发编译。
+当缓存开启时，webpack 会在内存中保存所有模块内容并在没变更时直接重用。&lt;/p&gt;
+
+&lt;p&gt;但在实际项目中，一般不会这样使用。&lt;/p&gt;
+
+&lt;p&gt;通常会结合npm命令来在项目中使用Webpack。&lt;/p&gt;
+
+&lt;p&gt;npm 是一个非常好用的用来编译的指令，我们把webpack编译步骤放到 npm run build 中。
+通过 npm 我们可以不用去担心项目中使用了什么技术，
+你只要调用这个指令就可以了，只要你在 package.json 中设置 scripts 的值就可以了。&lt;/p&gt;
+
+&lt;p&gt;把下面的内容添加到 package.json中。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;scripts&amp;quot;: {
+   &amp;quot;build&amp;quot;: &amp;quot;webpack&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;设置-webpack-dev-server&#34;&gt;设置 webpack-dev-server&lt;/h2&gt;
+
+&lt;p&gt;如果需要一直输入 npm run build 确实是一件非常无聊的事情，&lt;/p&gt;
+
+&lt;p&gt;幸运的是，我们可以把让他安静的运行，让我们设置 webpack-dev-server。&lt;/p&gt;
+
+&lt;p&gt;安装webpack-dev-server&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm i webpack-dev-server --save-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;把下面的内容添加到 package.json中。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;scripts&amp;quot;: {
+        &amp;quot;build&amp;quot;: &amp;quot;webpack&amp;quot;,
+        &amp;quot;dev&amp;quot;: &amp;quot;webpack-dev-server --devtool eval --progress --colors --hot --content-base build&amp;quot;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;webpack-dev-server - 在 localhost:8080 建立一个 Web 服务器
+&amp;ndash;devtool eval - 为你的代码创建源地址。当有任何报错的时候可以让你更加精确地定位到文件和行号
+&amp;ndash;progress - 显示合并代码进度
+&amp;ndash;colors - 命令行中显示颜色
+&amp;ndash;content-base build - 指向设置的输出目录&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;访问 &lt;a href=&#34;http://localhost:8080&#34;&gt;http://localhost:8080&lt;/a&gt; 会看到效果&lt;/p&gt;
+
+&lt;h2 id=&#34;webpack-config-js&#34;&gt;webpack.config.js&lt;/h2&gt;
+
+&lt;p&gt;在项目根目录手动创建名为webpack.config.js的配置文件,&lt;/p&gt;
+
+&lt;p&gt;Webpack 在执行的时候，除了在命令行传入参数，还可以通过指定的配置文件来执行。
+默认情况下，会搜索当前目录的 webpack.config.js 文件。&lt;/p&gt;
+
+&lt;h2 id=&#34;浏览器自动刷新&#34;&gt;浏览器自动刷新&lt;/h2&gt;
+
+&lt;p&gt;webpack-dev-server阻止了 webpack 生成结果文件到硬盘，而是直接通过内存来提供服务&lt;/p&gt;
+
+&lt;p&gt;当运行 webpack-dev-server 的时候，它会监听你的文件修改。当项目重新合并之后，会通知浏览器刷新。&lt;/p&gt;
+
+&lt;p&gt;为了能够触发这样的行为，你需要把你的 index.html 放到 build/ 文件夹下，&lt;/p&gt;
+
+&lt;p&gt;然后，需要在index.html中增加一个脚本当发生改动的时候去自动刷新应用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&amp;quot;UTF-8&amp;quot;/&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;script src=&amp;quot;http://localhost:8080/webpack-dev-server.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script src=&amp;quot;bundle.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在webpack.config.js配置中增加一个入口点&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var path = require(&#39;path&#39;);
+
+module.exports = {
+    entry: [&#39;webpack/hot/dev-server&#39;, path.resolve(__dirname, &#39;app/main.js&#39;)],
+    output: {
+        path: path.resolve(__dirname, &#39;build&#39;),
+        filename: &#39;bundle.js&#39;,
+    },
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在应用就可以在文件修改之后自动刷新了&lt;/p&gt;
+
+&lt;h2 id=&#34;默认自动刷新方式&#34;&gt;默认自动刷新方式&lt;/h2&gt;
+
+&lt;p&gt;在上面我们创建了 index.html 文件来获取更多的自由和控制，这样在&lt;a href=&#34;http://localhost:8080/就可以自动刷新。&#34;&gt;http://localhost:8080/就可以自动刷新。&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;另一种方式是不需要创建index.html, 直接访问&lt;a href=&#34;http://localhost:8080/webpack-dev-server/bundle&#34;&gt;http://localhost:8080/webpack-dev-server/bundle&lt;/a&gt; 运行应用。&lt;/p&gt;
+
+&lt;p&gt;这会触发一个默认的我们不能控制的 index.html ，它同样会触发一个允许iFrame中显示重合并的过程。
+webpack 命令会尝试加载当前目录下的 webpack.config.js 文件。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;加载器-1&#34;&gt;加载器&lt;/h1&gt;
+
+&lt;p&gt;加载器是把一个资源文件作为入参转换为另一个资源文件的 node.js 函数。&lt;/p&gt;
+
+&lt;h2 id=&#34;安装加载器&#34;&gt;安装加载器&lt;/h2&gt;
+
+&lt;p&gt;如果加载器发布在 npm 上，那么可以通过下面的两个命令来安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm install xxx-loader --save
+$ npm install xxx-loader --save-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;加载器用法&#34;&gt;加载器用法&lt;/h2&gt;
+
+&lt;p&gt;请参见&lt;a href=&#34;https://github.com/lizhiyao/learn_webpack_react&#34;&gt;在项目中使用webpack+react+es6&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://webpack.github.io/docs/&#34;&gt;Webpack Document&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://zhaoda.net/webpack-handbook/index.html&#34;&gt;Webpack 中文指南&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/liunian/webpack-doc/blob/master/SUMMARY.md&#34;&gt;webpack-doc&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://zhuanlan.zhihu.com/p/20367175&#34;&gt;Webpack傻瓜式指南（一）&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://zhuanlan.zhihu.com/p/20397902&#34;&gt;Webpack傻瓜指南（二）开发和部署技巧&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://zhuanlan.zhihu.com/p/20522487&#34;&gt;Webpack傻瓜指南（三）和React配合开发&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

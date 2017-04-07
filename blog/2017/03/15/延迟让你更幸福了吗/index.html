@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>延迟，让你更幸福了吗？</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/init.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/particles.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/markdown.css">
+    <link rel="stylesheet" href="http://dxy-developer.github.io/f2e/css/style.css">
+    <script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+    <script>
+      
+      function setLeanCloud() {
+        AV.initialize('PPDrp7ANvEDvzYqBF2gKC7vY-gzGzoHsz', '60o0boL7ij0mkftarA5kEfNs');
+      }
+      setLeanCloud();
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="menu"></button>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+    <div class="header">
+        <a href="http://dxy-developer.github.io/f2e">
+            <p class="title J-title">延迟，让你更幸福了吗？</p>
+            <p class="title">回到首页</p>
+            <p class="sub-title">DXY Tech&amp;Product Division</p>
+            <hr />
+        </a>
+    </div>
+
+<div class="container">
+    <div class="left">
+        <div class="post markdown-body">
+    <p class="post-info J-detail-option">
+        Author.<span class="J-author">志遥</span> ·
+        Tag.<a href="http://dxy-developer.github.io/f2e/tags/fastclick">FastClick</a> ·
+        Wed, Mar 15, 2017
+    </p>
+    <div class="post-body J-hack-url" data-url="http://dxy-developer.github.io/f2e/post/lizy/20170315/">
+        
+
+<p>做前端开发的同学应该知道：在移动端使用了 WebKit 内核的浏览器上，单击操作会延迟 300ms（也有延迟 350ms 的说法，下文统称为 300ms 延迟）后再执行。</p>
+
+<h1 id="造成延迟的原因">造成延迟的原因</h1>
+
+<p>故事要从 2007 年第一场雪说起，当时的网站都是为大屏幕设备所设计的，
+苹果公司在发布首款 iPhone 前夕，遇到一个问题： 在用户使用像 iPhone 这种小屏幕设备的浏览器访问网站时，
+如何确保用户获得较好的浏览体验。苹果的工程师们做了一些约定来解决这个问题，其中一项约定便是
+双击缩放(double tap to zoom)：用手指在屏幕上快速点击两次，iOS 自带的 Safari 浏览器会将网页缩放
+至原始比例。</p>
+
+<p>由于当用户一次点击屏幕之后，浏览器并不能立刻判断用户是确实要打开这个链接，还是想要进行双击操作。
+因此，iOS Safari 就等待 300ms，以判断用户是否再次点击了屏幕。</p>
+
+<p>逐渐地，几乎现在所有的移动端浏览器都支持了了双击缩放这个交互。</p>
+
+<p>在人们还在为通过移动设备上网而惊叹的时期，没有人会在意这 300ms 的延时。
+而当移动互联网的浪潮滚滚而来时，对于 Web 开发人员来说，点击事件的快速响应变得非常重要。
+移动端浏览器上所有的单击事件都有 300ms 延迟这件事，开始被人们诟病。</p>
+
+<h1 id="解决延迟的方法">解决延迟的方法</h1>
+
+<p>有问题，就会有对应的解决办法，任何一件事都逃不出这个定律。300ms 延迟也不例外。</p>
+
+<p>常用的解决方案如下：
+- 禁用缩放
+- 更改浏览器视口的默认宽度
+- 指针事件 (Pointer Events)
+- FastClick</p>
+
+<h2 id="禁用缩放">禁用缩放</h2>
+
+<p>这是一个比较容易想到的解决方案：既然延迟的起因是页面缩放，那就禁止页面缩放好了。</p>
+
+<p>代码实现起来也很容易，只需要在 html 页面头部添加如下代码：</p>
+
+<pre><code>&lt;meta name=&quot;viewport&quot; content=&quot;user-scalable=no&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;initial-scale=1,minimum-scale=1,maximum-scale=1&quot;&gt;
+</code></pre>
+
+<p>自古以来，“一刀切”是能解决问题的，但通常不是问题的最优解。</p>
+
+<blockquote>
+<p>这个解决方案看似完美，但也带来一个明显的缺陷 —— 你必须完全禁用缩放来达到目的，
+而从移动端站点的可用性和可访问性来看，缩放是相当关键的一环。
+你很可能已经遇到过这个问题，即你想要放大一张图片或者一段字体较小的文本，却发现无法完成操作。</p>
+</blockquote>
+
+<h2 id="更改浏览器视口的默认宽度">更改浏览器视口的默认宽度</h2>
+
+<p>2014 年，Chrome 开发团队宣布，在 Chrome 32 这一版中，他们将在通过<code>&lt;meta&gt;</code>标签设置 <code>width=device-width</code> 或者置为比 <code>viewport</code> 值更小的页面上禁用双击缩放。页面禁用了双击缩放，就意味着没有了 300 ms点击延迟。</p>
+
+<p>这个方法代码实现起来依旧很简单：只需要在 html 页面头部添加一行代码：</p>
+
+<pre><code>&lt;!--使浏览器将视口大小设为设备本身的尺寸--&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot;&gt;
+</code></pre>
+
+<p>该方案只是禁用了双击缩放操作，用户依旧可以使用双指缩放(pinch to zoom)等操作与页面发生交互。
+缩放功能并非被完全禁用，也就不存在可用性和可访问性的问题了。</p>
+
+<p>目前，主流的移动端浏览器均已支持该方案。</p>
+
+<p>iOS 10 发布之后，通过 <code>&lt;meta&gt;</code> 标签设置的 <code>user-scalable</code>，<code>min-scale</code> 和 <code>max-scale</code> 会被 WebKit 忽略掉，这意味着 iOS 10 上的 Safari/Chrome 允许用户在每个页面上进行缩放。但是依旧可以通过使用 <code>&lt;meta name=&quot;viewport&quot; content=&quot;initial-scale=1.0, width=device-width&quot;&gt;</code> 来消除延迟，从而快速响应用户的单击操作。</p>
+
+<p>在 iOS 10 的 hybrid 应用中，可以通过在 <code>WKWebViewConfiguration</code> 上设置新属性来阻止用户缩放：</p>
+
+<pre><code> var ignoresViewportScaleLimits : Bool 
+</code></pre>
+
+<p>默认值为 false ，这意味着 WKWebView 内容将允许内容阻止缩放。这保留了旧版本的iOS的行为。</p>
+
+<p>实际上，正是因为 iOS 10 中的 Safari 和 SafariViewController 将值设置为 true，才会导致禁止页面缩放失效。</p>
+
+<h2 id="指针事件-pointer-events">指针事件 (Pointer Events)</h2>
+
+<p>除了使用 HTML 的 <code>&lt;meta&gt;</code> 标签禁止页面缩放外，我们还可以通过 CSS 的方式来让页面快速响应点击操作。
+该种方式在国内通常被称作：指针事件。</p>
+
+<p>指针事件最初由微软提出。指针事件是一个新的 web 事件系列，相应的规范旨在使用一个单独的事件模型，对所有输入类型，包括鼠标 (mouse)、触摸 (touch)、触控 (stylus) 等，进行统一的处理。</p>
+
+<p>指针事件方案中，有一个和点击延迟直接相关的实现：一个名为 <code>touch-action</code> 的新 CSS 属性。
+根据<a href="https://w3c.github.io/pointerevents/#the-touch-action-css-property">规范</a> <code>touch-action</code> 属性决定 “是否触摸操作会触发用户代理的默认行为。这包括但不限于双指缩放等行为”。</p>
+
+<p>默认情况下，页面上的元素具有 <code>touch-action: auto;</code>，这表示 WebKit 可以启用任何触摸行为，例如平移，捏和双击。当页面上的元素具有 <code>touch-action: manipulation;</code> 时，WebKit 仅会支持在可点击元素上的触摸行为，仅用于平移和缩放的目的。 这味着 WebKit 不会考虑对元素执行双击手势，因此会立即调度单个点击。 当任何元素的祖先具有<code>touch-action: manipulation;</code> 时，元素上的单个点击变得快速。 注意，页面上所有具有了<code>touch-action: manipulation;</code>的节点的子节点都会立即调度单个点击事件。该种方式适用于各种缩放比例的页面。</p>
+
+<p>关于 <code>touch-action</code> 具体详情,可访问<a href="https://w3c.github.io/pointerevents/">W3C 规范的候选推荐标准阶段</a>进行了解。</p>
+
+<p>可以从<a href="http://caniuse.com/#search=touch-action">http://caniuse.com/</a>来了解现阶段各个浏览器对<code>touch-action</code>的支持情况。</p>
+
+<h3 id="指针事件的-polyfill">指针事件的 polyfill</h3>
+
+<p>下面列出了几种针对指针事件的 polyfill：</p>
+
+<ul>
+<li><a href="https://github.com/jquery/PEP">Polymer</a></li>
+<li><a href="http://handjs.codeplex.com/">HandJS</a></li>
+<li><a href="https://github.com/Rich-Harris/Points">Points</a></li>
+</ul>
+
+<p>需要注意的是，如果你需要的仅仅是一个解决 300ms 点击延迟的方法，上述方案可能不是最理想的。
+因为它们要么是会影响页面整体性能的资源密集型的方案，要么是 touch-action 属性的非标准化模拟。</p>
+
+<h2 id="fastclick-https-github-com-ftlabs-fastclick"><a href="https://github.com/ftlabs/fastclick">FastClick</a></h2>
+
+<p>FastClick 是 <a href="http://labs.ft.com/">FT Labs</a> 专门为解决移动端浏览器 300 ms点击延迟问题所开发的一个轻量级的库。</p>
+
+<h3 id="实现原理">实现原理</h3>
+
+<p>FastClick 在检测到 touchend 事件的时候，会通过 DOM 自定义事件立即触发一个模拟 click 事件，并把浏览器在 300 ms之后真正触发的 click 事件阻止掉。</p>
+
+<h3 id="使用方法">使用方法</h3>
+
+<p>FastClick 的使用方法非常简单。官方推荐的使用方法为：当初始 HTML 文档已完全加载和解析时，
+调用 <code>FastClick.attach(document.body);</code>：</p>
+
+<pre><code>if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+        FastClick.attach(document.body);
+    }, false);
+}
+</code></pre>
+
+<p>如果使用了 jQuery，可以使用如下方式使用 FastClick：</p>
+
+<pre><code>$(function() {
+    FastClick.attach(document.body);
+});
+</code></pre>
+
+<p>如果使用了 npm 等模块化的方式安装了 FastClick，则可以按照如下方式使用：</p>
+
+<pre><code>const attachFastClick = require('fastclick');
+attachFastClick(document.body);
+</code></pre>
+
+<p>其实具体如何使用 FastClick，去看一下 FastClick 的源码就一目了然了：</p>
+
+<pre><code>if (typeof define === 'function' &amp;&amp; typeof define.amd === 'object' &amp;&amp; define.amd) {
+
+    // AMD. Register as an anonymous module.
+    define(function() {
+        return FastClick;
+    });
+} else if (typeof module !== 'undefined' &amp;&amp; module.exports) {
+    module.exports = FastClick.attach;
+    module.exports.FastClick = FastClick;
+} else {
+    window.FastClick = FastClick;
+}
+</code></pre>
+
+<p>值得注意的是：attach() 方法虽可在更具体的元素上调用，直接绑定到 <code>&lt;body&gt;</code> 上可以确保整个应用都能受益。当 FastClick 检测到当前页面使用了基于 <code>&lt;meta&gt;</code> 标签或者 <code>touch-action</code> 属性等解决方案时，会静默退出。可以说，这是真正的跨平台方案出来之前一种很好的变通方案。</p>
+
+<h1 id="移动端浏览器的现状">移动端浏览器的现状</h1>
+
+<p>目前 iOS 和 Android 两大平台的移动设备上的浏览器，以及两个平台上微信中的内置浏览器均可通过上述方案
+来解决 300 ms 延时问题。</p>
+
+<h1 id="备注">备注</h1>
+
+<p>目前各个浏览器使用的内核情况。</p>
+
+<table>
+<thead>
+<tr>
+<th>浏览器</th>
+<th>内核</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Safari</td>
+<td>WebKit</td>
+</tr>
+
+<tr>
+<td>Chrome</td>
+<td>WebKit</td>
+</tr>
+
+<tr>
+<td>Opera</td>
+<td>WebKit</td>
+</tr>
+
+<tr>
+<td>Firefox</td>
+<td>Gecko</td>
+</tr>
+
+<tr>
+<td>国产浏览器极速模式</td>
+<td>WebKit</td>
+</tr>
+
+<tr>
+<td>微信浏览器</td>
+<td>WKWebView</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="参考">参考</h1>
+
+<ul>
+<li><a href="https://github.com/ftlabs/fastclick">FastClick</a></li>
+<li><a href="https://developers.google.com/web/updates/2013/12/300ms-tap-delay-gone-away">300ms tap delay, gone away</a></li>
+<li><a href="https://thx.github.io/mobile/300ms-click-delay">300 ms点击延迟的来龙去脉</a></li>
+<li><a href="http://labs.ft.com/">FT Labs</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent">CustomEvent</a></li>
+<li><a href="https://webkit.org/blog/5610/more-responsive-tapping-on-ios/">More Responsive Tapping on iOS</a></li>
+<li><a href="https://webkit.org/blog/7367/new-interaction-behaviors-in-ios-10/">New Interaction Behaviors in iOS 10</a></li>
+<li><a href="http://amazeui.org/javascript/fastclick?_ver=2.x">Amaze UI JS 插件 FastClick</a></li>
+<li><a href="http://www.cnblogs.com/vajoy/p/3735553.html">各主流浏览器内核介绍</a></li>
+<li><a href="http://www.cnblogs.com/vajoy/p/5522114.html">FastClick 填坑及源码解析</a></li>
+</ul>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var VisitTable = AV.Object.extend('Visit');
+    var URLLinkId = location.pathname;
+    var author = $('.J-author').text() || '';
+    var title = $('.J-title').text() || '';
+
+    
+    function postVisitData() {
+      var visit = new VisitTable();
+      var query = new AV.Query('Visit');
+
+      query.equalTo('link', URLLinkId)
+      query.find().then(function(list) {
+        var count = 1;
+        if (list.length > 0) {
+          var item = list[0];
+          item.increment('visitCount');
+          item.save();
+          count = item.get('visitCount');
+        } else {
+          visit.increment('visitCount');
+          visit.save({
+            link: URLLinkId,
+            author: author,
+            title: title
+          });
+        }
+        $('.J-detail-option').append('· 浏览量. <span>' + count + '</span>');
+      });
+    }
+
+    postVisitData();
+  });
+</script>
+
+
+        
+<div class="ds-thread" data-thread-key="http://dxy-developer.github.io/f2e/blog/2017/03/15/%E5%BB%B6%E8%BF%9F%E8%AE%A9%E4%BD%A0%E6%9B%B4%E5%B9%B8%E7%A6%8F%E4%BA%86%E5%90%97/" data-title="延迟，让你更幸福了吗？" data-url="http://dxy-developer.github.io/f2e/blog/2017/03/15/%E5%BB%B6%E8%BF%9F%E8%AE%A9%E4%BD%A0%E6%9B%B4%E5%B9%B8%E7%A6%8F%E4%BA%86%E5%90%97/"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"dxy-developer"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+    </div>
+    <div class="right">
+    
+    <div class="assort">
+        <p>分类</p>
+        <ul>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/css">css</a>
+        <span>(6)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/fastclick">fastclick</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/form">form</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/html5">html5</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/http">http</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/hybrid">hybrid</a>
+        <span>(3)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/javascript">javascript</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/novalidate">novalidate</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/promise">promise</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/reflow">reflow</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/repaint">repaint</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/required">required</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/seo">seo</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/tdz">tdz</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/viewport">viewport</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/webpack">webpack</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">前端性能优化</a>
+        <span>(2)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4">自动提交</a>
+        <span>(1)</span>
+    </li>
+    
+    <li>
+        <a href="http://dxy-developer.github.io/f2e/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+        <span>(1)</span>
+    </li>
+    
+</ul>
+
+    </div>
+</div>
+
+</div>
+<div id="gotop">
+	<a href="javascript:;">TOP</a>
+</div>
+<div class="footer">
+    <p>Establishment · 丁香园前端</p>
+</div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/script.js"></script>
+</body>
+
+</html>
+
+<div id="particles-js"></div>
+<script type="text/javascript" src="http://dxy-developer.github.io/f2e/js/particles.js"></script>
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http:\/\/dxy-developer.github.io\/f2e/json/particles.json', null);
+</script>
+

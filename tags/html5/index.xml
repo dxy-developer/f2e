@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Html5 on 丁香园前端小分队</title>
+    <link>http://dxy-developer.github.io/f2e/tags/html5/index.xml</link>
+    <description>Recent content in Html5 on 丁香园前端小分队</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Establishment · 丁香园前端</copyright>
+    <atom:link href="http://dxy-developer.github.io/f2e/tags/html5/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>HTML 桌面消息通知</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/07/06/html-%E6%A1%8C%E9%9D%A2%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/</link>
+      <pubDate>Wed, 06 Jul 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/07/06/html-%E6%A1%8C%E9%9D%A2%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/</guid>
+      <description>&lt;p&gt;HTML 桌面消息通知，指的是通过浏览器的 Notification 对象为用户在系统桌面设置和显示通知提醒。这样，用户就可以做自己的事情，而不用担心会错过一些消息。
+&lt;/p&gt;
+
+&lt;h3 id=&#34;如何使用&#34;&gt;如何使用？&lt;/h3&gt;
+
+&lt;h5 id=&#34;首先向用户获取在当前网站展示系统通知的权限&#34;&gt;首先向用户获取在当前网站展示系统通知的权限&lt;/h5&gt;
+
+&lt;p&gt;获取这个权限一般在网站在初始化的时候完成，使用 &lt;code&gt;Notification.requestPermission()&lt;/code&gt;方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    Notification.requestPermission().then(function(status) {
+        // 根据 status 的值做一些事情 
+        if (Notification.permission !== status) {
+            Notification.permission = status;
+        }
+    });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;返回的 status 为字符串，有三个值&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;denied (用户拒绝了通知的显示)&lt;/li&gt;
+&lt;li&gt;granted (用户允许了通知的显示)&lt;/li&gt;
+&lt;li&gt;default (默认为 default，也就是需要询问用户是否授权，浏览器的表现和 denied 一样)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;之后-就可以用-notification-构造函数建一条新的通知&#34;&gt;之后，就可以用&lt;code&gt;Notification()&lt;/code&gt;构造函数建一条新的通知&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;    var notification = new Notification(title, options);    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;这里的 title 是必传的&lt;/li&gt;
+&lt;li&gt;options 是可选的一个对象，它规定了文本的方向、通知的内容、通知的图标等等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;属性&#34;&gt;属性&lt;/h3&gt;
+
+&lt;h5 id=&#34;静态属性-notification-permission&#34;&gt;静态属性：&lt;code&gt;Notification.permission&lt;/code&gt;&lt;/h5&gt;
+
+&lt;p&gt;表明当前通知显示的授权状态，值可能为：denied、granted、default&lt;/p&gt;
+
+&lt;h5 id=&#34;只读属性&#34;&gt;只读属性：&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;dir (文字方向，经测试都不支持)&lt;/li&gt;
+&lt;li&gt;lang (语言)&lt;/li&gt;
+&lt;li&gt;body (消息体)&lt;/li&gt;
+&lt;li&gt;tag (标签)&lt;/li&gt;
+&lt;li&gt;icon (图标地址)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这些属性，可以在创建消息的时候，作为 options 的属性传入 Notificaiton 函数。&lt;/p&gt;
+
+&lt;p&gt;重点提一下tag属性，它用于给相同类别的消息做标记，如果在短时间内有很多消息，系统会只显示tag标记的消息中最新的一条&lt;/p&gt;
+
+&lt;h3 id=&#34;事件处理&#34;&gt;事件处理&lt;/h3&gt;
+
+&lt;p&gt;Notification.onclick()/onshow()/onerror()/onclose()&lt;/p&gt;
+
+&lt;p&gt;通常情况下，onclick事件用的比较多，比如点击消息后跳转到特定页面&lt;/p&gt;
+
+&lt;h3 id=&#34;方法&#34;&gt;方法&lt;/h3&gt;
+
+&lt;h5 id=&#34;静态方法&#34;&gt;静态方法：&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Notification.requestPermission() ——只能被用户行为调用，比如页面加载或用户点击&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;实例方法-仅在notification实例或其prototype中有效&#34;&gt;实例方法（仅在Notification实例或其prototype中有效）：&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Notification.close()&lt;/li&gt;
+&lt;li&gt;继承自EventTarget接口：addEventListener()/removeEventListener()/dispatchEvnet()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;举个&#34;&gt;举个🌰&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;    // 页面加载时，获取权限
+    if (window.Notification &amp;amp;&amp;amp; Notification.permission !== &amp;quot;granted&amp;quot;) {
+        Notification.requestPermission(function (status) {
+            if (Notification.permission !== status) {
+                Notification.permission = status;
+            }
+        });
+    }
+    function notifyMe() {
+        // 判断浏览器是否支持Nitifocaiton
+        if (!(&amp;quot;Notification&amp;quot; in window)) {
+            alert(&amp;quot;This browser does not support desktop notification&amp;quot;);
+        // 判断用户是否已经准许了发送桌面通知
+        } else if (window.Notification &amp;amp;&amp;amp; Notification.permission === &#39;granted&#39;) {
+        // 如果准许了，我们就发送一条消息
+            var n = new Notification(&#39;Hi!&#39;, {
+                body: &#39;hi, this is body&#39;
+            });
+        // 如果用户没有准许，我们需要向用户获取权限
+        } else if (window.Notification &amp;amp;&amp;amp; Notification.permission !== &#39;denied&#39;) {
+            Notification.requestPermission(function(status) {
+                if (Notification.permission !== status) {
+                    Notification.permission = status;
+                }
+                if (status === &#39;granted&#39;) {
+                    var n = new Notification(&#39;Hi!&#39;, {
+                    body: &#39;hi, this is body&#39;
+                    });
+                } else {
+                    alert(&#39;Hi!&#39;);
+                }
+            });
+        } else {
+            alert(&#39;Hi!&#39;);
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;（在我的 Mac 下 Chrome 中测试时，不能弹出通知，Firefox 和 Safari 都可以，但是别的电脑的 Chrome 中可以。原因我没有查到，希望查到的小伙伴告诉我一下～）&lt;/p&gt;
+
+&lt;h3 id=&#34;浏览器兼容性&#34;&gt;浏览器兼容性&lt;/h3&gt;
+
+&lt;p&gt;现代浏览器都支持基本的属性和方法，除了 IE。具体属性和方法的支持情况，可见参考资料&lt;/p&gt;
+
+&lt;p&gt;下面是 Nick Desaulniers 编写的一个可以向前向后兼容各种版本的实现&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	function sendNotification (title, options) {
+	  // Memoize based on feature detection.
+	  if (&amp;quot;Notification&amp;quot; in window) {
+	    sendNotification = function (title, options) {
+	      return new Notification(title, options);
+	    };
+	  } else if (&amp;quot;mozNotification&amp;quot; in navigator) {
+	    sendNotification = function (title, options) {
+	      // Gecko &amp;lt; 22
+	      return navigator.mozNotification
+	               .createNotification(title, options.body, options.icon)
+	               .show();
+	    };
+	  } else {
+	    sendNotification = function (title, options) {
+	      alert(title + &amp;quot;: &amp;quot; + options.body);
+	    };
+	  }
+	  return sendNotification(title, options);
+	};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;chrome-备忘&#34;&gt;Chrome 备忘&lt;/h5&gt;
+
+&lt;p&gt;在 Chrome 22 版本之前，如果要使用通知需要旧的带前缀版本的规范 ，并且使用navigator.webkitNotifications 对象创建一个新的通知实例。&lt;/p&gt;
+
+&lt;p&gt;在 Chrome 32 版本之前，不支持 Notification.permission 属性。&lt;/p&gt;
+
+&lt;p&gt;在Chrome 42 版本之前，不支持 service worker。&lt;/p&gt;
+
+&lt;p&gt;从chrome 49版本开始，匿名模式下的notifications不能运行。&lt;/p&gt;
+
+&lt;h5 id=&#34;safari-备忘&#34;&gt;Safari 备忘&lt;/h5&gt;
+
+&lt;p&gt;Safari 在 Safari 6 版本开始支持通知，但是只能在 Mac OSX 10.8+ (Mountain Lion) 中使用。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考资料&#34;&gt;参考资料&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/zh-CN/docs/Web/API/notification&#34;&gt;Notification - Web Api 接口&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/zh-CN/docs/Web/API/notification/Using_Web_Notifications&#34;&gt;使用 Web Notification&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>HTML5 drag and drop</title>
+      <link>http://dxy-developer.github.io/f2e/blog/2016/04/05/html5-drag-and-drop/</link>
+      <pubDate>Tue, 05 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://dxy-developer.github.io/f2e/blog/2016/04/05/html5-drag-and-drop/</guid>
+      <description>&lt;hr /&gt;
+
+&lt;h4 id=&#34;拖放简介&#34;&gt;拖放简介：&lt;/h4&gt;
+
+&lt;p&gt;拖放操作的过程是怎样的？&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;允许用户在一个元素上点击并按住鼠标按钮，拖动它到别的位置，然后松开鼠标，元素停留在该位置。在拖动的过程中，被拖动元素以半透明的形式展现，并跟随鼠标指针移动。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;在早期的 IE4 中的网页上，只有文本和图片可以拖动，并且唯一有效的放置目标就是文本框。随着浏览器的发展，拖放功能也得到扩展，现在几乎网页中的任何元素都可以拖放，并且任何元素都可以作为放置目标。&lt;/p&gt;
+
+&lt;p&gt;HTML5 就以 IE 的实例为基础制定了拖放规范。现对其主要内容做了整理。
+&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;拖放步骤&#34;&gt;拖放步骤：&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;定义可拖放目标&lt;/li&gt;
+&lt;li&gt;定义被拖动的数据&lt;/li&gt;
+&lt;li&gt;定义拖动过程中鼠标指针旁边出现的反馈图片&lt;/li&gt;
+&lt;li&gt;允许设置拖拽效果&lt;/li&gt;
+&lt;li&gt;定义放置区域&lt;/li&gt;
+&lt;li&gt;拖放结束时，完成数据交互等工作&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;帮助实现拖放的一些特性&#34;&gt;帮助实现拖放的一些特性：&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;属性&lt;/strong&gt;：&lt;code&gt;draggable&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;设为 true，则该元素可拖放&lt;/li&gt;
+&lt;li&gt;在 html 中，图片、超链接、被选中文本，这些元素默认就是可拖拽，可以不用设置该属性&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div draggable=&amp;quot;true&amp;quot; ondragstart=&amp;quot;event.dataTransfer.setData(&#39;text/plain&#39;, &#39;这里是想要拖动的元素&#39;)&amp;quot;&amp;gt;
+  这里是想要拖动的元素
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;事件&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;事件的目标是被拖动的元素
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;dragstart&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;drag&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dragend&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;事件的目标是作为放置目标（droptarget）的元素
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;dragenter&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dragover&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dragleave&lt;/code&gt;/&lt;code&gt;drop&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;对象&lt;/strong&gt;：&lt;code&gt;event.dataTransfer&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;用于实现数据交换，可在拖放事件的事件处理程序中访问&lt;/li&gt;
+&lt;li&gt;方法：&lt;code&gt;setData()&lt;/code&gt;，设置拖放要传递的数据
+
+&lt;ul&gt;
+&lt;li&gt;参数1: text/URL，表示保存的数据类型（HTML5 允许各种 MIME 类型，但 IE 只支持着两种）&lt;/li&gt;
+&lt;li&gt;参数2: 要保存的数据&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;方法：&lt;code&gt;getData()&lt;/code&gt;，获取拖放传递的数据，只能在 &lt;code&gt;drop&lt;/code&gt; 事件处理程序中使用&lt;/li&gt;
+&lt;li&gt;属性：&lt;code&gt;dropEffect&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;值：none/move/copy/link，&lt;/li&gt;
+&lt;li&gt;表示元素拖动到 droptarget 上时鼠标的效果&lt;/li&gt;
+&lt;li&gt;必须在 ondragenter 事件中使用&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;属性：&lt;code&gt;effectAllowed&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;值：none/move/copt/link/all/&amp;hellip;&lt;/li&gt;
+&lt;li&gt;跟 dropeffect 搭配使用，表示允许拖动元素的哪种 dropeffect&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;代码示例&#34;&gt;代码示例：&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;    $(被拖动元素).on(&amp;quot;dragstart&amp;quot;, function (e) {
+        /*开始拖拽源文本*/         
+        e.preventDefault();
+        e.dataTransfer.effectAllowed = &amp;quot;move&amp;quot;;
+        e.originalEvent.dataTransfer.setData(&amp;quot;text&amp;quot;, &#39;要传递的数据&#39;);
+        return true;
+    });
+
+    $(被拖动元素).on(&amp;quot;dragend&amp;quot;,  function(ev) {
+        /*拖拽结束*/
+        ev.dataTransfer.clearData(&amp;quot;text&amp;quot;);
+        eleDrag = null;
+        return false
+    });
+
+    $(放置目标元素).on(&amp;quot;dragover&amp;quot;, function (e) {
+        /*拖拽元素在目标元素头上移动的时候*/
+        e.preventDefault();
+        return true;
+    });
+
+    $(放置目标元素).on(&amp;quot;dragenter&amp;quot;,  function(ev) {
+        /*拖拽元素进入目标元素头上的时候*/
+        return true;
+    });
+
+    $(放置目标元素).on(&amp;quot;drop&amp;quot;, function (e) {               
+        /*拖拽元素进入目标元素头上，同时鼠标松开的时候*/
+        var data = e.originalEvent.dataTransfer.getData(&amp;quot;text&amp;quot;);
+        /*阻止在Firefox中拖拽打开新标签*/
+        return false;
+    });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;注意点&#34;&gt;注意点：&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在 dragstart 事件中必须使用 &lt;code&gt;event.preventDefault()&lt;/code&gt;，否则 drag 事件不能触发，也就不能实现拖拽&lt;/li&gt;
+&lt;li&gt;在 dragover 事件中也必须使用 &lt;code&gt;event.preventDefault()&lt;/code&gt;，否则 drop 事件不会触发&lt;/li&gt;
+&lt;li&gt;需在 drop 事件中使用 &lt;code&gt;return false;&lt;/code&gt;， 解决 Firefox 中拖拽元素会直接打开新标签的问题&lt;/li&gt;
+&lt;li&gt;为了减少事件，可以在 dragenter 的时候绑定方法 ，而 dragleave 的时候删除方法&lt;/li&gt;
+&lt;li&gt;在 dragover 上不要做数据处理，它类似mouseover，在拖动的过程中会不断触发，可能会导致浏览器崩溃&lt;/li&gt;
+&lt;li&gt;drag 事件和 mouse 事件不能同时触发&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;兼容性&#34;&gt;兼容性：&lt;/h4&gt;
+
+&lt;p&gt;浏览器支持：IE10+、Firefox 4+、Safari 5+和Chrome。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;参考文档&#34;&gt;参考文档：&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://developer.mozilla.org/zh-CN/docs/DragDrop/Drag_and_Drop&#34;&gt;拖放操作&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.zhangxinxu.com/wordpress/2011/02/html5-drag-drop-%E6%8B%96%E6%8B%BD%E4%B8%8E%E6%8B%96%E6%94%BE%E7%AE%80%E4%BB%8B/&#34;&gt;HTML5 drag &amp;amp; drop 拖拽与拖放简介&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
